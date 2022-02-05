@@ -37,7 +37,7 @@ public class MergeSort {
             } else if (j > endIndex) {
                 tmpArray[k++] = a[i++];
             } else {
-                if (a[i] < a[j]) {
+                if (a[i] <= a[j]) {
                     tmpArray[k++] = a[i++];
                 } else {
                     tmpArray[k++] = a[j++];
