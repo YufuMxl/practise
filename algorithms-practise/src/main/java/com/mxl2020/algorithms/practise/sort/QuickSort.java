@@ -22,12 +22,25 @@ public class QuickSort {
 
     private int partition(final int[] a, final int startIndex, final int endIndex) {
         int pivotValue = a[endIndex];
-        int pivotIndex = endIndex;
 
-        // 进行分区
+        // 定义游标：i 为要和 pivot 比较大小的元素，j 为可以交换位置的元素下标
+        int i = startIndex;
+        int j = endIndex - 1;
 
-        return pivotIndex;
+        // 对 startIndex ~ endIndex-1 的数组进行分区
+        while (i <= j) {
+            if (a[i] <= pivotValue) {
+                i++;
+            } else {
+                int tmp = a[j];
+                a[j--] = a[i];
+                a[i] = tmp;
+            }
+        }
 
+        a[endIndex] = a[i];
+        a[i] = pivotValue;
+        return i;
     }
 
 }
