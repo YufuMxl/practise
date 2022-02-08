@@ -5,11 +5,11 @@ package com.mxl2020.algorithms.practise.sort;
  */
 public class KthLargestElementInAnArray {
 
-    public int kthLargestElementInArray(int[] a, int n, int k) {
-        return kthLargestElementInArray(a, 0, n - 1, k);
+    public int findKthLargest(int[] nums, int k) {
+        return findKthLargest(nums, 0, nums.length - 1, k);
     }
 
-    private int kthLargestElementInArray(int[] a, int startIndex, int endIndex, int k) {
+    private int findKthLargest(int[] a, int startIndex, int endIndex, int k) {
         if (startIndex >= endIndex) return a[startIndex];
 
         int pivotIndex = partition(a, startIndex, endIndex);
@@ -17,9 +17,9 @@ public class KthLargestElementInAnArray {
         if (pivotIndex + 1 == k) {
             return a[pivotIndex];
         } else if (pivotIndex + 1 > k) {
-            return kthLargestElementInArray(a, startIndex, pivotIndex - 1, k);
+            return findKthLargest(a, startIndex, pivotIndex - 1, k);
         } else {
-            return kthLargestElementInArray(a, pivotIndex + 1, endIndex, k);
+            return findKthLargest(a, pivotIndex + 1, endIndex, k);
         }
     }
 
