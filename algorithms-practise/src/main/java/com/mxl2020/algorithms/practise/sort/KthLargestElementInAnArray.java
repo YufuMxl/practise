@@ -56,6 +56,6 @@ public class KthLargestElementInAnArray {
         return j;
     }
 
-    // TODO 基于堆排序的选择方法
+    // TODO 基于优先队列/堆排序的选择方法
 
 }
