@@ -1,9 +1,9 @@
 package com.mxl2020.algorithms.practise.sort;
 
 /**
- * 数组中的第 K 大元素
+ * 查找无序数组中的第 K 个最大元素
  */
-public class KthLargestElementInArray {
+public class KthLargestElementInAnArray {
 
     public int kthLargestElementInArray(int[] a, int n, int k) {
         return kthLargestElementInArray(a, 0, n - 1, k);
@@ -32,7 +32,7 @@ public class KthLargestElementInArray {
         // 遍历数组
         // 将 <=pivot 的值与位置 j 的元素交换，j 同时向前移动一位
         for (; i < endIndex; i++) {
-            if (a[i] < pivotValue) {
+            if (a[i] > pivotValue) {
                 int tmp = a[j];
                 a[j++] = a[i];
                 a[i] = tmp;
