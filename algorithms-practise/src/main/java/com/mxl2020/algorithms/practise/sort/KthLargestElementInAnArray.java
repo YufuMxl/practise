@@ -11,6 +11,12 @@ public class KthLargestElementInAnArray {
         return findKthLargest(nums, 0, nums.length - 1, k);
     }
 
+    /**
+     * 快速选择算法
+     * <p>
+     * 时间复杂度 O(n)
+     * 空间复杂度 O(log n)
+     */
     private int findKthLargest(int[] a, int startIndex, int endIndex, int k) {
         if (startIndex >= endIndex) return a[startIndex];
 
@@ -26,7 +32,11 @@ public class KthLargestElementInAnArray {
     }
 
     private int partition(final int[] a, final int startIndex, final int endIndex) {
-        int pivotValue = a[endIndex];
+        // 随机选择一个分区点，将该分区点与末尾元素交换
+        int randomIndex = startIndex + (int) (Math.random() * (endIndex - startIndex + 1));
+        int pivotValue = a[randomIndex];
+        a[randomIndex] = a[endIndex];
+        a[endIndex] = pivotValue;
         // 定义游标：i 用于遍历数组，j 用于表示"小区间"后一位
         int i = startIndex;
         int j = startIndex;
@@ -45,5 +55,7 @@ public class KthLargestElementInAnArray {
         a[j] = pivotValue;
         return j;
     }
+
+    // TODO 基于堆排序的选择方法
 
 }
