@@ -17,21 +17,29 @@ public class SqrtOfX {
      * @return 返回 x 的平方根的整数部分
      */
     public int mySqrt(int x) {
+        // 设置区间
         int low = 0;
         int high = x;
-        int squareRoot = -1;
+        // 初始化中间值
+        int mid = -1;
 
         while (low <= high) {
-            squareRoot = low + ((high - low) >> 1);
-            if ((long) squareRoot * squareRoot == x) {
-                break;
-            } else if ((long) squareRoot * squareRoot < x) {
-                low = squareRoot + 1;
+            // 寻找 low~high 区间的中间数
+            mid = low + ((high - low) >> 1);
+            if ((long) mid * mid == x) {
+                return mid;
+            } else if ((long) mid * mid < x) {
+                low = mid + 1;
             } else {
-                high = squareRoot - 1;
+                high = mid - 1;
             }
         }
-        return squareRoot;
+
+        if ((long) mid * mid > x) {
+            // 修正 mid 值
+            mid -= 1;
+        }
+        return mid;
     }
 
     // TODO 如何精确到小数点后 6 位
