@@ -28,7 +28,7 @@ public class SqrtOfX {
             if ((long) mid * mid > x) {
                 high = mid - 1;
             } else {
-                if (mid == high || (mid + 1) * (mid + 1) > x) {
+                if (mid == high || (long) (mid + 1) * (mid + 1) > x) {
                     return mid;
                 } else {
                     low = mid + 1;
