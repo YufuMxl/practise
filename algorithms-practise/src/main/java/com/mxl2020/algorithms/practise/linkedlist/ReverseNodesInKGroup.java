@@ -18,13 +18,11 @@ public class ReverseNodesInKGroup {
     public ListNode reverseKGroup(ListNode head, int k) {
         ListNode soldier = new ListNode(-1, head);
         ListNode lastNodeOfPreviousGroup = soldier;
-        ListNode firstNodeOfCurrentGroup;
-        ListNode lastNodeOfCurrentGroup;
 
         while (lastNodeOfPreviousGroup.next != null) {
             // 定位每组的首尾结点
-            firstNodeOfCurrentGroup = lastNodeOfPreviousGroup.next;
-            lastNodeOfCurrentGroup = lastNodeOfPreviousGroup;
+            ListNode firstNodeOfCurrentGroup = lastNodeOfPreviousGroup.next;
+            ListNode lastNodeOfCurrentGroup = lastNodeOfPreviousGroup;
             // 循环 k 次得到 lastNodeOfCurrentGroup
             for (int i = 0; i < k; i++) {
                 lastNodeOfCurrentGroup = lastNodeOfCurrentGroup.next;
@@ -33,18 +31,25 @@ public class ReverseNodesInKGroup {
                     return soldier.next;
                 }
             }
+            ListNode firstNodeOfNextGroup = lastNodeOfCurrentGroup.next;
 
             // 反转链表
+            // 1.上组最后一个指向该组最后一个
             lastNodeOfPreviousGroup.next = lastNodeOfCurrentGroup;
-            myReverse(lastNodeOfCurrentGroup.next, firstNodeOfCurrentGroup, k);
+            // 2.反转 k 个结点
+            myReverse(firstNodeOfCurrentGroup, k);
+            // 3.该组第一个指向下组第一个
+            firstNodeOfCurrentGroup.next = firstNodeOfNextGroup;
 
             // 重新定位 lastNodeOfPreviousGroup
+            // 特别注意这里的指针移动
             lastNodeOfPreviousGroup = firstNodeOfCurrentGroup;
         }
         return soldier.next;
     }
 
-    private void myReverse(ListNode previousNode, ListNode currentNode, int k) {
+    private void myReverse(ListNode currentNode, int k) {
+        ListNode previousNode = null;
         for (int i = 0; i < k; i++) {
             ListNode nextNode = currentNode.next;
             currentNode.next = previousNode;
