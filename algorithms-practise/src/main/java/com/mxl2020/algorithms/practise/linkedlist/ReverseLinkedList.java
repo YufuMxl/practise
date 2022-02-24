@@ -17,18 +17,16 @@ public class ReverseLinkedList {
      */
     public ListNode reverseListIteratively(ListNode head) {
         ListNode previousNode = null;
-        ListNode currentNode = head;
-        ListNode nextNode;
 
-        // 循环终止条件：当 current 为空时，停止反转
-        while (currentNode != null) {
-            nextNode = currentNode.next;
+        // 循环终止条件：当 head 为空时，停止反转
+        while (head != null) {
+            ListNode nextNode = head.next;
 
             // 将当前节点进行反转
-            currentNode.next = previousNode;
-            // previousNode 和 currentNode 前进一位
-            previousNode = currentNode;
-            currentNode = nextNode;
+            head.next = previousNode;
+            // previousNode 和 head 前进一位
+            previousNode = head;
+            head = nextNode;
         }
 
         return previousNode;
