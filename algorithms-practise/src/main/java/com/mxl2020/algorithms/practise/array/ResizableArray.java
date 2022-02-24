@@ -9,8 +9,8 @@ package com.mxl2020.algorithms.practise.array;
 public class ResizableArray<E> {
 
     private Object[] elementData;
-    private int size = 0;   // 记录数组实际长度
-    private int capacity;   // 记录数组当前容量
+    private int size = 0;   // 记录实际元素数量
+    private int capacity;   // 记录当前数组容量
 
     public ResizableArray() {
         // 初始化一个常数空间的空数组
@@ -29,16 +29,22 @@ public class ResizableArray<E> {
     }
 
     /**
+     * 在末尾插入
+     * <p>
      * 若空间不够，重新申请 2 倍大小的数组；旧数据拷贝到新数组，然后释放旧数组的空间
-     * <p>均摊时间复杂度为 O(1)</p>
+     * <p>
+     * 均摊时间复杂度为 O(1)
      */
     public void pushBack(E e) {
         elementData[size] = e;
     }
 
     /**
+     * 在末尾删除
+     * <p>
      * 若空间利用率（size/capacity）不到 25%，则释放一半空间
-     * <p>均摊时间复杂度为 O(1)</p>
+     * <p>
+     * 均摊时间复杂度为 O(1)
      */
     @SuppressWarnings("unchecked")
     public E popBack(int index) {
