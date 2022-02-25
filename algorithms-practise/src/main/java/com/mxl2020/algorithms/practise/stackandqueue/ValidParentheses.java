@@ -31,23 +31,22 @@ public class ValidParentheses {
      * 空间复杂度 O(n)
      */
     public boolean isValid(String s) {
-        if (s.length() % 2 == 1) {
-            return false;
-        }
+        if (s == null) return false;
 
-        Deque<Character> charQueue = new LinkedList<>();
+        Deque<Character> parenStack = new LinkedList<>();
         for (int i = 0; i < s.length(); i++) {
-            if (parenMap.containsKey(s.charAt(i))) {
-                charQueue.push(s.charAt(i));
+            Character parenChar = s.charAt(i);
+            if (parenMap.containsKey(parenChar)) {
+                // 遇到左括号，入栈
+                parenStack.push(parenChar);
             } else {
-                if (!charQueue.isEmpty() && parenMap.get(charQueue.peek()) == s.charAt(i)) {
-                    charQueue.pop();
-                } else {
+                // 遇到右括号，与栈顶元素匹配
+                if (parenStack.isEmpty() || parenMap.get(parenStack.pop()) != parenChar) {
                     return false;
                 }
             }
         }
-        return charQueue.isEmpty();
+        return parenStack.isEmpty();
     }
 
 }
