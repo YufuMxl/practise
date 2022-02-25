@@ -1,7 +1,6 @@
 package com.mxl2020.algorithms.practise.stackandqueue;
 
-import java.util.Deque;
-import java.util.LinkedList;
+import java.util.Stack;
 
 /**
  * 最小栈
@@ -10,12 +9,12 @@ import java.util.LinkedList;
  */
 public class MinStack {
 
-    private final Deque<Integer> mainStack;
-    private final Deque<Integer> minStack;
+    private final Stack<Integer> mainStack;
+    private final Stack<Integer> minStack;
 
     public MinStack() {
-        mainStack = new LinkedList<>();
-        minStack = new LinkedList<>();
+        mainStack = new Stack<>();
+        minStack = new Stack<>();
     }
 
     public void push(int val) {
