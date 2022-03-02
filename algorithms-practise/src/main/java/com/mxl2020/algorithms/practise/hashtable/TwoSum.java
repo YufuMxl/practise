@@ -1,4 +1,4 @@
-package com.mxl2020.algorithms.practise.array;
+package com.mxl2020.algorithms.practise.hashtable;
 
 import java.util.HashMap;
 import java.util.Map;
