@@ -32,8 +32,8 @@ public class SubstringWithConcatenationOfAllWords {
         return result;
     }
 
-    private boolean isValidSubstring(String substring, Map<String, Integer> wordToCountMap, int wordSize) {
-        Map<String, Integer> substringMap = genWordToCountMap(substring, wordSize);
+    private boolean isValidSubstring(String substring, Map<String, Integer> wordToCountMap, int wordLength) {
+        Map<String, Integer> substringMap = genWordToCountMap(substring, wordLength);
         return isSameMap(substringMap, wordToCountMap);
     }
 
