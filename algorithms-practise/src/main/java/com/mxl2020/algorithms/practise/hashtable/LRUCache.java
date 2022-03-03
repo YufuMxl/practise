@@ -7,129 +7,129 @@ package com.mxl2020.algorithms.practise.hashtable;
  */
 public class LRUCache {
 
+    // 缓存的元素个数
+    private int size = 0;
     // 缓存的最大容量
     private final int capacity;
-    // 当前缓存包含的元素数量
-    private int size = 0;
+
     // 散列表
     private final Node[] hashTable;
 
-    // 双向链表的首尾结点字段
-    private final Node head;
-    private final Node tail;
+    // 双向链表
+    private final Node linkedListHead;
+    private final Node linkedListTail;
 
     public LRUCache(int capacity) {
-        // 初始化 LRUCache 的容量大小
+        // 初始化缓存容量
         this.capacity = capacity;
+
+        // 初始化散列表
         this.hashTable = new Node[capacity];
-        for (int i = 0; i < hashTable.length; i++) {
-            // 为哈希表设置哨兵
+        for (int i = 0; i < capacity; i++) {
+            // 为散列表分配哨兵结点
             hashTable[i] = new Node(-1, -1);
         }
 
-        // 同时初始化双链表的头尾
-        head = new Node(-1, -1);
-        tail = new Node(-1, -1);
-        head.next = tail;
-        tail.prev = head;
+        // 初始化双向链表
+        this.linkedListHead = new Node(-1, -1);
+        this.linkedListTail = new Node(-1, -1);
+        linkedListHead.linkedListNext = linkedListTail;
+        linkedListTail.linkedListPrev = linkedListHead;
     }
 
     public int get(int key) {
-        Node node = getNodeFromHashTable(key);
-        // 返回 key 对应的 value
-        // key 不存在，返回 -1
+        Node node = getFromHashTable(key);
+        // node 为空，返回 -1
         if (node == null) return -1;
-        // 特别注意，get 完成后，需要将 get 到的 node 放到链表头部
+
+        // node 不为空，先将该 node 放到双向链表头部，再返回该 node 的值
         removeFromLinkedList(node);
-        addFirst(node);
+        insertInLinkedList(linkedListHead, node);
         return node.value;
     }
 
-    private Node getNodeFromHashTable(int key) {
-        Node node = hashTable[hashFunction(key)];
+    public void put(int key, int value) {
+        Node node = getFromHashTable(key);
+        if (node != null) {
+            // 更新 node 的值，将 node 放到双向链表头部
+            node.value = value;
+            removeFromLinkedList(node);
+            insertInLinkedList(linkedListHead, node);
+        } else {
+            size += 1;
+            if (size > capacity) {
+                // 删除链表的尾部结点
+                Node tailNode = linkedListTail.linkedListPrev;
+                removeFromLinkedList(tailNode);
+                // 同时从散列表中删除
+                removeFromHashTable(tailNode.key);
+                size -= 1;
+            }
+            // 插入散列表和双向链表中
+            Node newNode = putInHashTable(key, value);
+            insertInLinkedList(linkedListHead, newNode);
+        }
+    }
 
-        while (node != null) {
-            if (node.key == key) {
-                return node;
-            } else {
-                node = node.hashNext;
+    // 以下是双向链表操作
+    private void insertInLinkedList(Node pre, Node node) {
+        node.linkedListPrev = pre;
+        node.linkedListNext = pre.linkedListNext;
+        pre.linkedListNext.linkedListPrev = node;
+        pre.linkedListNext = node;
+    }
+
+    private void removeFromLinkedList(Node node) {
+        Node pre = node.linkedListPrev;
+        node.linkedListNext.linkedListPrev = pre;
+        pre.linkedListNext = node.linkedListNext;
+        node.linkedListPrev = null;
+        node.linkedListNext = null;
+    }
+
+    // 以下是散列表操作
+    private Node getFromHashTable(int key) {
+        Node headNode = hashTable[hash(key)];
+        while (headNode.hashTableNext != null) {
+            headNode = headNode.hashTableNext;
+            if (headNode.key == key) {
+                return headNode;
             }
         }
         return null;
     }
 
-    public void put(int key, int value) {
-        Node node = getNodeFromHashTable(key);
+    private Node putInHashTable(int key, int value) {
+        Node headNode = hashTable[hash(key)];
+        Node node = new Node(key, value);
+        node.hashTableNext = headNode.hashTableNext;
+        headNode.hashTableNext = node;
+        return node;
+    }
 
-        if (node == null) {
-            // key 不存在，将 key value 插入链表头部
-            Node nodeToPut = new Node(key, value);
-            addFirst(nodeToPut);
-            // 同时将 key value 放入哈希表
-            putInHashTable(nodeToPut);
-            size += 1;
-            if (size > capacity) {
-                // 如果缓存已满，删除最后一个结点
-                removeFromHashTable(tail.prev);
-                removeLast();
-                size -= 1;
+    private void removeFromHashTable(int key) {
+        Node headNode = hashTable[hash(key)];
+        while (headNode.hashTableNext != null) {
+            Node node = headNode.hashTableNext;
+            if (node.key == key) {
+                // 删除结点
+                headNode.hashTableNext = node.hashTableNext;
+                node.hashTableNext = null;
+                break;
             }
-        } else {
-            // 如果存在 key，则将 key 对应的结点转移至链表头部
-            node.value = value;
-            removeFromLinkedList(node);
-            addFirst(node);
+            // 如果没有找到 key 对应的 node，将 head 指针向下移动
+            headNode = node;
         }
-    }
-
-    private void addFirst(Node node) {
-        node.next = head.next;
-        node.prev = head;
-        head.next.prev = node;
-        head.next = node;
-    }
-
-    private void putInHashTable(Node node) {
-        Node nodeInHashTable = hashTable[hashFunction(node.key)];
-        node.hashNext = nodeInHashTable.hashNext;
-        nodeInHashTable.hashNext = node;
-    }
-
-    private void removeLast() {
-        // 从链表中删除
-        Node node = tail.prev;
-        node.prev.next = tail;
-        tail.prev = node.prev;
-        node.prev = null;
-        node.next = null;
-    }
-
-    private void removeFromHashTable(Node node) {
-        // 从哈希表中删除
-        Node previousNode = hashTable[hashFunction(node.key)];
-        while (previousNode.hashNext != null && previousNode.hashNext.key != node.key) {
-            previousNode = previousNode.hashNext;
-        }
-        previousNode.hashNext = node.hashNext;
-        node.hashNext = null;
-    }
-
-    private void removeFromLinkedList(Node node) {
-        node.prev.next = node.next;
-        node.next.prev = node.prev;
     }
 
     static class Node {
-        // 健值字段
-        private final int key;
-        private int value;
+        public final int key;
+        public int value;
 
-        // 指针字段
-        // prev 和 next 串联结点形成双向链表
-        public Node prev;
-        public Node next;
-        // hashNext 串联结点形成散列表的拉链
-        public Node hashNext;
+        public Node linkedListPrev;
+        public Node linkedListNext;
+
+        public Node hashTableNext;
 
         public Node(int key, int value) {
             this.key = key;
@@ -137,9 +137,8 @@ public class LRUCache {
         }
     }
 
-    // 散列函数
-    private int hashFunction(int key) {
-        return key % hashTable.length;
+    private int hash(int key) {
+        return key % capacity;
     }
 
 }
