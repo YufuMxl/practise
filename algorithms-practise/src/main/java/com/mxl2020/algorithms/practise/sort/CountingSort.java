@@ -38,10 +38,4 @@ public class CountingSort {
         System.arraycopy(r, 0, a, 0, n);
     }
 
-    public static void main(String[] args) {
-        int[] array = new int[]{2, 5, 3, 0, 2, 3, 0, 3};
-        new CountingSort().countingSort(array);
-        System.out.println(Arrays.toString(array));
-    }
-
 }

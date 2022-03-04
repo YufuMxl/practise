@@ -41,8 +41,6 @@ public class CountNumberOfNiceSubArrays {
         }
         return count;
     }
-
-    // 删除代码：print
 }
 
 
