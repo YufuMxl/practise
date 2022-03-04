@@ -23,10 +23,13 @@ public class SubstringWithConcatenationOfAllWords {
         Map<String, Integer> wordToCountMap = genWordToCountMap(words);
 
         List<Integer> result = new ArrayList<>();
-        for (int i = 0; i < s.length() - totalWordsLength + 1; i++) {
-            String substring = s.substring(i, i + totalWordsLength);
-            if (isValidSubstring(substring, wordToCountMap, wordLength)) {
-                result.add(i);
+        for (int j = 0; j < wordLength; j++) {
+            // TODO 同一层的 substring 共用一个 map
+            for (int i = j; i < s.length() - totalWordsLength + 1; i += wordLength) {
+                String substring = s.substring(i, i + totalWordsLength);
+                if (isValidSubstring(substring, wordToCountMap, wordLength)) {
+                    result.add(i);
+                }
             }
         }
         return result;
