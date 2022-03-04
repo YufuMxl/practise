@@ -7,6 +7,12 @@ package com.mxl2020.algorithms.practise.presum;
  */
 public class MaximumSubArray {
 
+    /**
+     * 前缀和解法
+     *
+     * @param nums 整数数组（包含负数）
+     * @return 最大的子数组之和
+     */
     public int maxSubArray(int[] nums) {
 
         // 获取前缀和数组
@@ -25,5 +31,21 @@ public class MaximumSubArray {
         }
 
         return maxSumOfSubArray;
+    }
+
+    /**
+     * 贪心解法
+     * TODO
+     */
+    public int maxSubArray2(int[] nums) {
+        int res = nums[0];
+        int sum = 0;
+        for (int num : nums) {
+            if (sum > 0) sum += num;
+            else sum = num;
+
+            res = Math.max(res, sum);
+        }
+        return res;
     }
 }
