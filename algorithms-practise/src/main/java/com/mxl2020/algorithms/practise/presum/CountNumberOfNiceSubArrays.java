@@ -1,6 +1,5 @@
 package com.mxl2020.algorithms.practise.presum;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,28 +27,22 @@ public class CountNumberOfNiceSubArrays {
             prefixSumArray[i] = prefixSumArray[i - 1] + (nums[i - 1] % 2);
         }
 
-        Map<Integer, ArrayList<Integer>> map = new HashMap<>();
-        for (int i = 0; i < prefixSumArray.length; i++) {
-            int sum = prefixSumArray[i] + k;
-            if (map.containsKey(sum)) {
-                map.get(sum).add(i);
-            } else {
-                ArrayList<Integer> indices = new ArrayList<>();
-                indices.add(i);
-                map.put(sum, indices);
-            }
+        // 将 sum = "前缀和 + k" 作为 key，sum 出现的次数作为 value 放入 map
+        Map<Integer, Integer> prefixSumToCount = new HashMap<>();
+        for (final int prefixSum : prefixSumArray) {
+            int sum = prefixSum + k;
+            prefixSumToCount.put(sum, prefixSumToCount.getOrDefault(sum, 0) + 1);
         }
 
         // 寻找总和等于 k 的子段数量
         int count = 0;
         for (final int prefixSum : prefixSumArray) {
-            // 子段和：sum(l,r) = S[r] - S[l-1] = k
-            if (map.get(prefixSum) != null) {
-                count += map.get(prefixSum).size();
-            }
+            count += prefixSumToCount.getOrDefault(prefixSum, 0);
         }
         return count;
     }
+
+    // 删除代码：print
 }
 
 
