@@ -1,14 +1,15 @@
 package com.mxl2020.algorithms.practise.hashtable;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>两数之和</p>
  * <p>两数之和 II - 输入有序数组</p>
+ * <p>三数之和</p>
  *
  * @see <a href="https://leetcode-cn.com/problems/two-sum/">LeetCode 1</a>
  * @see <a href="https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/">LeetCode 167</a>
+ * @see <a href="https://leetcode-cn.com/problems/3sum/">LeetCode 15</a>
  */
 public class TwoSum {
 
@@ -60,4 +61,56 @@ public class TwoSum {
     }
 
     // 可以将 twoSumI 的数组排序之后，按照 twoSumII 求解决
+
+    /**
+     * @param nums 有重复元素的整数数组
+     * @return 返回所有"三数之和为零"的三元数组
+     */
+    public List<List<Integer>> threeSum(int[] nums) {
+        // 先排序
+        Arrays.sort(nums);
+
+        List<List<Integer>> result = new ArrayList<>();
+        for (int i = 0; i < nums.length - 2; i++) {
+            // 去重
+            if (i != 0 && nums[i] == nums[i - 1]) continue;
+
+            List<int[]> jks = twoSumIII(nums, i + 1, -nums[i]);
+            for (int[] jk : jks) {
+                List<Integer> triplets = new ArrayList<>(3);
+                triplets.add(nums[i]);
+                triplets.add(jk[0]);
+                triplets.add(jk[1]);
+                result.add(triplets);
+            }
+        }
+        return result;
+    }
+
+    private List<int[]> twoSumIII(int[] sortedNums, int startIndex, int target) {
+        int i = startIndex;
+        int j = sortedNums.length - 1;
+        List<int[]> result = new ArrayList<>();
+        while (i < j) {
+            // 去重
+            if (i != startIndex && sortedNums[i] == sortedNums[i - 1]) {
+                i++;
+                continue;
+            }
+            if (j != sortedNums.length - 1 && sortedNums[j] == sortedNums[j + 1]) {
+                j--;
+                continue;
+            }
+
+            if (sortedNums[i] + sortedNums[j] < target) {
+                i++;
+            } else if (sortedNums[i] + sortedNums[j] > target) {
+                j--;
+            } else {
+                result.add(new int[]{sortedNums[i], sortedNums[j]});
+                i++;
+            }
+        }
+        return result;
+    }
 }
