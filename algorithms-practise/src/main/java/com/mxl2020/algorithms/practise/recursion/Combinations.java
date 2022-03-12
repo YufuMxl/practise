@@ -10,39 +10,37 @@ import java.util.List;
  */
 public class Combinations {
 
-    private List<List<Integer>> combinations = new ArrayList<>();
-
     /**
      * @param n 代表数组 [1, 2, ..., n]
      * @param k 代表组合的大小，比如当 k = 2 时，[1, 2] 就是一个组合
      * @return 返回所有组合的可能
      */
     public List<List<Integer>> combine(int n, int k) {
-        generateCombinations(1, n, k);
-        return combinations;
+        return generateCombinations(1, n, k);
     }
 
-    private void generateCombinations(int currentNum, int endNum, int combinationSize) {
+    private List<List<Integer>> generateCombinations(final int currentNum, final int endNum, final int k) {
         // 终止条件
-        if (combinationSize <= 0) {
-            combinations.add(new ArrayList<>());
-            return;
+        if (k == 0) {
+            List<List<Integer>> result = new ArrayList<>(1);
+            result.add(new ArrayList<>());
+            return result;
         }
-        if (currentNum + combinationSize > endNum) {
-            List<Integer> combination = new ArrayList<>();
+        if (currentNum + k - 1 == endNum) {
+            List<List<Integer>> result = new ArrayList<>(1);
+            result.add(new ArrayList<>());
             for (int i = currentNum; i <= endNum; i++) {
-                combination.add(i);
+                result.get(0).add(i);
             }
-            combinations.add(combination);
-            return;
+            return result;
         }
 
-        // 处理子问题
-        generateCombinations(currentNum + 1, endNum, combinationSize - 1);
-        // 处理当前问题
-        for (List<Integer> combination : combinations) {
-            combination.add(currentNum);
+        List<List<Integer>> result1 = generateCombinations(currentNum + 1, endNum, k - 1);
+        for (List<Integer> result : result1) {
+            result.add(currentNum);
         }
-        generateCombinations(currentNum + 1, endNum, combinationSize);
+        List<List<Integer>> result2 = generateCombinations(currentNum + 1, endNum, k);
+        result2.addAll(result1);
+        return result2;
     }
 }
