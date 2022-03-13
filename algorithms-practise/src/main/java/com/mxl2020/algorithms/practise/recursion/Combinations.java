@@ -44,5 +44,31 @@ public class Combinations {
         return result2;
     }
 
-    // TODO 按照课程思路实现一遍
+    // 用于保存某条线路的被选中的值
+    private final List<Integer> chosen = new ArrayList<>();
+    private final List<List<Integer>> combinations = new ArrayList<>();
+
+    public List<List<Integer>> combine2(int n, int k) {
+        generateCombinations2(1, n, k);
+        return combinations;
+    }
+
+    private void generateCombinations2(final int currentNum, final int endNum, final int k) {
+        // 终止条件
+        if (chosen.size() + (endNum - currentNum + 1) < k) return;
+        if (chosen.size() == k) {
+            combinations.add(new ArrayList<>(chosen));
+            return;
+        }
+
+        // 不含当前元素的组合
+        generateCombinations2(currentNum + 1, endNum, k);
+
+        // 含当前元素的组合
+        chosen.add(currentNum);
+        generateCombinations2(currentNum + 1, endNum, k);
+
+        // 还原共享变量
+        chosen.remove(chosen.size() - 1);
+    }
 }
