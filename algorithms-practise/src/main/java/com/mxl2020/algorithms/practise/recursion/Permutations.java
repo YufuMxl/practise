@@ -14,6 +14,6 @@ public class Permutations {
      * @return 返回所有的不同排列的数组
      */
     public List<List<Integer>> permute(int[] nums) {
-
+        return null;
     }
 }

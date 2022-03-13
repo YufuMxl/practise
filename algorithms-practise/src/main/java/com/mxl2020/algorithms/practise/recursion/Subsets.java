@@ -11,6 +11,7 @@ import java.util.List;
 public class Subsets {
 
     private final List<List<Integer>> subsets = new ArrayList<>();
+    private final List<Integer> chosen = new ArrayList<>();
 
     /**
      * @param nums 无重复元素的整数数组
@@ -40,6 +41,22 @@ public class Subsets {
         }
     }
 
-    // TODO 按照课程思路实现一遍
+    private void seekSubsets2(int index, int[] nums) {
+        // 终止条件
+        if (index == nums.length) {
+            subsets.add(new ArrayList<>(chosen));
+            return;
+        }
+
+        // 不含当前元素的子集
+        seekSubsets2(index + 1, nums);
+
+        // 含当前元素的子集
+        chosen.add(nums[index]);
+        seekSubsets2(index + 1, nums);
+
+        // 还原共享变量
+        chosen.remove(chosen.size() - 1);
+    }
 
 }
