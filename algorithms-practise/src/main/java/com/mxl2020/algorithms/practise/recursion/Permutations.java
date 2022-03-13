@@ -28,7 +28,7 @@ public class Permutations {
      * 往 permutations 数组中插入所有可能的排列数组
      */
     private void permute(int depth, int[] nums) {
-        // 终止条件
+        // 终止条件：当递归出界时，将排列好的数组 permutation 加入到 permutations 中
         if (depth == nums.length) {
             permutations.add(new ArrayList<>(permutation));
             return;
