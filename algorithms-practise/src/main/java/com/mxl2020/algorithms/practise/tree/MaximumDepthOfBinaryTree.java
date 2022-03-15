@@ -18,7 +18,7 @@ public class MaximumDepthOfBinaryTree {
      * 解法 2：递归 + 全局变量
      *
      * @param root 树的节点
-     * @return 返回 root 所代表的树的深度
+     * @return 返回 root 所代表的树的最大深度
      */
     public int maxDepth2(TreeNode root) {
         calculateDepth(root);
