@@ -35,4 +35,15 @@ public class ValidateBinarySearchTree {
         return Math.min(node.val, Math.min(findMin(node.left), findMin(node.right)));
     }
 
+    public boolean isValidBST2(TreeNode root) {
+        // 千万要注意这道题的陷阱：测试用例会将值为 Integer.MAX_VALUE 的节点传入
+        return inRange(Long.MIN_VALUE, Long.MAX_VALUE, root);
+    }
+
+    private boolean inRange(long leftRange, long rightRange, TreeNode node) {
+        if (node == null) return true;
+        if (node.val <= leftRange || node.val >= rightRange) return false;
+        return inRange(leftRange, node.val, node.left) && inRange(node.val, rightRange, node.right);
+    }
+
 }
