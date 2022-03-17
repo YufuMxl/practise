@@ -2,10 +2,7 @@ package com.mxl2020.algorithms.practise.tree;
 
 import com.mxl2020.algorithms.practise.tree.datastructure.Node;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.List;
+import java.util.*;
 
 /**
  * N 叉树的前序遍历
@@ -43,6 +40,7 @@ public class N_AryTreePreorderTraversal {
      * 迭代 + 栈
      */
     public List<Integer> preorder2(Node root) {
+        if (root == null) return Collections.emptyList();
         sequence = new ArrayList<>();
         // 初始化栈
         Deque<Node> nodeStack = new ArrayDeque<>();
