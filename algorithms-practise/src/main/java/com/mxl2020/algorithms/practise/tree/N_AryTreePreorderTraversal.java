@@ -2,7 +2,9 @@ package com.mxl2020.algorithms.practise.tree;
 
 import com.mxl2020.algorithms.practise.tree.datastructure.Node;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 
 /**
@@ -14,6 +16,12 @@ public class N_AryTreePreorderTraversal {
 
     private List<Integer> sequence;
 
+    /**
+     * 递归
+     *
+     * @param root N 叉树的根结点
+     * @return 返回前序遍历的结果
+     */
     public List<Integer> preorder(Node root) {
         sequence = new ArrayList<>();
         dfs(root);
@@ -29,5 +37,26 @@ public class N_AryTreePreorderTraversal {
                 dfs(child);
             }
         }
+    }
+
+    /**
+     * 迭代 + 栈
+     */
+    public List<Integer> preorder2(Node root) {
+        sequence = new ArrayList<>();
+        // 初始化栈
+        Deque<Node> nodeStack = new ArrayDeque<>();
+        // 将根结点入栈
+        nodeStack.push(root);
+        while (!nodeStack.isEmpty()) {
+            Node popNode = nodeStack.pop();
+            sequence.add(popNode.val);
+            if (popNode.children != null) {
+                for (int i = popNode.children.size() - 1; i >= 0; i--) {
+                    nodeStack.push(popNode.children.get(i));
+                }
+            }
+        }
+        return sequence;
     }
 }
