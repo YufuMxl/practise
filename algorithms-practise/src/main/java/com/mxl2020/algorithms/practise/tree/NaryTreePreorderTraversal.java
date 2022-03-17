@@ -9,14 +9,14 @@ import java.util.*;
  *
  * @see <a href="https://leetcode-cn.com/problems/n-ary-tree-preorder-traversal/description/">LeetCode 589</a>
  */
-public class N_AryTreePreorderTraversal {
+public class NaryTreePreorderTraversal {
 
     private List<Integer> sequence;
 
     /**
      * 递归
      *
-     * @param root N 叉树的根结点
+     * @param root N 叉树的根节点
      * @return 返回前序遍历的结果
      */
     public List<Integer> preorder(Node root) {
@@ -38,13 +38,15 @@ public class N_AryTreePreorderTraversal {
 
     /**
      * 迭代 + 栈
+     * <p>
+     * 深度优先，使用先进后出的栈
      */
     public List<Integer> preorder2(Node root) {
         if (root == null) return Collections.emptyList();
         sequence = new ArrayList<>();
         // 初始化栈
         Deque<Node> nodeStack = new ArrayDeque<>();
-        // 将根结点入栈
+        // 将根节点入栈
         nodeStack.push(root);
         while (!nodeStack.isEmpty()) {
             Node popNode = nodeStack.pop();
