@@ -1,7 +1,7 @@
 package com.mxl2020.algorithms.practise.tree.datastructure;
 
 /**
- * 二叉查找树的节点定义
+ * 二叉树的节点定义
  */
 public class TreeNode {
     public int val;
