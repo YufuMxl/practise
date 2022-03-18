@@ -8,7 +8,7 @@ import com.mxl2020.algorithms.practise.tree.datastructure.TreeNode;
  * @see <a href="https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/">LeetCode 105</a>
  */
 public class ConstructBinaryTreeFromPreAndInOrder {
-    // 注意：给定前序和后序，不能唯一确定一棵二叉树
+    // 注意：给定前序和后序，无法重构二叉树
 
     private int[] preorder;
     private int[] inorder;
@@ -25,10 +25,10 @@ public class ConstructBinaryTreeFromPreAndInOrder {
     public TreeNode buildTree(int[] preorder, int[] inorder) {
         this.preorder = preorder;
         this.inorder = inorder;
-        return buildTree(0, preorder.length - 1, 0, inorder.length - 1);
+        return buildTree(0, preorder.length - 1, 0);
     }
 
-    private TreeNode buildTree(int preLeftIndex, int preRightIndex, int inLeftIndex, int inRightIndex) {
+    private TreeNode buildTree(int preLeftIndex, int preRightIndex, int inLeftIndex) {
         // 递归终止条件
         if (preLeftIndex > preRightIndex) return null;
         // 生成根节点
@@ -46,15 +46,13 @@ public class ConstructBinaryTreeFromPreAndInOrder {
         root.left = buildTree(
             preLeftIndex + 1,
             preLeftIndex + rootIndexInInOrder - inLeftIndex,
-            inLeftIndex,
-            rootIndexInInOrder - 1
+            inLeftIndex
         );
         // 递归构建右子树
         root.right = buildTree(
-            preRightIndex + rootIndexInInOrder - inRightIndex + 1,
+            preLeftIndex + rootIndexInInOrder - inLeftIndex + 1,
             preRightIndex,
-            rootIndexInInOrder + 1,
-            inRightIndex
+            rootIndexInInOrder + 1
         );
 
         // 返回根节点
