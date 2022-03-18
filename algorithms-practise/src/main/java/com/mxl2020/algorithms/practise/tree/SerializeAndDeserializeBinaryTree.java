@@ -69,7 +69,7 @@ public class SerializeAndDeserializeBinaryTree {
     /**
      * 前序遍历序列 + 递归
      *
-     * @return 自定义序列化格式："1,2,3,null,null,null,null"
+     * @return 自定义序列化格式："1,2,null,null,3,null,null"
      */
     public String serialize2(TreeNode root) {
         preOrder = new ArrayList<>();
@@ -90,7 +90,7 @@ public class SerializeAndDeserializeBinaryTree {
     }
 
     /**
-     * @param data 自定义序列化格式："1,2,3,null,null,null,null"
+     * @param data 自定义序列化格式："1,2,null,null,3,null,null"
      */
     public TreeNode deserialize2(String data) {
         sequence = data.split(",");
@@ -106,10 +106,11 @@ public class SerializeAndDeserializeBinaryTree {
             current++;
             return null;
         }
-        TreeNode node = new TreeNode(Integer.parseInt(sequence[current++]));
-        node.left = restore();
-        node.right = restore();
-        return node;
+        TreeNode root = new TreeNode(Integer.parseInt(sequence[current]));
+        current++;
+        root.left = restore();
+        root.right = restore();
+        return root;
     }
 
 }
