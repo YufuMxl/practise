@@ -15,7 +15,7 @@ public class SerializeAndDeserializeBinaryTree {
     /**
      * 层序遍历序列 + 顺序存储法
      * <p>
-     * 注意：该方法只能处理 31 层的树
+     * 注意：该方法只能处理 31 层的树（如果用 long 来表示 index，则能处理 63 层树）
      *
      * @return 自定义序列化格式："0:0,1:1,2:2,3:3,4:4"
      */
@@ -67,19 +67,49 @@ public class SerializeAndDeserializeBinaryTree {
     }
 
     /**
-     * 前序遍历序列
+     * 前序遍历序列 + 递归
      *
-     * @return 1, 2, null, null, 3, 4, null, null, 5, null, null
+     * @return 自定义序列化格式："1,2,3,null,null,null,null"
      */
     public String serialize2(TreeNode root) {
-        return "";
+        preOrder = new ArrayList<>();
+        dfs(root);
+        return String.join(",", preOrder);
+    }
+
+    private List<String> preOrder;
+
+    private void dfs(TreeNode node) {
+        if (node == null) {
+            preOrder.add("null");
+            return;
+        }
+        preOrder.add(Integer.toString(node.val));
+        dfs(node.left);
+        dfs(node.right);
     }
 
     /**
-     * @param data 序列化的二叉树（自定义格式："1,2,3,null,null,4,5"）
+     * @param data 自定义序列化格式："1,2,3,null,null,null,null"
      */
     public TreeNode deserialize2(String data) {
-        return null;
+        sequence = data.split(",");
+        current = 0;
+        return restore();
+    }
+
+    private String[] sequence;
+    private int current;
+
+    private TreeNode restore() {
+        if ("null".equals(sequence[current])) {
+            current++;
+            return null;
+        }
+        TreeNode node = new TreeNode(Integer.parseInt(sequence[current++]));
+        node.left = restore();
+        node.right = restore();
+        return node;
     }
 
 }
