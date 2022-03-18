@@ -95,21 +95,24 @@ public class SerializeAndDeserializeBinaryTree {
     public TreeNode deserialize2(String data) {
         sequence = data.split(",");
         current = 0;
-        return restore();
+        return restructure();
     }
 
     private String[] sequence;
     private int current;
 
-    private TreeNode restore() {
+    /**
+     * @return 对某个节点进行重构二叉树
+     */
+    private TreeNode restructure() {
         if ("null".equals(sequence[current])) {
             current++;
             return null;
         }
         TreeNode root = new TreeNode(Integer.parseInt(sequence[current]));
         current++;
-        root.left = restore();
-        root.right = restore();
+        root.left = restructure();
+        root.right = restructure();
         return root;
     }
 
