@@ -8,20 +8,20 @@ import java.util.ArrayList;
  */
 public class AdjacencyArray implements Graph {
 
-    private final ArrayList<Integer>[] graph;
+    private final ArrayList<ArrayList<Integer>> graph;
 
     /**
      * @param n 图中元素的最大编号
      */
     public AdjacencyArray(int n) {
-        this.graph = new ArrayList[n];
+        this.graph = new ArrayList<>(n);
         for (int i = 0; i < n; i++) {
-            graph[i] = new ArrayList<>();
+            graph.add(i, new ArrayList<>());
         }
     }
 
     @Override
     public void addEdge(final int from, final int to) {
-        graph[from].add(to);
+        graph.get(from).add(to);
     }
 }

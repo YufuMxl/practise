@@ -1,5 +1,6 @@
 package com.mxl2020.algorithms.practise.graph.datastructure;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -7,20 +8,20 @@ import java.util.LinkedList;
  */
 public class AdjacencyList implements Graph {
 
-    private final LinkedList<Integer>[] graph;
+    private final ArrayList<LinkedList<Integer>> graph;
 
     /**
      * @param n 图中元素的最大编号
      */
     public AdjacencyList(int n) {
-        this.graph = new LinkedList[n];
+        this.graph = new ArrayList<>(n);
         for (int i = 0; i < n; i++) {
-            graph[i] = new LinkedList<>();
+            graph.add(i, new LinkedList<>());
         }
     }
 
     @Override
     public void addEdge(final int from, final int to) {
-        graph[from].addFirst(to);
+        graph.get(from).addFirst(to);
     }
 }
