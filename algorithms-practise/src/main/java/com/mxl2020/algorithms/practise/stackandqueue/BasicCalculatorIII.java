@@ -33,7 +33,7 @@ public class BasicCalculatorIII {
      * @return 返回表达式的计算结果
      */
     public int calculate(String s) {
-        // 补零
+        // TODO 负数补零优化
         if (s.startsWith("-(") || s.startsWith("- (")) {
             s = "0" + s;
         }

@@ -35,7 +35,7 @@ public class MaximumSubArray {
 
     /**
      * 贪心解法
-     * TODO
+     * TODO 理解贪心解法
      */
     public int maxSubArray2(int[] nums) {
         int res = nums[0];
