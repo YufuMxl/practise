@@ -47,7 +47,7 @@ public class CourseSchedule {
             }
         }
 
-        // 如果 visited size 与节点数量相等，则该图无环
+        // 如果 visited size 等于课程数量，则该图无环
         return visited.size() == numCourses;
     }
 }
