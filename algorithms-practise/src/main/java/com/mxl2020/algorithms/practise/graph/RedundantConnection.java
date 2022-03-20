@@ -2,7 +2,6 @@ package com.mxl2020.algorithms.practise.graph;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * 冗余连接
@@ -23,7 +22,7 @@ public class RedundantConnection {
     public int[] findRedundantConnection(int[][] edges) {
         // 初始化"遍历记录表"
         visited = new boolean[edges.length + 1];
-        // 初始化出边数组
+        // 初始化"出边数组"
         graph = new ArrayList<>(edges.length + 1);
         for (int i = 0; i <= edges.length; i++) {
             graph.add(i, new ArrayList<>());
@@ -38,18 +37,18 @@ public class RedundantConnection {
         return null;
     }
 
-    private List<List<Integer>> graph;
+    private ArrayList<ArrayList<Integer>> graph;
     private boolean[] visited;
     private boolean hasCycle;
 
-    private void dfs(int x, int father) {
-        visited[x] = true;
-        for (int y : graph.get(x)) {
+    private void dfs(int node, int father) {
+        visited[node] = true;
+        for (int child : graph.get(node)) {
             // 递归终止条件：遇到父节点
-            if (y == father) continue;
-            // 递归终止条件：此处成环
-            if (visited[y]) hasCycle = true;
-            else dfs(y, x);
+            if (child == father) continue;
+            // 递归终止条件：遇到曾遍历过的节点（此处成环）
+            if (visited[child]) hasCycle = true;
+            else dfs(child, node);
         }
     }
 
