@@ -41,6 +41,7 @@ public class RedundantConnection {
     private boolean[] visited;
     private boolean hasCycle;
 
+    // 无向图判断环的模板
     private void dfs(int node, int father) {
         visited[node] = true;
         for (int child : graph.get(node)) {
