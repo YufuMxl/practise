@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * N 叉树的前序遍历
  *
- * @see <a href="https://leetcode-cn.com/problems/n-ary-tree-preorder-traversal/description/">LeetCode 589</a>
+ * @see <a href="https://leetcode-cn.com/problems/n-ary-tree-preorder-traversal/">LeetCode 589</a>
  */
 public class NaryTreePreorderTraversal {
 
