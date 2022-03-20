@@ -33,7 +33,7 @@ public class NaryTreeLevelOrderTraversal {
             Pair<Node, Integer> nodePair = nodeQueue.poll();
             Node node = nodePair.getKey();
             Integer depth = nodePair.getValue();
-            // 将当前结点的内容存入 sequence 数组中
+            // 将当前节点的内容存入 sequence 数组中
             if (sequence.size() <= depth) sequence.add(new ArrayList<>());
             sequence.get(depth).add(node.val);
 
