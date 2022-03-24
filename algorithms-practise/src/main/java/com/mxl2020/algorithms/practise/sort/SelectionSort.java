@@ -1,7 +1,7 @@
 package com.mxl2020.algorithms.practise.sort;
 
 /**
- * 选择排序
+ * 简单选择排序（选择排序）
  */
 public class SelectionSort {
 

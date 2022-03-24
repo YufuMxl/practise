@@ -1,7 +1,7 @@
 package com.mxl2020.algorithms.practise.sort;
 
 /**
- * 归并排序
+ * 二路归并排序（归并排序）
  */
 public class MergeSort {
 

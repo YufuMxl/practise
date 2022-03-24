@@ -1,7 +1,7 @@
 package com.mxl2020.algorithms.practise.sort;
 
 /**
- * 冒泡排序
+ * 冒泡排序（交换排序）
  */
 public class BubbleSort {
     // 冒泡排序，a 表示数组，n 表示数组大小

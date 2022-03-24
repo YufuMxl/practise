@@ -1,7 +1,7 @@
 package com.mxl2020.algorithms.practise.sort;
 
 /**
- * 快速排序
+ * 快速排序（交换排序）
  */
 public class QuickSort {
 
