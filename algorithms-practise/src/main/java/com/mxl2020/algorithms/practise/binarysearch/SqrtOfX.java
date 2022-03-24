@@ -1,4 +1,4 @@
-package com.mxl2020.algorithms.practise.search;
+package com.mxl2020.algorithms.practise.binarysearch;
 
 /**
  * x 的平方根

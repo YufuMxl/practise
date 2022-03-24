@@ -1,9 +1,9 @@
-package com.mxl2020.algorithms.practise.search;
+package com.mxl2020.algorithms.practise.binarysearch;
 
 /**
  * 二分查找
  */
-public class BinarySearch {
+public class BinarySearchTemplate {
 
     /**
      * 查找第一个值等于给定值的元素

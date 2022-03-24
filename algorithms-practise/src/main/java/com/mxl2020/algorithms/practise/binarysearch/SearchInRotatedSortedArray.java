@@ -1,4 +1,4 @@
-package com.mxl2020.algorithms.practise.search;
+package com.mxl2020.algorithms.practise.binarysearch;
 
 /**
  * 搜索旋转排序数组
