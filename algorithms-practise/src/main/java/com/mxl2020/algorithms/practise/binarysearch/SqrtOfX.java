@@ -13,6 +13,7 @@ public class SqrtOfX {
      * 时间复杂度 O(log n)
      * 空间复杂度 O(1)
      *
+     * @param x 非负整数
      * @return 返回 x 的平方根的整数部分
      */
     public int mySqrt(int x) {
@@ -38,6 +39,18 @@ public class SqrtOfX {
         return -1;
     }
 
-    // TODO 如何精确到小数点后 6 位
-    // 思路：先查找整数部分，再查找第 1 位小数，，，一直查找到第 6 位小数，得到的值 k^2<=x 即可
+    public int mySqrt2(int x) {
+        int left = 0;
+        int right = x;
+
+        while (left <= right) {
+            int mid = left + ((right - left) >> 1);
+            if ((long) mid * mid > x) right = mid - 1;
+            else {
+                if (mid == right || (long) (mid + 1) * (mid + 1) > x) return mid;
+                else left = mid + 1;
+            }
+        }
+        return -1;
+    }
 }
