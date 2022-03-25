@@ -1,5 +1,8 @@
 package com.mxl2020.algorithms.practise.sort;
 
+/**
+ * 堆排序（选择排序）
+ */
 public class HeapSort {
 
     public void heapSort(int[] array) {
