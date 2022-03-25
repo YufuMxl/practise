@@ -1,7 +1,5 @@
 package com.mxl2020.algorithms.practise.sort;
 
-import java.util.Arrays;
-
 public class CountingSort {
     // 计数排序，a 是数组，n 是数组大小
     // 假设数组中存储的都是非负整数
