@@ -1,4 +1,4 @@
-package com.mxl2020.algorithms.practise.sort;
+package com.mxl2020.algorithms.practise.sort.template;
 
 public class CountingSort {
     // 计数排序，a 是数组，n 是数组大小

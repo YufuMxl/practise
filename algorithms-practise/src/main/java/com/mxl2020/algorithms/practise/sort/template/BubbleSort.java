@@ -1,4 +1,4 @@
-package com.mxl2020.algorithms.practise.sort;
+package com.mxl2020.algorithms.practise.sort.template;
 
 /**
  * 冒泡排序（交换排序）
