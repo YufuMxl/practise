@@ -5,23 +5,30 @@ package com.mxl2020.algorithms.practise.sort;
  */
 public class QuickSort {
 
-    public void quickSort(int[] a, int n) {
-        quickSort(a, 0, n - 1);
+    private int[] nums;
+
+    public int[] sortArray(int[] nums) {
+        this.nums = nums;
+        quickSort(0, nums.length - 1);
+        return this.nums;
     }
 
-    private void quickSort(final int[] a, final int startIndex, final int endIndex) {
+    private void quickSort(int startIndex, int endIndex) {
         if (startIndex >= endIndex) return;
 
         // 对数组进行分区，并返回分区点的下标
-        int pivotIndex = partition(a, startIndex, endIndex);
+        int pivotIndex = partition(startIndex, endIndex);
 
         // 对分区点的左右两个分区进行排序
-        quickSort(a, startIndex, pivotIndex - 1);
-        quickSort(a, pivotIndex + 1, endIndex);
+        quickSort(startIndex, pivotIndex - 1);
+        quickSort(pivotIndex + 1, endIndex);
     }
 
-    private int partition(final int[] a, final int startIndex, final int endIndex) {
-        int pivotValue = a[endIndex];
+    private int partition(int startIndex, int endIndex) {
+        int randomIndex = startIndex + (int) (Math.random() * (endIndex - startIndex + 1));
+        int pivotValue = nums[randomIndex];
+        nums[randomIndex] = nums[endIndex];
+        nums[endIndex] = pivotValue;
 
         // 定义游标：i 为要和 pivot 比较大小的元素，j 为可以交换位置的元素下标
         int i = startIndex;
@@ -29,17 +36,16 @@ public class QuickSort {
 
         // 对 startIndex ~ endIndex-1 的数组进行分区
         while (i <= j) {
-            if (a[i] <= pivotValue) {
-                i++;
-            } else {
-                int tmp = a[j];
-                a[j--] = a[i];
-                a[i] = tmp;
+            if (nums[i] <= pivotValue) i++;
+            else {
+                int tmp = nums[j];
+                nums[j--] = nums[i];
+                nums[i] = tmp;
             }
         }
 
-        a[endIndex] = a[i];
-        a[i] = pivotValue;
+        nums[endIndex] = nums[i];
+        nums[i] = pivotValue;
         return i;
     }
 
