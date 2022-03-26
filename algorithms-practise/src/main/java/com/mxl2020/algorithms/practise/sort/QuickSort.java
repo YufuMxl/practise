@@ -2,6 +2,8 @@ package com.mxl2020.algorithms.practise.sort;
 
 /**
  * 快速排序（交换排序）
+ *
+ * @see <a href="https://leetcode-cn.com/problems/sort-an-array/">LeetCode 912</a>
  */
 public class QuickSort {
 
@@ -10,7 +12,7 @@ public class QuickSort {
     public int[] sortArray(int[] nums) {
         this.nums = nums;
         quickSort(0, nums.length - 1);
-        return this.nums;
+        return nums;
     }
 
     private void quickSort(int startIndex, int endIndex) {
