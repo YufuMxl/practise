@@ -22,11 +22,11 @@ public class Heap {
         if (count >= capacity) return;
         // 插入数据
         a[++count] = data;
-        heapify();
+        heapifyUp();
     }
 
     // 从下往上的堆化
-    private void heapify() {
+    private void heapifyUp() {
         int lastIndex = count;
         while (lastIndex / 2 > 0 && a[lastIndex / 2] < a[lastIndex]) {
             int tmp = a[lastIndex];
@@ -44,11 +44,11 @@ public class Heap {
         // 删除堆中最后一个元素
         a[count--] = 0;
 
-        heapify(1);
+        heapifyDown(1);
     }
 
     // 从上往下的堆化
-    private void heapify(int index) {
+    private void heapifyDown(int index) {
         // 递归边界条件
         if (index * 2 > count) return;
 
@@ -61,7 +61,7 @@ public class Heap {
             int maxChildValue = a[maxChildIndex];
             a[maxChildIndex] = a[index];
             a[index] = maxChildValue;
-            heapify(maxChildIndex);
+            heapifyDown(maxChildIndex);
         }
     }
 
