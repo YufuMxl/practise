@@ -114,4 +114,6 @@ public class MergeKSortedLists {
         return soldier.next;
     }
 
+    // TODO 使用 Java Util 解决
+
 }
