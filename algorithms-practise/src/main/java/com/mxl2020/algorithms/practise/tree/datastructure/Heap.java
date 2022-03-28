@@ -1,4 +1,4 @@
-package com.mxl2020.algorithms.practise.heap;
+package com.mxl2020.algorithms.practise.tree.datastructure;
 
 /**
  * 大顶堆
