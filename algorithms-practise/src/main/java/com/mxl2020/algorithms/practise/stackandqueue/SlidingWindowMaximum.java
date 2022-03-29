@@ -55,9 +55,10 @@ public class SlidingWindowMaximum {
      */
     public int[] maxSlidingWindow2(int[] nums, int k) {
         this.nums = nums;
+        this.k = k;
         // 初始化大顶堆
         this.heap = new int[k];
-        this.keyToIndexMap = new HashMap<>(k);
+        this.numIndexToHeapIndex = new int[k];
         for (int i = 0; i < k; i++) {
             insertHeap(i);
         }
@@ -74,13 +75,14 @@ public class SlidingWindowMaximum {
     }
 
     private int[] nums;
+    private int k;
     private int[] heap;
     private int size;
-    private HashMap<Integer, Integer> keyToIndexMap;
+    private int[] numIndexToHeapIndex;
 
     private void insertHeap(int numIndex) {
         heap[size++] = numIndex;
-        keyToIndexMap.put(numIndex, size - 1);
+        numIndexToHeapIndex[numIndex % k] = size - 1;
         heapifyUp(size - 1);
     }
 
@@ -91,22 +93,22 @@ public class SlidingWindowMaximum {
             heap[parentIndex] = heap[heapIndex];
             heap[heapIndex] = parentValue;
 
-            keyToIndexMap.put(heap[parentIndex], parentIndex);
-            keyToIndexMap.put(heap[heapIndex], heapIndex);
+            numIndexToHeapIndex[heap[parentIndex] % k] = parentIndex;
+            numIndexToHeapIndex[heap[heapIndex] % k] = heapIndex;
 
             heapifyUp(parentIndex);
         }
     }
 
     private void removeKey(int numIndex) {
-        int heapIndex = keyToIndexMap.remove(numIndex);
+        int heapIndex = numIndexToHeapIndex[numIndex % k];
         // 更新 heap size
         size--;
         // 如果删除的是 heap 的最后一个元素，直接返回即可
         if (heapIndex == size) return;
 
         heap[heapIndex] = heap[size];
-        keyToIndexMap.put(heap[heapIndex], heapIndex);
+        numIndexToHeapIndex[heap[heapIndex] % k] = heapIndex;
 
         heapifyUp(heapIndex);
         heapifyDown(heapIndex);
@@ -123,8 +125,8 @@ public class SlidingWindowMaximum {
             heap[maxChildIndex] = heap[heapIndex];
             heap[heapIndex] = maxChildValue;
 
-            keyToIndexMap.put(heap[maxChildIndex], maxChildIndex);
-            keyToIndexMap.put(heap[heapIndex], heapIndex);
+            numIndexToHeapIndex[heap[maxChildIndex] % k] = maxChildIndex;
+            numIndexToHeapIndex[heap[heapIndex] % k] = heapIndex;
 
             heapifyDown(maxChildIndex);
         }
