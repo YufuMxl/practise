@@ -2,6 +2,7 @@ package com.mxl2020.algorithms.practise.stackandqueue;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.HashMap;
 
 /**
  * 滑动窗口最大值
@@ -47,5 +48,85 @@ public class SlidingWindowMaximum {
             }
         }
         return answer;
+    }
+
+    /**
+     * 大顶堆解法
+     */
+    public int[] maxSlidingWindow2(int[] nums, int k) {
+        this.nums = nums;
+        // 初始化大顶堆
+        this.heap = new int[k];
+        this.keyToIndexMap = new HashMap<>(k);
+        for (int i = 0; i < k; i++) {
+            insertHeap(i);
+        }
+
+        int[] result = new int[nums.length - k + 1];
+        result[0] = nums[heap[0]];
+
+        for (int i = 1; i < result.length; i++) {
+            removeKey(i - 1);
+            insertHeap(i + k - 1);
+            result[i] = nums[heap[0]];
+        }
+        return result;
+    }
+
+    private int[] nums;
+    private int[] heap;
+    private int size;
+    private HashMap<Integer, Integer> keyToIndexMap;
+
+    private void insertHeap(int numIndex) {
+        heap[size++] = numIndex;
+        keyToIndexMap.put(numIndex, size - 1);
+        heapifyUp(size - 1);
+    }
+
+    private void heapifyUp(int heapIndex) {
+        int parentIndex = (heapIndex - 1) / 2;
+        if (parentIndex >= 0 && nums[heap[heapIndex]] > nums[heap[parentIndex]]) {
+            int parentValue = heap[parentIndex];
+            heap[parentIndex] = heap[heapIndex];
+            heap[heapIndex] = parentValue;
+
+            keyToIndexMap.put(heap[parentIndex], parentIndex);
+            keyToIndexMap.put(heap[heapIndex], heapIndex);
+
+            heapifyUp(parentIndex);
+        }
+    }
+
+    private void removeKey(int numIndex) {
+        int heapIndex = keyToIndexMap.remove(numIndex);
+        // 更新 heap size
+        size--;
+        // 如果删除的是 heap 的最后一个元素，直接返回即可
+        if (heapIndex == size) return;
+
+        heap[heapIndex] = heap[size];
+        keyToIndexMap.put(heap[heapIndex], heapIndex);
+
+        heapifyUp(heapIndex);
+        heapifyDown(heapIndex);
+    }
+
+    private void heapifyDown(int heapIndex) {
+        int left = heapIndex * 2 + 1;
+        if (left > size - 1) return;
+        int right = left + 1;
+        int maxChildIndex = right <= size - 1 && nums[heap[right]] > nums[heap[left]] ? right : left;
+
+        if (nums[heap[maxChildIndex]] > nums[heap[heapIndex]]) {
+            int maxChildValue = heap[maxChildIndex];
+            heap[maxChildIndex] = heap[heapIndex];
+            heap[heapIndex] = maxChildValue;
+
+            keyToIndexMap.put(heap[maxChildIndex], maxChildIndex);
+            keyToIndexMap.put(heap[heapIndex], heapIndex);
+
+            heapifyDown(maxChildIndex);
+        }
     }
 }
