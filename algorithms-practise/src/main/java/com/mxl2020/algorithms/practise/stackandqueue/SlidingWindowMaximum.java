@@ -2,7 +2,6 @@ package com.mxl2020.algorithms.practise.stackandqueue;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.HashMap;
 
 /**
  * 滑动窗口最大值
@@ -56,7 +55,6 @@ public class SlidingWindowMaximum {
     public int[] maxSlidingWindow2(int[] nums, int k) {
         this.nums = nums;
         this.k = k;
-        // 初始化大顶堆
         this.heap = new int[k];
         this.numIndexToHeapIndex = new int[k];
         for (int i = 0; i < k; i++) {
@@ -77,13 +75,13 @@ public class SlidingWindowMaximum {
     private int[] nums;
     private int k;
     private int[] heap;
-    private int size;
+    private int heapSize;
     private int[] numIndexToHeapIndex;
 
     private void insertHeap(int numIndex) {
-        heap[size++] = numIndex;
-        numIndexToHeapIndex[numIndex % k] = size - 1;
-        heapifyUp(size - 1);
+        heap[heapSize++] = numIndex;
+        numIndexToHeapIndex[numIndex % k] = heapSize - 1;
+        heapifyUp(heapSize - 1);
     }
 
     private void heapifyUp(int heapIndex) {
@@ -103,11 +101,11 @@ public class SlidingWindowMaximum {
     private void removeKey(int numIndex) {
         int heapIndex = numIndexToHeapIndex[numIndex % k];
         // 更新 heap size
-        size--;
+        heapSize--;
         // 如果删除的是 heap 的最后一个元素，直接返回即可
-        if (heapIndex == size) return;
+        if (heapIndex == heapSize) return;
 
-        heap[heapIndex] = heap[size];
+        heap[heapIndex] = heap[heapSize];
         numIndexToHeapIndex[heap[heapIndex] % k] = heapIndex;
 
         heapifyUp(heapIndex);
@@ -116,9 +114,9 @@ public class SlidingWindowMaximum {
 
     private void heapifyDown(int heapIndex) {
         int left = heapIndex * 2 + 1;
-        if (left > size - 1) return;
+        if (left > heapSize - 1) return;
         int right = left + 1;
-        int maxChildIndex = right <= size - 1 && nums[heap[right]] > nums[heap[left]] ? right : left;
+        int maxChildIndex = right <= heapSize - 1 && nums[heap[right]] > nums[heap[left]] ? right : left;
 
         if (nums[heap[maxChildIndex]] > nums[heap[heapIndex]]) {
             int maxChildValue = heap[maxChildIndex];
