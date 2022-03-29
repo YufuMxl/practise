@@ -15,6 +15,8 @@ public class Permutations {
     private final List<List<Integer>> permutations = new ArrayList<>();
 
     /**
+     * n! 种可能
+     *
      * @param nums 无重复元素的整数数组
      * @return 返回所有的不同排列的数组
      */

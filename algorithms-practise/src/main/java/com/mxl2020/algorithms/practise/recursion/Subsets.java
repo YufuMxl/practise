@@ -14,6 +14,8 @@ public class Subsets {
     private final List<Integer> chosen = new ArrayList<>();
 
     /**
+     * 2^n 种可能
+     *
      * @param nums 无重复元素的整数数组
      * @return 返回 nums 的所有子集
      */
