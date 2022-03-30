@@ -14,9 +14,9 @@ public class N_Queens {
     /**
      * 要求将 n 个皇后放置在 n * n 的棋盘上，且不存在攻击线路
      * <p>
-     * 皇后会直线、对角线攻击，所以同一条直线、对角线不能有 1 个以上的皇后
+     * 皇后会直线、对角线攻击，所以同一条直线、对角线的皇后个数只能有 1 个
      *
-     * @return 返回 n 个皇后在棋盘中的所有摆放
+     * @return 返回所有可能的摆放方式
      */
     public List<List<String>> solveNQueens(int n) {
         this.n = n;
