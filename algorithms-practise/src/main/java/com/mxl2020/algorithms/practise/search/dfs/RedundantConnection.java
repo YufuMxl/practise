@@ -1,4 +1,4 @@
-package com.mxl2020.algorithms.practise.graph;
+package com.mxl2020.algorithms.practise.search.dfs;
 
 import java.util.ArrayList;
 import java.util.Arrays;

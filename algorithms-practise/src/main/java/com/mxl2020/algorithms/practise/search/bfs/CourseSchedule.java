@@ -1,4 +1,4 @@
-package com.mxl2020.algorithms.practise.graph;
+package com.mxl2020.algorithms.practise.search.bfs;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
