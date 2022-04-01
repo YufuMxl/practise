@@ -52,4 +52,44 @@ public class LongestIncreasingPathInMatrix {
     private boolean isValidCell(int x, int y, int m, int n) {
         return 0 <= x && x < m && 0 <= y && y < n;
     }
+
+    /**
+     * DFS 解法
+     */
+    public int longestIncreasingPath2(int[][] matrix) {
+        this.matrix = matrix;
+        this.pathStore = new int[matrix.length][matrix[0].length];
+
+        int longestPath = 0;
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                longestPath = Math.max(longestPath, dfs(i, j));
+            }
+        }
+
+        return longestPath;
+    }
+
+    private int[][] matrix;
+    private int[][] pathStore;
+    private final byte[][] directions = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+
+    /**
+     * 求一个点的最远路径
+     */
+    private int dfs(int x, int y) {
+        if (pathStore[x][y] != 0) return pathStore[x][y];
+
+        int maxSubPath = 0;
+        for (byte[] direction : directions) {
+            int subX = x + direction[0];
+            int subY = y + direction[1];
+            if (isValidCell(subX, subY, matrix.length, matrix[0].length) && matrix[subX][subY] > matrix[x][y]) {
+                maxSubPath = Math.max(maxSubPath, dfs(subX, subY));
+            }
+        }
+
+        pathStore[x][y] = 1 + maxSubPath;
+        return pathStore[x][y];
+    }
 }
