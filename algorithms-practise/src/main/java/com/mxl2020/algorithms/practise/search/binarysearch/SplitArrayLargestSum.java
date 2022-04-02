@@ -26,8 +26,7 @@ public class SplitArrayLargestSum {
 
         while (left < right) {
             int ans = left + ((right - left) >> 1);
-            boolean isValidAns = validate(ans);
-            if (isValidAns) {
+            if (validate(ans)) {
                 right = ans;
             } else {
                 left = ans + 1;
