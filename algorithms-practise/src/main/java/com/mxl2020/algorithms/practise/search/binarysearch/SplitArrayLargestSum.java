@@ -17,7 +17,7 @@ public class SplitArrayLargestSum {
         this.m = m;
 
         // 定义答案区间
-        int left = nums[0];
+        int left = 0;
         int right = 0;
         for (int num : nums) {
             left = Math.max(left, num);
@@ -26,7 +26,7 @@ public class SplitArrayLargestSum {
 
         while (left < right) {
             int ans = left + ((right - left) >> 1);
-            boolean isValidAns = isValid(ans);
+            boolean isValidAns = validate(ans);
             if (isValidAns) {
                 right = ans;
             } else {
@@ -39,7 +39,7 @@ public class SplitArrayLargestSum {
     private int[] nums;
     private int m;
 
-    private boolean isValid(int ans) {
+    private boolean validate(int ans) {
         int subArraySum = 0;
         int splitTime = 1;
         for (int num : nums) {
