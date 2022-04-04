@@ -44,24 +44,26 @@ public class MergeIntervals {
      * 解法二：差分
      */
     public int[][] merge2(int[][] intervals) {
-        int[] delta = new int[10001];
-        for (int[] interval : intervals) {
-            delta[interval[0]]++;
-            delta[interval[1]]--;
+        int[][] deltaArray = new int[intervals.length * 2][2];
+        for (int i = 0; i < intervals.length; i++) {
+            deltaArray[i * 2] = new int[]{intervals[i][0], 1};
+            deltaArray[i * 2 + 1] = new int[]{intervals[i][1] + 1, -1};
         }
+
+        Arrays.sort(deltaArray, (o1, o2) -> {
+            if (o1[0] < o2[0] || (o1[0] == o2[0] && o1[1] < o2[1])) return -1;
+            else if (o1[0] == o2[0] && o1[1] == o2[1]) return 0;
+            else return 1;
+        });
 
         final ArrayList<int[]> ans = new ArrayList<>();
 
         int start = 0;
         int event = 0;
-        for (int i = 0; i < delta.length; i++) {
-            event += delta[i];
-            if (event > 0 && event == delta[i]) {
-                start = i;
-            }
-            if (event == 0 && delta[i] < 0) {
-                ans.add(new int[]{start, i});
-            }
+        for (final int[] delta : deltaArray) {
+            event += delta[1];
+            if (event > 0 && event == delta[1]) start = delta[0];
+            if (event == 0 && delta[1] < 0) ans.add(new int[]{start, delta[0] - 1});
         }
 
         return ans.toArray(new int[0][0]);
