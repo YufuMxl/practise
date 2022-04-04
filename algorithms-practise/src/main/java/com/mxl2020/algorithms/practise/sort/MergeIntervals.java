@@ -41,9 +41,29 @@ public class MergeIntervals {
     }
 
     /**
-     * 解法二：查分
+     * 解法二：差分
      */
     public int[][] merge2(int[][] intervals) {
-        return null;
+        int[] delta = new int[10001];
+        for (int[] interval : intervals) {
+            delta[interval[0]]++;
+            delta[interval[1]]--;
+        }
+
+        final ArrayList<int[]> ans = new ArrayList<>();
+
+        int start = 0;
+        int event = 0;
+        for (int i = 0; i < delta.length; i++) {
+            event += delta[i];
+            if (event > 0 && event == delta[i]) {
+                start = i;
+            }
+            if (event == 0 && delta[i] < 0) {
+                ans.add(new int[]{start, i});
+            }
+        }
+
+        return ans.toArray(new int[0][0]);
     }
 }
