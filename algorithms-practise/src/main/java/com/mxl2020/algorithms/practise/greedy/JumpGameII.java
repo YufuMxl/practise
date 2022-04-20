@@ -30,7 +30,7 @@ public class JumpGameII {
 
         int nextJumpIndex = start;
         for (int i = start + 1; i <= end; i++) {
-            nextJumpIndex = i + nums[i] > nextJumpIndex + nums[nextJumpIndex] ? i : nextJumpIndex;
+            if (i + nums[i] > nextJumpIndex + nums[nextJumpIndex]) nextJumpIndex = i;
         }
         return nextJumpIndex;
     }
