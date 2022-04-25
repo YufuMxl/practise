@@ -1,4 +1,4 @@
-package com.mxl2020.algorithms.practise.greedy;
+package com.mxl2020.algorithms.practise.statusspace.greedy;
 
 import java.util.Arrays;
 import java.util.Comparator;

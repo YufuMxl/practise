@@ -1,4 +1,4 @@
-package com.mxl2020.algorithms.practise.greedy;
+package com.mxl2020.algorithms.practise.statusspace.greedy;
 
 /**
  * 跳跃游戏 II
