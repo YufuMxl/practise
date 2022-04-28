@@ -48,4 +48,19 @@ public class MaximumSubArray {
         }
         return res;
     }
+
+    /**
+     * 动态规划解法
+     */
+    public int maxSubArray3(int[] nums) {
+        int[] opt = new int[nums.length];
+        opt[0] = nums[0];
+        int maxSubArray = opt[0];
+        for (int i = 1; i < opt.length; i++) {
+            opt[i] = opt[i - 1] <= 0 ? nums[i] : opt[i - 1] + nums[i];
+            if (opt[i] > maxSubArray) maxSubArray = opt[i];
+        }
+
+        return maxSubArray;
+    }
 }
