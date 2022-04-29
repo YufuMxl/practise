@@ -53,4 +53,24 @@ public class BestTimeBuySellStockII {
         }
         return profit;
     }
+
+    /**
+     * 动态规划解法
+     * <p>
+     * 由于没有交易次数限制，所以这里的状态只有天数 i 和持仓 j
+     */
+    public int maxProfit3(int[] prices) {
+        // 确定状态 & 最优子结构：
+        // opt[i][0] 表示第 i 天未持仓状态时的手头最大资金
+        // opt[i][1] 表示第 i 天已持仓状态时的手头最大资金
+        int[][] opt = new int[prices.length][2];
+        // 确定边界
+        opt[0][1] = -prices[0];
+
+        for (int i = 1; i < prices.length; i++) {
+            opt[i][0] = Math.max(opt[i - 1][1] + prices[i], opt[i - 1][0]);
+            opt[i][1] = Math.max(opt[i - 1][0] - prices[i], opt[i - 1][1]);
+        }
+        return opt[prices.length - 1][0];
+    }
 }
