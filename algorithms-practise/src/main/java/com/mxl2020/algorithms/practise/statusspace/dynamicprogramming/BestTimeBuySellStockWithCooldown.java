@@ -29,4 +29,30 @@ public class BestTimeBuySellStockWithCooldown {
 
         return Math.max(opt[prices.length - 1][0][0], opt[prices.length - 1][0][1]);
     }
+
+    /**
+     * 状态空间缩小一维
+     * <p>
+     * opt[0] 未持仓未冷冻
+     * <p>
+     * opt[1] 未持仓冷冻
+     * <p>
+     * opt[2] 持仓未冷冻
+     */
+    public int maxProfit2(int[] prices) {
+        int[][] opt = new int[prices.length][3];
+        // 定义边界
+        opt[0][1] = (int) -1e9;
+        opt[0][2] = -prices[0];
+
+        for (int i = 1; i < prices.length; i++) {
+            int yesterday = i - 1;
+            opt[i][0] = Math.max(opt[yesterday][0], opt[yesterday][1]);
+            opt[i][1] = opt[yesterday][2] + prices[i];
+            opt[i][2] = Math.max(opt[yesterday][2], opt[yesterday][0] - prices[i]);
+        }
+
+        int lastDay = prices.length - 1;
+        return Math.max(opt[lastDay][0], opt[lastDay][1]);
+    }
 }
