@@ -55,4 +55,6 @@ public class BestTimeBuySellStockWithCooldown {
         int lastDay = prices.length - 1;
         return Math.max(opt[lastDay][0], opt[lastDay][1]);
     }
+
+    // TODO 滚动数组
 }
