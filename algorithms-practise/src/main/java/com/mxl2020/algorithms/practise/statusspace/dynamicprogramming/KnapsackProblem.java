@@ -33,6 +33,22 @@ public class KnapsackProblem {
         return ans;
     }
 
+    public int oneZeroKnapsackProblem2(int[] weight, int[] worth, int volume) {
+        int[] opt = new int[volume + 1];
+        if (weight[0] <= volume) opt[weight[0]] = worth[0];
+        for (int i = 1; i < weight.length; i++) {
+            for (int j = volume; j >= weight[i]; j--) {
+                opt[j] = Math.max(opt[j], opt[j - weight[i]] + worth[i]);
+            }
+        }
+
+        int ans = 0;
+        for (int j = 1; j <= volume; j++) {
+            ans = Math.max(ans, opt[j]);
+        }
+        return ans;
+    }
+
     /**
      * 完全背包问题
      * <p>
