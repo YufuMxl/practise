@@ -50,10 +50,6 @@ public class Trie {
     }
 
     static class TrieNode {
-        // public char data;
-        // TODO 用 Map 代替数组实现一遍
-        // TODO 用 count 代替 isEndingChar 实现一遍
-        public int count;
         public final TrieNode[] children = new TrieNode[26];
         public boolean isEndingChar = false;
     }
