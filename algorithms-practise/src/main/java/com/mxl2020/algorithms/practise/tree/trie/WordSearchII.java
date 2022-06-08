@@ -43,13 +43,19 @@ public class WordSearchII {
     }
 
     private void dfs(final int x, final int y, final TrieNode node) {
-        TrieNode currentNode = node.children[board[x][y] - 'a'];
+        int currentIndex = board[x][y] - 'a';
+        TrieNode currentNode = node.children[currentIndex];
         if (currentNode == null) return;
 
         wordBuilder.append(board[x][y]);
         if (currentNode.wordTag) {
             ans.add(wordBuilder.toString());
             currentNode.wordTag = false;
+            if (currentNode.isEmpty()) {
+                node.children[currentIndex] = null;
+                wordBuilder.deleteCharAt(wordBuilder.length() - 1);
+                return;
+            }
         }
         visited[x][y] = true;
         for (int[] direction : directions) {
@@ -77,5 +83,12 @@ public class WordSearchII {
     static class TrieNode {
         public boolean wordTag;
         public final TrieNode[] children = new TrieNode[26];
+
+        public boolean isEmpty() {
+            for (TrieNode node : this.children) {
+                if (node != null) return false;
+            }
+            return true;
+        }
     }
 }
