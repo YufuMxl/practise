@@ -36,7 +36,7 @@ public class LowestCommonAncestorOfABinaryTree {
     private TreeNode lca;
 
     /**
-     * 通过深度优先遍历，判断指定的节点是否包含 p 或 q
+     * 通过后续遍历，判断指定的节点是否包含 p 或 q
      */
     private Pair<Boolean, Boolean> dfs(TreeNode node) {
         // 递归终止条件
