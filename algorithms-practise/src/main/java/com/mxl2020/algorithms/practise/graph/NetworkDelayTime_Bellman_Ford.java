@@ -7,7 +7,7 @@ import java.util.Arrays;
  *
  * @see <a href="https://leetcode.cn/problems/network-delay-time/">LeetCode 743</a>
  */
-public class NetworkDelayTime {
+public class NetworkDelayTime_Bellman_Ford {
 
     /**
      * @param times times[i] = (ui, vi, wi)，表示一条有向边，其中 wi 表示信号从 ui 到 vi 的延迟时间
