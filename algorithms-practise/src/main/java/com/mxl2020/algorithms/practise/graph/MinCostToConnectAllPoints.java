@@ -20,10 +20,7 @@ public class MinCostToConnectAllPoints {
         List<int[]> edges = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             for (int j = i + 1; j < n; j++) {
-                int x = i;
-                int y = j;
-                int z = Math.abs(points[i][0] - points[j][0]) + Math.abs(points[i][1] - points[j][1]);
-                edges.add(new int[]{x, y, z});
+                edges.add(new int[]{i, j, Math.abs(points[i][0] - points[j][0]) + Math.abs(points[i][1] - points[j][1])});
             }
         }
         // 按照边的权值，对边集进行排序
