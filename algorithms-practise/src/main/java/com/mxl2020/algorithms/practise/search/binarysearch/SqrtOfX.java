@@ -17,29 +17,6 @@ public class SqrtOfX {
      * @return 返回 x 的平方根的整数部分
      */
     public int mySqrt(int x) {
-        // 边界条件
-        if (x < 0) return -1;
-        if (x == 0 || x == 1) return x;
-        // 设置区间
-        int low = 1;
-        int high = x / 2;
-
-        while (low <= high) {
-            int mid = low + ((high - low) >> 1);
-            if ((long) mid * mid > x) {
-                high = mid - 1;
-            } else {
-                if (mid == high || (long) (mid + 1) * (mid + 1) > x) {
-                    return mid;
-                } else {
-                    low = mid + 1;
-                }
-            }
-        }
-        return -1;
-    }
-
-    public int mySqrt2(int x) {
         int left = 0;
         int right = x;
 
@@ -47,7 +24,7 @@ public class SqrtOfX {
             int mid = left + ((right - left) >> 1);
             if ((long) mid * mid > x) right = mid - 1;
             else {
-                if (mid == right || (long) (mid + 1) * (mid + 1) > x) return mid;
+                if ((long) (mid + 1) * (mid + 1) > x) return mid;
                 else left = mid + 1;
             }
         }
