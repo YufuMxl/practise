@@ -41,11 +41,8 @@ public class SqrtOfX {
         // right - left > 1e-n 代表精确到小数点后 n 位
         while (right - left > 1e-6) {
             double mid = (left + right) / 2;
-            if (mid * mid < x) {
-                left = mid;
-            } else if (mid * mid > x) {
-                right = mid;
-            }
+            if (mid * mid < x) left = mid;
+            else if (mid * mid > x) right = mid;
         }
         return right;
     }
