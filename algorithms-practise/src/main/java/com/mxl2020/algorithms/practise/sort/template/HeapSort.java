@@ -6,36 +6,36 @@ package com.mxl2020.algorithms.practise.sort.template;
 public class HeapSort {
 
     public void heapSort(int[] array) {
-        int n = array.length;
-        // 1. 建堆
+        final int n = array.length;
+        // 1. 建堆（将数组转换成大顶堆）
         for (int i = n / 2 - 1; i >= 0; i--) {
-            heapify(array, n - 1, i);
+            heapifyDown(array, i, n - 1);
         }
 
-        // 2. 排序
+        // 2. 排序（堆顶元素与堆尾元素交换）
         for (int i = n - 1; i >= 1; i--) {
             int heapTopValue = array[0];
             array[0] = array[i];
             array[i] = heapTopValue;
-            heapify(array, i - 1, 0);
+            heapifyDown(array, 0, i - 1);
         }
     }
 
     // 从上往下的堆化
-    private void heapify(int[] array, int endIndex, int targetIndex) {
-        int leftIndex = targetIndex * 2 + 1;
-        // 递归终止条件
-        if (leftIndex > endIndex) return;
-        // 获取较大值的子节点的下标
-        int rightIndex = leftIndex + 1;
-        int maxChildIndex = rightIndex <= endIndex && array[rightIndex] > array[leftIndex] ? rightIndex : leftIndex;
+    private void heapifyDown(int[] array, int targetIndex, int endIndex) {
+        int leftChildIndex = targetIndex * 2 + 1;
+        int rightChildIndex = leftChildIndex + 1;
+        if (leftChildIndex > endIndex) return;
 
-        // 对比父子节点大小，进行堆化操作
+        int maxChildIndex = leftChildIndex;
+        if (rightChildIndex <= endIndex && array[rightChildIndex] > array[leftChildIndex])
+            maxChildIndex = rightChildIndex;
+
         if (array[targetIndex] < array[maxChildIndex]) {
             int maxChildValue = array[maxChildIndex];
             array[maxChildIndex] = array[targetIndex];
             array[targetIndex] = maxChildValue;
-            heapify(array, endIndex, maxChildIndex);
+            heapifyDown(array, maxChildIndex, endIndex);
         }
     }
 
