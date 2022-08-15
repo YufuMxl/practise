@@ -1,4 +1,4 @@
-package com.mxl2020.algorithms.practise.search.dfs;
+package com.mxl2020.algorithms.practise.search.bfs;
 
 import java.util.*;
 

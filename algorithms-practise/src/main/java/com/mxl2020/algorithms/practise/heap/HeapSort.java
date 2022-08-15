@@ -1,4 +1,4 @@
-package com.mxl2020.algorithms.practise.sort.template;
+package com.mxl2020.algorithms.practise.heap;
 
 /**
  * 堆排序（选择排序）

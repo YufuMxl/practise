@@ -1,4 +1,4 @@
-package com.mxl2020.algorithms.practise.linkedlist;
+package com.mxl2020.algorithms.practise.heap;
 
 import com.mxl2020.algorithms.practise.linkedlist.datastructure.ListNode;
 

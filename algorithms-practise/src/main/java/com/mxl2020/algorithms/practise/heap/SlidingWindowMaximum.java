@@ -1,4 +1,4 @@
-package com.mxl2020.algorithms.practise.stackandqueue;
+package com.mxl2020.algorithms.practise.heap;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
