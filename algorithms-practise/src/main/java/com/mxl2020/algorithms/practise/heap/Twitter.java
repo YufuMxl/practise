@@ -57,10 +57,6 @@ public class Twitter {
         return res;
     }
 
-    /**
-     * @param followerId 发起关注者 id
-     * @param followeeId 被关注者 id
-     */
     public void follow(int followerId, int followeeId) {
         // 被关注人不能是自己
         if (followeeId == followerId) return;
@@ -76,10 +72,6 @@ public class Twitter {
         }
     }
 
-    /**
-     * @param followerId 发起取消关注的人的 id
-     * @param followeeId 被取消关注的人的 id
-     */
     public void unfollow(int followerId, int followeeId) {
         if (followeeId == followerId) return;
         // 获取我自己的关注列表
