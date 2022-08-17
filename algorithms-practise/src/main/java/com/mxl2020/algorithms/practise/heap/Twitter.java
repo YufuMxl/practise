@@ -10,17 +10,16 @@ import java.util.*;
 public class Twitter {
     private final Map<Integer, Tweet> twitter;              // 用户 id 和推文（单链表）的对应关系
     private final Map<Integer, Set<Integer>> followings;    // 用户 id 和他关注的用户列表的对应关系
-    private static int timestamp = 0;                       // 全局使用的时间戳字段，用户每发布一条推文之前 + 1
     private static PriorityQueue<Tweet> maxHeap;            // 合并 k 组推文使用的数据结构
 
     public Twitter() {
         followings = new HashMap<>();
         twitter = new HashMap<>();
-        maxHeap = new PriorityQueue<>((o1, o2) -> -o1.timestamp + o2.timestamp);
+        maxHeap = new PriorityQueue<>(Comparator.comparingLong(tweet -> -tweet.timestamp));
     }
 
     public void postTweet(int userId, int tweetId) {
-        timestamp++;
+        long timestamp =System.currentTimeMillis();
         if (twitter.containsKey(userId)) {
             Tweet oldHead = twitter.get(userId);
             Tweet newHead = new Tweet(tweetId, timestamp);
@@ -92,10 +91,10 @@ public class Twitter {
 
     static class Tweet {
         private final int id;           // 推文 id
-        private final int timestamp;    // 发推文的时间戳
+        private final long timestamp;    // 发推文的时间戳
         private Tweet next;
 
-        public Tweet(int id, int timestamp) {
+        public Tweet(int id, long timestamp) {
             this.id = id;
             this.timestamp = timestamp;
         }
