@@ -21,21 +21,14 @@ public class TopVotedCandidate {
         this.times = times;
         this.topVotedPersons = new int[persons.length];
 
-        Map<Integer, int[]> votes = new HashMap<>();
-        votes.put(persons[0], new int[]{1, 0});
+        Map<Integer, Integer> votes = new HashMap<>();
+        votes.put(persons[0], 1);
         int topVotedPersonId = persons[0];
-        topVotedPersons[0] = topVotedPersonId;
+        topVotedPersons[0] = persons[0];
 
         for (int i = 1; i < persons.length; i++) {
-            int[] personVotes = votes.getOrDefault(persons[i], new int[2]);
-            // 0 号元素表示票数；1 号元素表示最后一票的票号
-            personVotes[0]++;
-            personVotes[1] = i;
-            votes.put(persons[i], personVotes);
-
-            if (personVotes[0] > votes.get(topVotedPersonId)[0] || (personVotes[0] == votes.get(topVotedPersonId)[0] && personVotes[1] > votes.get(topVotedPersonId)[1])) {
-                topVotedPersonId = persons[i];
-            }
+            votes.put(persons[i], votes.getOrDefault(persons[i], 0) + 1);
+            if (votes.get(persons[i]) >= votes.get(topVotedPersonId)) topVotedPersonId = persons[i];
             topVotedPersons[i] = topVotedPersonId;
         }
     }
@@ -45,8 +38,7 @@ public class TopVotedCandidate {
      * @return 返回 t 时刻得票最多的人的编号；如果两人得票相同，返回截止到 t 时刻得到最后一票的人
      */
     public int q(int t) {
-        int voteIndex = binarySearch(t);
-        return this.topVotedPersons[voteIndex];
+        return topVotedPersons[binarySearch(t)];
     }
 
     /**
