@@ -33,7 +33,7 @@ public class KokoEatingBananas {
     private boolean canEatUp(final int[] piles, final int h, final int speed) {
         int eatingHours = 0;
         for (int pile : piles) {
-            eatingHours +=((pile + speed - 1) / speed);
+            eatingHours += ((pile + speed - 1) / speed);
         }
         return eatingHours <= h;
     }
