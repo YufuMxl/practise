@@ -1,4 +1,4 @@
-package com.mxl2020.algorithms.practise.statusspace.greedy;
+package com.mxl2020.algorithms.practise.statusspace.dboptimize;
 
 /**
  * 爬楼梯
