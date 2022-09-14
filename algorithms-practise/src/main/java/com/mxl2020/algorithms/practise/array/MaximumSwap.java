@@ -26,4 +26,11 @@ public class MaximumSwap {
         }
         return num;
     }
+
+    /**
+     * 解法二：贪心
+     */
+    public int maximumSwap2(int num) {
+        return -1;
+    }
 }
