@@ -22,27 +22,18 @@ public class EvaluateReversePolishNotation {
     public int evalRPN(String[] tokens) {
         Deque<Integer> operandStack = new ArrayDeque<>();
         for (String token : tokens) {
-            if (isOperator(token)) {
-                // 遇到运算符，取栈顶两个数字，进行运算
+            if (isDigit(token)) operandStack.push(Integer.valueOf(token));
+            else { // 注意运算顺序
                 int b = operandStack.pop();
                 int a = operandStack.pop();
-                // 将计算结果入栈
                 operandStack.push(calculate(a, b, token));
-            } else {
-                // 遇到数字入栈
-                operandStack.push(Integer.valueOf(token));
             }
         }
-        // 栈里剩的最后一个元素就是最终结果
         return operandStack.pop();
     }
 
-    private boolean isOperator(String token) {
-        if ("+".equals(token) || "-".equals(token) || "*".equals(token) || "/".equals(token)) {
-            return true;
-        } else {
-            return false;
-        }
+    private boolean isDigit(String token) {
+        return !("+".equals(token) || "-".equals(token) || "*".equals(token) || "/".equals(token));
     }
 
     private int calculate(int a, int b, String operator) {
