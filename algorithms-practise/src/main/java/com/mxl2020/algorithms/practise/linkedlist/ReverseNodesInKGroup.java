@@ -17,44 +17,29 @@ public class ReverseNodesInKGroup {
      */
     public ListNode reverseKGroup(ListNode head, int k) {
         ListNode soldier = new ListNode(-1, head);
-        ListNode lastNodeOfPreviousGroup = soldier;
+        ListNode nodeOfPrevGroup = soldier;
 
-        while (lastNodeOfPreviousGroup.next != null) {
-            // 定位每组的首尾结点
-            ListNode firstNodeOfCurrentGroup = lastNodeOfPreviousGroup.next;
-            ListNode lastNodeOfCurrentGroup = lastNodeOfPreviousGroup;
-            // 循环 k 次得到 lastNodeOfCurrentGroup
+        while (nodeOfPrevGroup.next != null) {
+            ListNode lastNodeOfCurrentGroup = nodeOfPrevGroup;
             for (int i = 0; i < k; i++) {
                 lastNodeOfCurrentGroup = lastNodeOfCurrentGroup.next;
-                // 当前组内不满 k 个结点，直接返回
-                if (lastNodeOfCurrentGroup == null) {
-                    return soldier.next;
-                }
+                if (lastNodeOfCurrentGroup == null) return soldier.next;
             }
-            ListNode firstNodeOfNextGroup = lastNodeOfCurrentGroup.next;
-
-            // 反转链表
-            // 1.上组最后一个指向该组最后一个
-            lastNodeOfPreviousGroup.next = lastNodeOfCurrentGroup;
-            // 2.反转 k 个结点
-            myReverse(firstNodeOfCurrentGroup, k);
-            // 3.该组第一个指向下组第一个
-            firstNodeOfCurrentGroup.next = firstNodeOfNextGroup;
-
-            // 重新定位 lastNodeOfPreviousGroup
-            // 特别注意这里的指针移动
-            lastNodeOfPreviousGroup = firstNodeOfCurrentGroup;
+            ListNode firstNodeOfCurrentGroup = nodeOfPrevGroup.next;
+            nodeOfPrevGroup.next = lastNodeOfCurrentGroup;
+            reverse(firstNodeOfCurrentGroup, lastNodeOfCurrentGroup.next, k);
+            nodeOfPrevGroup = firstNodeOfCurrentGroup;
         }
         return soldier.next;
     }
 
-    private void myReverse(ListNode currentNode, int k) {
-        ListNode previousNode = null;
+    private void reverse(ListNode head, ListNode firstNodeOfNextGroup, int k) {
+        ListNode previousNode = firstNodeOfNextGroup;
         for (int i = 0; i < k; i++) {
-            ListNode nextNode = currentNode.next;
-            currentNode.next = previousNode;
-            previousNode = currentNode;
-            currentNode = nextNode;
+            ListNode nextNode = head.next;
+            head.next = previousNode;
+            previousNode = head;
+            head = nextNode;
         }
     }
 
