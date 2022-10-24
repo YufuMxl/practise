@@ -1,8 +1,8 @@
 package com.mxl2020.algorithms.practise.stackandqueue;
 
+import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 /**
@@ -31,20 +31,10 @@ public class ValidParentheses {
      * 空间复杂度 O(n)
      */
     public boolean isValid(String s) {
-        if (s == null) return false;
-
-        Deque<Character> parenStack = new LinkedList<>();
-        for (int i = 0; i < s.length(); i++) {
-            Character parenChar = s.charAt(i);
-            if (parenMap.containsKey(parenChar)) {
-                // 遇到左括号，入栈
-                parenStack.push(parenChar);
-            } else {
-                // 遇到右括号，与栈顶元素匹配
-                if (parenStack.isEmpty() || parenMap.get(parenStack.pop()) != parenChar) {
-                    return false;
-                }
-            }
+        Deque<Character> parenStack = new ArrayDeque<>();
+        for (Character parenChar : s.toCharArray()) {
+            if (parenMap.containsKey(parenChar)) parenStack.push(parenChar);
+            else if (parenStack.isEmpty() || parenMap.get(parenStack.pop()) != parenChar) return false;
         }
         return parenStack.isEmpty();
     }
