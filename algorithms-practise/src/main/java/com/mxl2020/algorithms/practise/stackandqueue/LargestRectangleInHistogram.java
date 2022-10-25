@@ -22,10 +22,11 @@ public class LargestRectangleInHistogram {
 
         for (int i = 0; i <= heights.length; i++) {
             int height = i == heights.length ? 0 : heights[i];
-            int accumulatedWidth = 0;
+
             if (rectangleStack.isEmpty() || rectangleStack.peek().height <= height) {
                 rectangleStack.push(new Rectangle(height, 1));
             } else {
+                int accumulatedWidth = 0;
                 while (!rectangleStack.isEmpty() && rectangleStack.peek().height > height) {
                     Rectangle higherRectangle = rectangleStack.pop();
                     accumulatedWidth += higherRectangle.width;
