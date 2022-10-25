@@ -44,15 +44,16 @@ public class PlusOne {
 
         // 判断是否需要补充首位
         if (head.next.val == 0) {
-            return genNewDigits(digits.length + 1);
+            digits = new int[digits.length + 1];
+            digits[0] = 1;
         } else {
             DoubleListNode node = head.next;
             for (int i = 0; i < digits.length; i++) {
                 digits[i] = node.val;
                 node = node.next;
             }
-            return digits;
         }
+        return digits;
     }
 
     private void addNode(DoubleListNode preNode, DoubleListNode node) {
@@ -66,31 +67,6 @@ public class PlusOne {
      * 数组实现
      */
     public int[] plusOne2(int[] digits) {
-        // 从后向前遍历数组
-        boolean plusOne = true;
-        for (int i = digits.length - 1; i >= 0 && plusOne; i--) {
-            int result = digits[i] + 1;
-            if (10 == result) {
-                digits[i] = 0;
-            } else {
-                digits[i] = result;
-                plusOne = false;
-            }
-        }
-        if (digits[0] == 0) {
-            return genNewDigits(digits.length + 1);
-        } else {
-            return digits;
-        }
-    }
-
-    private int[] genNewDigits(int arrayLength) {
-        int[] digits = new int[arrayLength];
-        digits[0] = 1;
-        return digits;
-    }
-
-    public int[] plusOne3(int[] digits) {
         for (int i = digits.length - 1; i >= 0; i--) {
             if (digits[i] != 9) {
                 digits[i]++;
@@ -99,7 +75,9 @@ public class PlusOne {
             digits[i] = 0;
         }
         // 跳出 for 循环，说明数字全部是 9
-        return genNewDigits(digits.length + 1);
+        digits = new int[digits.length + 1];
+        digits[0] = 1;
+        return digits;
     }
 
 }
