@@ -26,25 +26,18 @@ public class SlidingWindowMaximum {
         // 队列保存的是单调递减的元素
         // 为了保证单调递减，队尾要支持出队和入队，所以使用双端队列
         Deque<Integer> slidingWindowDeque = new ArrayDeque<>();
-        int numsLength = nums.length;
-        int[] answer = new int[numsLength - k + 1];
+        int[] answer = new int[nums.length + 1 - k];
 
-        for (int i = 0; i < numsLength; i++) {
+        for (int i = 0; i < nums.length; i++) {
             // 移除出界元素，保证队列中的元素都在滑动窗口的范围内
-            while (!slidingWindowDeque.isEmpty() && slidingWindowDeque.peekFirst() <= (i - k)) {
-                slidingWindowDeque.pollFirst();
-            }
+            while (!slidingWindowDeque.isEmpty() && slidingWindowDeque.peekFirst() <= (i - k)) slidingWindowDeque.pollFirst();
             // 维护单调递减队列
-            while (!slidingWindowDeque.isEmpty() && nums[slidingWindowDeque.peekLast()] < nums[i]) {
-                slidingWindowDeque.pollLast();
-            }
+            while (!slidingWindowDeque.isEmpty() && nums[slidingWindowDeque.peekLast()] < nums[i]) slidingWindowDeque.pollLast();
             // 保存数组下标是为了判断队首元素是否出界
             slidingWindowDeque.offerLast(i);
 
             // 拿队首元素（队首元素是当前窗口的最大值）
-            if (!slidingWindowDeque.isEmpty() && i + 1 >= k) {
-                answer[i + 1 - k] = nums[slidingWindowDeque.peekFirst()];
-            }
+            if (!slidingWindowDeque.isEmpty() && (i + 1 -k) >= 0) answer[i + 1 - k] = nums[slidingWindowDeque.peekFirst()];
         }
         return answer;
     }
