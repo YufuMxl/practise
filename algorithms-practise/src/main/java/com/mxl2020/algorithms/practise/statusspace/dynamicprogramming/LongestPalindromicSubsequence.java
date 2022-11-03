@@ -20,12 +20,8 @@ public class LongestPalindromicSubsequence {
         for (int len = 2; len <= n; len++) {
             for (int l = 0; l <= n - len; l++) {
                 int r = l + len - 1;
-                if (s.charAt(l) == s.charAt(r)) {
-                    if (l + 1 == r) opt[l][r] = 2;
-                    else opt[l][r] = opt[l + 1][r - 1] + 2;
-                } else {
-                    opt[l][r] = Math.max(opt[l][r - 1], opt[l + 1][r]);
-                }
+                if (s.charAt(l) == s.charAt(r)) opt[l][r] = opt[l + 1][r - 1] + 2;
+                else opt[l][r] = Math.max(opt[l + 1][r], opt[l][r - 1]);
             }
         }
         return opt[0][n - 1];
