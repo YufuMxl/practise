@@ -37,6 +37,9 @@ public class JumpGameII {
         return nextJumpIndex;
     }
 
+    /**
+     * 状态空间解法
+     */
     public int jump2(int[] nums) {
         int n = nums.length;
         int[] opt = new int[n];
@@ -44,7 +47,7 @@ public class JumpGameII {
         opt[n - 1] = 0;
 
         for (int i = n - 2; i >= 0; i--) {
-            for (int j = Math.min(i + nums[i], n - 1); j >= i + 1; j--) {
+            for (int j = Math.min(i + nums[i], n - 1); j > i; j--) {
                 opt[i] = Math.min(opt[i], opt[j] + 1);
             }
         }

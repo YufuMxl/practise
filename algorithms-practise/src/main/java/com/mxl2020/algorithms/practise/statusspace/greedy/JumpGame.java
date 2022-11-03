@@ -11,6 +11,7 @@ import java.util.List;
 public class JumpGame {
 
     /**
+     * 状态空间解法
      * @param nums 非负整数数组
      * @return 判断是否能够到达 nums 的最后一个下标
      */
