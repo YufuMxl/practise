@@ -20,7 +20,7 @@ public class JumpGame {
         opt[n - 1] = true;
 
         for (int i = n - 2; i >= 0; i--) {
-            for (int j = Math.min(i + nums[i], n - 1); j >= i + 1; j--) {
+            for (int j = Math.min(i + nums[i], n - 1); j > i; j--) {
                 if (opt[j]) {
                     opt[i] = true;
                     break;
