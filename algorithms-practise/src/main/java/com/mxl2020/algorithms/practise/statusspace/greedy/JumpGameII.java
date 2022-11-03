@@ -1,5 +1,7 @@
 package com.mxl2020.algorithms.practise.statusspace.greedy;
 
+import java.util.Arrays;
+
 /**
  * 跳跃游戏 II
  *
@@ -33,5 +35,20 @@ public class JumpGameII {
             if (i + nums[i] > nextJumpIndex + nums[nextJumpIndex]) nextJumpIndex = i;
         }
         return nextJumpIndex;
+    }
+
+    public int jump2(int[] nums) {
+        int n = nums.length;
+        int[] opt = new int[n];
+        Arrays.fill(opt, (int) 1e9);
+        opt[n - 1] = 0;
+
+        for (int i = n - 2; i >= 0; i--) {
+            for (int j = Math.min(i + nums[i], n - 1); j >= i + 1; j--) {
+                opt[i] = Math.min(opt[i], opt[j] + 1);
+            }
+        }
+
+        return opt[0];
     }
 }
