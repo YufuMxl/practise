@@ -55,7 +55,7 @@ public class BinaryTreeMaximumPathSum {
 
     private int endContain(TreeNode treeNode) {
         int maxPathSumInChild = Math.max(map.get(treeNode.left)[2], map.get(treeNode.right)[2]);
-        if (maxPathSumInChild > 0) return treeNode.val += maxPathSumInChild;
+        if (maxPathSumInChild > 0) return treeNode.val + maxPathSumInChild;
         else return treeNode.val;
     }
 }
