@@ -1,6 +1,6 @@
 package com.mxl2020.algorithms.practise.tree.disjointset;
 
-import javafx.util.Pair;
+import com.sun.tools.javac.util.Pair;
 
 /**
  * 超市
