@@ -1,7 +1,11 @@
 package com.mxl2020.algorithms.practise.search.bfs;
 
+import com.mxl2020.algorithms.practise.tree.disjointset.DisjointSet;
+
 import java.util.ArrayDeque;
+import java.util.HashSet;
 import java.util.Queue;
+import java.util.Set;
 
 /**
  * 岛屿数量
@@ -82,6 +86,32 @@ public class NumberOfIslands {
         dfs(x, y + 1);
         dfs(x - 1, y);
         dfs(x, y - 1);
+    }
+
+    /**
+     * 并查集
+     */
+    public int numIslands3(char[][] grid) {
+        final int m = grid.length;
+        final int n = grid[0].length;
+        final DisjointSet disjointSet = new DisjointSet(m * n + 1);
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                int num = i * n + j + 1;
+                if (grid[i][j] == '0') disjointSet.unionSet(num, 0);
+                else {
+                    if (i - 1 >= 0 && grid[i - 1][j] == '1') disjointSet.unionSet(num, num - n);
+                    if (j - 1 >= 0 && grid[i][j - 1] == '1') disjointSet.unionSet(num, num - 1);
+                }
+            }
+        }
+
+        Set<Integer> set = new HashSet<>();
+        for (int i = 0; i < m * n + 1; i++) {
+            set.add(disjointSet.find(i));
+        }
+        return set.size() - 1;
     }
 
 }
