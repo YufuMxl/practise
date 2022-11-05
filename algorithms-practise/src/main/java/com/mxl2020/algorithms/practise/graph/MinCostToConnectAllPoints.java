@@ -1,5 +1,7 @@
 package com.mxl2020.algorithms.practise.graph;
 
+import com.mxl2020.algorithms.practise.tree.disjointset.DisjointSet;
+
 import java.util.*;
 
 /**
@@ -30,35 +32,9 @@ public class MinCostToConnectAllPoints {
         DisjointSet mst = new DisjointSet(n);
         int cost = 0;
         for (int[] edge : edges) {
-            if (mst.unionSet(edge[0], edge[1])) cost += edge[2];
+            if (mst.tryUnionSet(edge[0], edge[1])) cost += edge[2];
         }
 
         return cost;
-    }
-
-    static class DisjointSet {
-        private final int[] father;
-
-        public DisjointSet(int n) {
-            father = new int[n];
-            for (int i = 0; i < n; i++) {
-                father[i] = i;
-            }
-        }
-
-        public int find(int x) {
-            if (father[x] == x) return x;
-            return father[x] = find(father[x]);
-        }
-
-        public boolean unionSet(int a, int b) {
-            a = find(a);
-            b = find(b);
-            if (a != b) {
-                father[a] = b;
-                return true;
-            }
-            return false;
-        }
     }
 }
