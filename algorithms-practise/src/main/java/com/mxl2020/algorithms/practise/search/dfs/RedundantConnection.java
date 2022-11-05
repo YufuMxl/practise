@@ -1,5 +1,7 @@
 package com.mxl2020.algorithms.practise.search.dfs;
 
+import com.mxl2020.algorithms.practise.tree.disjointset.DisjointSet;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -51,6 +53,19 @@ public class RedundantConnection {
             if (visited[child]) hasCycle = true;
             else dfs(child, node);
         }
+    }
+
+    /**
+     * 并查集解法
+     */
+    public int[] findRedundantConnection2(int[][] edges) {
+        DisjointSet disjointSet = new DisjointSet(edges.length + 1);
+        for (int[] edge : edges) {
+            if (!disjointSet.tryUnionSet(edge[0], edge[1])) {
+                return edge;
+            }
+        }
+        return new int[2];
     }
 
 }
