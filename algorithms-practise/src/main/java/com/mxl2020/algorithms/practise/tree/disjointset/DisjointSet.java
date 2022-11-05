@@ -31,4 +31,8 @@ public class DisjointSet {
             return true;
         }
     }
+
+    public boolean isSelfFather(int x) {
+        return father[x] == x;
+    }
 }
