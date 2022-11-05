@@ -107,11 +107,7 @@ public class NumberOfIslands {
             }
         }
 
-        Set<Integer> set = new HashSet<>();
-        for (int i = 0; i < m * n + 1; i++) {
-            set.add(disjointSet.find(i));
-        }
-        return set.size() - 1;
+        return disjointSet.getSetCount() - 1;
     }
 
 }

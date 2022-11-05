@@ -2,9 +2,12 @@ package com.mxl2020.algorithms.practise.tree.disjointset;
 
 public class DisjointSet {
 
+    // 集合数量
+    private int setCount;
     private final int[] father;
 
     public DisjointSet(int n) {
+        setCount = n;
         father = new int[n];
         for (int i = 1; i < n; i++) {
             father[i] = i;
@@ -25,7 +28,10 @@ public class DisjointSet {
     public void unionSet(int a, int b) {
         a = find(a);
         b = find(b);
-        if (a != b) father[a] = b;
+        if (a != b) {
+            father[a] = b;
+            setCount--;
+        }
     }
 
     /**
@@ -35,8 +41,11 @@ public class DisjointSet {
         a = find(a);
         b = find(b);
         if (a == b) return false;
-        else father[a] = b;
-        return true;
+        else {
+            father[a] = b;
+            setCount--;
+            return true;
+        }
     }
 
     /**
@@ -44,5 +53,9 @@ public class DisjointSet {
      */
     public boolean isRoot(int x) {
         return father[x] == x;
+    }
+
+    public int getSetCount() {
+        return setCount;
     }
 }
