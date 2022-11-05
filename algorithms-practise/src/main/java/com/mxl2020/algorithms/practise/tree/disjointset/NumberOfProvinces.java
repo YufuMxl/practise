@@ -26,7 +26,7 @@ public class NumberOfProvinces {
 
         int ans = 0;
         for (int i = 0; i < n; i++) {
-            if (disjointSet.isSelfFather(i)) ans++;
+            if (disjointSet.isRoot(i)) ans++;
         }
         return ans;
     }
