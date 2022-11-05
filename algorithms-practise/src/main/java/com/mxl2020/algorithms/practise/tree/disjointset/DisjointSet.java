@@ -35,10 +35,8 @@ public class DisjointSet {
         a = find(a);
         b = find(b);
         if (a == b) return false;
-        else {
-            father[a] = b;
-            return true;
-        }
+        else father[a] = b;
+        return true;
     }
 
     /**
