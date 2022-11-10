@@ -1,6 +1,7 @@
 package com.mxl2020.algorithms.practise.string.basequestion;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -24,11 +25,7 @@ public class ReverseWordsInString {
             } else sb.append(c);
         }
 
-        for (int i = words.size() - 1; i > 0; i--) {
-            sb.append(words.get(i)).append(" ");
-        }
-        sb.append(words.get(0));
-
-        return sb.toString();
+        Collections.reverse(words);
+        return String.join(" ", words);
     }
 }
