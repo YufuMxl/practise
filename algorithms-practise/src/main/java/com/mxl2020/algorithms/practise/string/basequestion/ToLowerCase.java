@@ -1,4 +1,4 @@
-package com.mxl2020.algorithms.practise.string;
+package com.mxl2020.algorithms.practise.string.basequestion;
 
 /**
  * 转换成小写字母
