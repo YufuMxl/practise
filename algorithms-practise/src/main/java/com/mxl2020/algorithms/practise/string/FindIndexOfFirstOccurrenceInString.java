@@ -15,9 +15,12 @@ public class FindIndexOfFirstOccurrenceInString {
         int m = needle.length();
         if (m > n) return -1;
 
+        // 定义进制和模数
         // b 取 131，p 取大质数，hash 冲突的概率极小
         int b = 131;
         int p = (int) 1e9 + 7;
+
+        // 计算 haystack 前缀 hash
         // preHash 用于保存 haystack 前缀哈希
         long[] preHash = new long[n];
         // 加 1 的目的是让字符 a 的值为 1，因为 ab != b，但是 01 = 1，所以不能让 a = 0
@@ -26,6 +29,7 @@ public class FindIndexOfFirstOccurrenceInString {
             preHash[i] = (preHash[i - 1] * b + (haystack.charAt(i) - 'a' + 1)) % p;
         }
 
+        // 计算 needle hash
         long hNeedle = 0;
         long powB = 1;
         for (char c : needle.toCharArray()) {
@@ -35,7 +39,7 @@ public class FindIndexOfFirstOccurrenceInString {
             powB = (powB * b) % p;
         }
 
-        // 对比 haystack 子串的 hash 值与 needle 的 hash 值
+        // 滑动窗口比较 haystack 子串和 needle 的 hash 值是否相等
         if (preHash[m - 1] == hNeedle) return 0;
         for (int l = 1; l < n - m + 1; l++) {
             int r = l + m - 1;
