@@ -8,7 +8,9 @@ package com.mxl2020.algorithms.practise.string;
 public class StringToIntegerATOI {
 
     public int myAtoi(String s) {
+        // 1.忽略前导空格
         s = s.trim();
+        // 2.正负号
         int sign = 1;
         int ans = 0;
         for (int i = 0; i < s.length(); i++) {
@@ -18,12 +20,15 @@ public class StringToIntegerATOI {
                 sign = -1;
                 continue;
             }
-            if (c < '0' || c > '9') break;
 
-            if ((Integer.MAX_VALUE - (c - '0')) / 10 < ans) {
+            // 3.处理到非数字结束
+            if (c < '0' || c > '9') break;
+            // 4.处理数字直到末尾
+            if (ans > (Integer.MAX_VALUE - (c - '0')) / 10) {
                 if (sign == 1) return Integer.MAX_VALUE;
                 else return Integer.MIN_VALUE;
-            } else ans = (ans * 10 + (c - '0'));
+            }
+            ans = ans * 10 + (c - '0');
         }
         return sign * ans;
     }
