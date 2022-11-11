@@ -16,13 +16,12 @@ public class FindIndexOfFirstOccurrenceInString {
         if (m > n) return -1;
 
         // b 取 131，p 取大质数，hash 冲突的概率极小
-        int b = 27;
+        int b = 131;
         int p = (int) 1e9 + 7;
         // preHash 用于保存 haystack 前缀哈希
         long[] preHash = new long[n];
         // 加 1 的目的是让字符 a 的值为 1，因为 ab != b，但是 01 = 1，所以不能让 a = 0
         preHash[0] = (haystack.charAt(0) - 'a' + 1) % p;
-
         for (int i = 1; i < n; i++) {
             preHash[i] = (preHash[i - 1] * b + (haystack.charAt(i) - 'a' + 1)) % p;
         }
