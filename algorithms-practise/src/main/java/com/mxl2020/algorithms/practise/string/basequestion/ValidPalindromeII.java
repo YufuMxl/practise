@@ -12,7 +12,6 @@ public class ValidPalindromeII {
     }
 
     private boolean validPalindrome(String s, int start, int end, int deleteCount) {
-        if (start > end) return false;
         while (start < end) {
             if (s.charAt(start) != s.charAt(end)) {
                 if (deleteCount > 0)
