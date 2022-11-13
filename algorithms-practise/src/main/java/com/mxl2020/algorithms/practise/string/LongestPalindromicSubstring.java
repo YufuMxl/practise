@@ -14,8 +14,8 @@ public class LongestPalindromicSubstring {
         int endIndex = 0;
 
         for (int i = 0; i < n; i++) {
-            int left = i;
-            int right = i;
+            int left = i - 1;
+            int right = i + 1;
             while (left >= 0 && right < n && s.charAt(left) == s.charAt(right)) {
                 left--;
                 right++;
