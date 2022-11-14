@@ -45,36 +45,32 @@ public class LongestPalindromicSubstring {
         return s.substring(beginIndex, endIndex + 1);
     }
 
-
     /**
      * 普通解法优化：二分 + 字符串哈希
      */
     public String longestPalindrome2(String s) {
         n = s.length();
-        int beginIndex = 0;
-        int endIndex = 0;
         int b = 131;
 
-        // 9 的 ascii 值是 57
-        // Z 的 ascii 值是 90
-        // z 的 ascii 值是 122
+        // '9' = 57
+        // 'Z' = 90
+        // 'z' = 122
         preH = new long[n];
         sufH = new long[n];
         powB = new long[n + 1];
-        powB[0] = 1;
 
         preH[0] = s.charAt(0) % p;
+        sufH[0] = s.charAt(n - 1) % p;
+        powB[0] = 1;
         for (int i = 1; i < n; i++) {
             preH[i] = (preH[i - 1] * b + s.charAt(i)) % p;
+            sufH[i] = (sufH[i - 1] * b + s.charAt(n - 1 - i)) % p;
             powB[i] = (powB[i - 1] * b) % p;
         }
         powB[n] = (powB[n - 1] * b) % p;
 
-        sufH[0] = s.charAt(n - 1) % p;
-        for (int i = 1; i < n; i++) {
-            sufH[i] = (sufH[i - 1] * b + s.charAt(n - 1 - i)) % p;
-        }
-
+        int beginIndex = 0;
+        int endIndex = 0;
         for (int i = 0; i < n; i++) {
             int left = i - Math.min(i, n - 1 - i);
             int right = i;
@@ -115,8 +111,8 @@ public class LongestPalindromicSubstring {
     private long[] preH;
     private long[] sufH;
     private long[] powB;
-    private final int p = (int) 1e9 + 7;
     private int n;
+    private final int p = (int) 1e9 + 7;
 
     private long calcuH(int l, int r) {
         if (l == 0) return preH[r];
