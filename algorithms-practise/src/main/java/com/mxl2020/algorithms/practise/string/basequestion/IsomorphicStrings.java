@@ -17,8 +17,7 @@ public class IsomorphicStrings {
             char x = s.charAt(i);
             char y = t.charAt(i);
 
-            if ((s2t.containsKey(x) && s2t.get(x) != y) || t2s.containsKey(y) && t2s.get(y) != x) return false;
-
+            if ((s2t.containsKey(x) && s2t.get(x) != y) || (t2s.containsKey(y) && t2s.get(y) != x)) return false;
             s2t.put(x, y);
             t2s.put(y, x);
         }
