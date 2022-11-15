@@ -14,19 +14,13 @@ public class FindAllAnagramsInString {
         List<Integer> ans = new ArrayList<>();
         if (s.length() < p.length()) return ans;
 
-        // 计算 p 的 key
-        int[] arr = new int[26];
-        for (char c : p.toCharArray()) {
-            arr[c - 'a']++;
+        int[] pCnt = new int[26];
+        int[] sCnt = new int[26];
+        for (int i = 0; i < p.length(); i++) {
+            pCnt[p.charAt(i) - 'a']++;
+            sCnt[s.charAt(i) - 'a']++;
         }
-        String pKey = genKey(arr);
-
-        // 计算 s 的 key
-        Arrays.fill(arr, 0);
-        for (char c : s.substring(0, p.length()).toCharArray()) {
-            arr[c - 'a']++;
-        }
-        if (pKey.equals(genKey(arr))) ans.add(0);
+        if (Arrays.equals(pCnt, sCnt)) ans.add(0);
 
         for (int l = 1; l < s.length() - p.length() + 1; l++) {
             int r = l + p.length() - 1;
@@ -34,21 +28,38 @@ public class FindAllAnagramsInString {
                 if (!ans.isEmpty() && ans.get(ans.size() - 1) == l - 1) ans.add(l);
                 continue;
             }
-            arr[s.charAt(l - 1) - 'a']--;
-            arr[s.charAt(r) - 'a']++;
-            if (pKey.equals(genKey(arr))) ans.add(l);
+            sCnt[s.charAt(l - 1) - 'a']--;
+            sCnt[s.charAt(r) - 'a']++;
+            if (Arrays.equals(pCnt, sCnt)) ans.add(l);
         }
 
         return ans;
     }
 
-    private final StringBuilder sb = new StringBuilder();
+    public List<Integer> findAnagrams2(String s, String p) {
+        int n = s.length(), m = p.length();
+        List<Integer> res = new ArrayList<>();
+        if (n < m) return res;
 
-    private String genKey(int[] arr) {
-        this.sb.setLength(0);
-        for (int i = 0; i < 26; i++) {
-            if (arr[i] != 0) this.sb.append((char) (i + 'a')).append(arr[i]);
+        int[] pCnt = new int[26];
+        int[] sCnt = new int[26];
+
+        for (int i = 0; i < m; i++) {
+            pCnt[p.charAt(i) - 'a']++;
         }
-        return this.sb.toString();
+
+        int left = 0;
+        for (int right = 0; right < n; right++) {
+            int curRight = s.charAt(right) - 'a';
+            sCnt[curRight]++;
+            while (sCnt[curRight] > pCnt[curRight]) {
+                sCnt[s.charAt(left) - 'a']--;
+                left++;
+            }
+            if (right - left + 1 == m) {
+                res.add(left);
+            }
+        }
+        return res;
     }
 }
