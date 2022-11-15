@@ -37,4 +37,28 @@ public class GroupAnagrams {
         return new ArrayList<>(map.values());
     }
 
+    public List<List<String>> groupAnagrams2(String[] strs) {
+        Map<String, List<String>> map = new HashMap<>();
+        for (String str : strs) {
+            String key = genKey(str);
+            List<String> list = map.getOrDefault(key, new ArrayList<>());
+            list.add(str);
+            map.put(key, list);
+        }
+
+        return new ArrayList<>(map.values());
+    }
+
+    private String genKey(String str) {
+        int[] arr = new int[26];
+        for (char c : str.toCharArray()) {
+            arr[c - 'a']++;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 26; i++) {
+            if (arr[i] != 0) sb.append(i + 'a').append(arr[i]);
+        }
+        return sb.toString();
+    }
+
 }
