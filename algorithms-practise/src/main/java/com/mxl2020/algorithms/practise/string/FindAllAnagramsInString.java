@@ -1,6 +1,7 @@
 package com.mxl2020.algorithms.practise.string;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -11,25 +12,43 @@ import java.util.List;
 public class FindAllAnagramsInString {
     public List<Integer> findAnagrams(String s, String p) {
         List<Integer> ans = new ArrayList<>();
-        String pKey = genKey(p);
+        if (s.length() < p.length()) return ans;
 
-        for (int i = 0; i < s.length() - p.length() + 1; i++) {
-            String subS = s.substring(i, i + p.length());
-            if (pKey.equals(genKey(subS))) ans.add(i);
+        // 计算 p 的 key
+        int[] arr = new int[26];
+        for (char c : p.toCharArray()) {
+            arr[c - 'a']++;
+        }
+        String pKey = genKey(arr);
+
+        // 计算 s 的 key
+        Arrays.fill(arr, 0);
+        for (char c : s.substring(0, p.length()).toCharArray()) {
+            arr[c - 'a']++;
+        }
+        if (pKey.equals(genKey(arr))) ans.add(0);
+
+        for (int l = 1; l < s.length() - p.length() + 1; l++) {
+            int r = l + p.length() - 1;
+            if (s.charAt(l - 1) == s.charAt(r)) {
+                if (!ans.isEmpty() && ans.get(ans.size() - 1) == l - 1) ans.add(l);
+                continue;
+            }
+            arr[s.charAt(l - 1) - 'a']--;
+            arr[s.charAt(r) - 'a']++;
+            if (pKey.equals(genKey(arr))) ans.add(l);
         }
 
         return ans;
     }
 
-    private String genKey(String str) {
-        int[] arr = new int[26];
-        for (char c : str.toCharArray()) {
-            arr[c - 'a']++;
-        }
-        StringBuilder sb = new StringBuilder();
+    private final StringBuilder sb = new StringBuilder();
+
+    private String genKey(int[] arr) {
+        this.sb.setLength(0);
         for (int i = 0; i < 26; i++) {
-            if (arr[i] != 0) sb.append((char)(i + 'a')).append(arr[i]);
+            if (arr[i] != 0) this.sb.append((char) (i + 'a')).append(arr[i]);
         }
-        return sb.toString();
+        return this.sb.toString();
     }
 }
