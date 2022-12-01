@@ -56,8 +56,6 @@ public class FindIndexOfFirstOccurrenceInString {
      * O(m + n)
      */
     public int strStr2(String haystack, String needle) {
-        if (needle.isEmpty()) return 0;
-
         int n = haystack.length(), m = needle.length();
         haystack = " " + haystack;
         needle = " " + needle;
