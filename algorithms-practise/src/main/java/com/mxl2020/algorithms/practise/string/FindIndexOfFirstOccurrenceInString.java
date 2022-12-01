@@ -9,6 +9,7 @@ public class FindIndexOfFirstOccurrenceInString {
 
     /**
      * Rabin-Karp 算法
+     * O(m + n)
      */
     public int strStr(String haystack, String needle) {
         int n = haystack.length();
@@ -45,6 +46,35 @@ public class FindIndexOfFirstOccurrenceInString {
             int r = l + m - 1;
             // 在减法中，为了避免取模得负数，有如下写法
             if (((preHash[r] - preHash[l - 1] * powB) % p + p) % p == hNeedle) return l;
+        }
+
+        return -1;
+    }
+
+    /**
+     * KMP 算法
+     * O(m + n)
+     */
+    public int strStr2(String haystack, String needle) {
+        if (needle.isEmpty()) return 0;
+
+        int n = haystack.length(), m = needle.length();
+        haystack = " " + haystack;
+        needle = " " + needle;
+
+        // 构造 needle 的 next 数组
+        int[] next = new int[m + 1];
+        for (int i = 2, j = 0; i <= m; i++) {
+            while (j > 0 && needle.charAt(i) != needle.charAt(j + 1)) j = next[j];
+            if (needle.charAt(i) == needle.charAt(j + 1)) j++;
+            next[i] = j;
+        }
+
+        // haystack 与 needle 进行匹配
+        for (int i = 1, j = 0; i <= n; i++) {
+            while (j > 0 && haystack.charAt(i) != needle.charAt(j + 1)) j = next[j];
+            if (haystack.charAt(i) == needle.charAt(j + 1)) j++;
+            if (j == m) return i - j;
         }
 
         return -1;
