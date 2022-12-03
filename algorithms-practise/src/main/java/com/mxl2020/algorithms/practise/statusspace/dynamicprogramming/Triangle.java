@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * 三角形最小路径和
  *
- * @see <a href="https://leetcode.cn/problems/triangle/description/">LeetCode 120</a>
+ * @see <a href="https://leetcode.cn/problems/triangle/">LeetCode 120</a>
  */
 public class Triangle {
 

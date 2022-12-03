@@ -3,7 +3,7 @@ package com.mxl2020.algorithms.practise.string.basequestion;
 /**
  * 最长公共前缀
  *
- * @see <a href="https://leetcode.cn/problems/longest-common-prefix/description/">LeetCode 14</a>
+ * @see <a href="https://leetcode.cn/problems/longest-common-prefix/">LeetCode 14</a>
  */
 public class LongestCommonPrefix {
 
