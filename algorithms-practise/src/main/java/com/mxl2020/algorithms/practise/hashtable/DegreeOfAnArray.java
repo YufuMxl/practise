@@ -21,36 +21,25 @@ public class DegreeOfAnArray {
         Map<Integer, CountRecord> counts = new HashMap<>(nums.length);
 
         for (int i = 0; i < nums.length; i++) {
-            int num = nums[i];
-            if (counts.get(num) == null) {
-                counts.put(num, new CountRecord(i));
-            }
-            CountRecord countRecord = counts.get(num);
+            CountRecord countRecord = counts.getOrDefault(nums[i], new CountRecord(i));
             countRecord.count++;
             countRecord.endIndex = i;
-
+            counts.put(nums[i], countRecord);
             maxDegree = Math.max(maxDegree, countRecord.count);
         }
 
         int subArrayMinLength = nums.length;
-        for (int key : counts.keySet()) {
-            CountRecord countRecord = counts.get(key);
-            if (countRecord.count == maxDegree) {
-                subArrayMinLength = Math.min(subArrayMinLength, countRecord.getLength());
-            }
+        for (CountRecord record : counts.values()) {
+            if (record.count == maxDegree) subArrayMinLength = Math.min(subArrayMinLength, record.getLength());
         }
         return subArrayMinLength;
     }
 
     static class CountRecord {
-        // 该元素出现的次数
-        public int count = 0;
-        // 第一次出现的下标
-        public final int startIndex;
-        // 第二次出现的下标
-        public int endIndex;
+        private int count = 0;
+        private final int startIndex;
+        private int endIndex;
 
-        // 返回该子数组的长度
         public int getLength() {
             return endIndex - startIndex + 1;
         }
