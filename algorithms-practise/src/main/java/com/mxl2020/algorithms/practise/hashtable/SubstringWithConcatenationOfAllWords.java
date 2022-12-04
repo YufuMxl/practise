@@ -15,61 +15,49 @@ public class SubstringWithConcatenationOfAllWords {
      * @return 从长字符串中找到子串的起始下标，使得子串可以由单词数组的所有单词拼接而成
      */
     public List<Integer> findSubstring(String s, String[] words) {
-        // 单词长度
-        int wordLength = words[0].length();
-        // 所有单词拼接起来的长度
-        int totalWordsLength = wordLength * words.length;
-        // 统计单词数组的每个单词出现的次数
-        Map<String, Integer> wordToCountMap = genWordToCountMap(words);
+        final Map<String, Integer> wordToCountMap = new HashMap<>();
+        for (String word : words) wordToCountMap.put(word, wordToCountMap.getOrDefault(word, 0) + 1);
 
-        List<Integer> result = new ArrayList<>();
-        for (int j = 0; j < wordLength; j++) {
-            // TODO 同一层的 substring 共用一个 map
-            for (int i = j; i < s.length() - totalWordsLength + 1; i += wordLength) {
-                String substring = s.substring(i, i + totalWordsLength);
-                if (isValidSubstring(substring, wordToCountMap, wordLength)) {
-                    result.add(i);
+        final int wordLength = words[0].length();
+        final int totalWordsLength = wordLength * words.length;
+        final List<Integer> ans = new ArrayList<>();
+
+        for (int i = 0; i < wordLength; i++) {
+            int endIndex = i + totalWordsLength;
+            if (endIndex > s.length()) break;
+            // 计算第一个 subStr 的 count map
+            Map<String, Integer> countMap = new HashMap<>();
+            String subStr = s.substring(i, endIndex);
+            for (int j = 0; j < words.length; j++) {
+                String word = subStr.substring(j * wordLength, (j + 1) * wordLength);
+                countMap.put(word, countMap.getOrDefault(word, 0) + 1);
+            }
+            if (isSameMap(wordToCountMap, countMap)) ans.add(i);
+
+            // 计算之后的 subStr 的 count map
+            for (int j = endIndex; j <= s.length() - wordLength; j += wordLength) {
+                int subStrStartIndex = j - totalWordsLength + wordLength;
+                String outWord = s.substring(subStrStartIndex - wordLength, subStrStartIndex);
+                String inWord = s.substring(j, j + wordLength);
+                if (!outWord.equals(inWord)) {
+                    countMap.put(outWord, countMap.get(outWord) - 1);
+                    countMap.put(inWord, countMap.getOrDefault(inWord, 0) + 1);
                 }
+                if (isSameMap(wordToCountMap, countMap)) ans.add(subStrStartIndex);
             }
         }
-        return result;
-    }
 
-    private boolean isValidSubstring(String substring, Map<String, Integer> wordToCountMap, int wordLength) {
-        Map<String, Integer> substringMap = genWordToCountMap(substring, wordLength);
-        return isSameMap(substringMap, wordToCountMap);
-    }
-
-    private Map<String, Integer> genWordToCountMap(String[] words) {
-        Map<String, Integer> wordToCountMap = new HashMap<>();
-        for (String word : words) {
-            if (wordToCountMap.containsKey(word)) {
-                wordToCountMap.put(word, wordToCountMap.get(word) + 1);
-            } else {
-                wordToCountMap.put(word, 1);
-            }
-        }
-        return wordToCountMap;
-    }
-
-    private Map<String, Integer> genWordToCountMap(String substring, int wordLength) {
-        String[] words = new String[substring.length() / wordLength];
-        for (int i = 0; i < words.length; i++) {
-            words[i] = substring.substring(i * wordLength, (i + 1) * wordLength);
-        }
-        return genWordToCountMap(words);
+        return ans;
     }
 
     private boolean isSameMap(Map<String, Integer> a, Map<String, Integer> b) {
         for (String key : a.keySet()) {
-            if (!Objects.equals(a.get(key), b.get(key))) {
-                return false;
-            }
+            if (a.get(key) == 0) continue;
+            if (!Objects.equals(a.get(key), b.get(key))) return false;
         }
         for (String key : b.keySet()) {
-            if (!Objects.equals(a.get(key), b.get(key))) {
-                return false;
-            }
+            if (b.get(key) == 0) continue;
+            if (!Objects.equals(a.get(key), b.get(key))) return false;
         }
         return true;
     }

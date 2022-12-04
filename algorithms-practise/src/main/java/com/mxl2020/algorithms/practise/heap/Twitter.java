@@ -14,7 +14,6 @@ public class Twitter {
 
     public Twitter() {
         followings = new HashMap<>();
-
         twitter = new HashMap<>();
         maxHeap = new PriorityQueue<>(Comparator.comparingLong(tweet -> -tweet.timestamp));
     }
