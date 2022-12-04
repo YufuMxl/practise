@@ -36,28 +36,28 @@ public class SubstringWithConcatenationOfAllWords {
 
             // 计算之后的 subStr 的 count map
             for (int j = endIndex; j <= s.length() - wordLength; j += wordLength) {
-                int subStrStartIndex = j - totalWordsLength + wordLength;
-                String outWord = s.substring(subStrStartIndex - wordLength, subStrStartIndex);
+                int subStrStartIndex = j - totalWordsLength;
+                String outWord = s.substring(subStrStartIndex, subStrStartIndex + wordLength);
                 String inWord = s.substring(j, j + wordLength);
                 if (!outWord.equals(inWord)) {
                     countMap.put(outWord, countMap.get(outWord) - 1);
                     countMap.put(inWord, countMap.getOrDefault(inWord, 0) + 1);
                 }
-                if (isSameMap(wordToCountMap, countMap)) ans.add(subStrStartIndex);
+                if (isSameMap(wordToCountMap, countMap)) ans.add(subStrStartIndex + wordLength);
             }
         }
 
         return ans;
     }
 
-    private boolean isSameMap(Map<String, Integer> a, Map<String, Integer> b) {
-        for (String key : a.keySet()) {
-            if (a.get(key) == 0) continue;
-            if (!Objects.equals(a.get(key), b.get(key))) return false;
+    private boolean isSameMap(Map<String, Integer> aMap, Map<String, Integer> bMap) {
+        for (String key : aMap.keySet()) {
+            if (aMap.get(key) == 0) continue;
+            if (!Objects.equals(aMap.get(key), bMap.get(key))) return false;
         }
-        for (String key : b.keySet()) {
-            if (b.get(key) == 0) continue;
-            if (!Objects.equals(a.get(key), b.get(key))) return false;
+        for (String key : bMap.keySet()) {
+            if (bMap.get(key) == 0) continue;
+            if (!Objects.equals(aMap.get(key), bMap.get(key))) return false;
         }
         return true;
     }
