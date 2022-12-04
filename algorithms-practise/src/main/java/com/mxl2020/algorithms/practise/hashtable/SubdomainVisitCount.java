@@ -18,25 +18,25 @@ public class SubdomainVisitCount {
      * @return 子域名的计数配对域名
      */
     public List<String> subdomainVisits(String[] cpdomains) {
-        Map<String, Integer> subdomainToCountMap = new HashMap<>(cpdomains.length * 3);
+        Map<String, Integer> map = new HashMap<>();
 
         for (String cpdomain : cpdomains) {
-            String[] splitCpdomain = cpdomain.split(" ");
-            int count = Integer.parseInt(splitCpdomain[0]);
-            String[] splitDomain = splitCpdomain[1].split("\\.");
+            String[] splitCPDomain = cpdomain.split(" ");
+            int count = Integer.parseInt(splitCPDomain[0]);
+            String[] splitDomain = splitCPDomain[1].split("\\.");
 
-            String cur = splitDomain[splitDomain.length - 1];
-            subdomainToCountMap.put(cur, subdomainToCountMap.getOrDefault(cur, 0) + count);
+            String subDomain = splitDomain[splitDomain.length - 1];
+            map.put(subDomain, map.getOrDefault(subDomain, 0) + count);
             for (int i = splitDomain.length - 2; i >= 0; i--) {
-                cur = splitDomain[i] + "." + cur;
-                subdomainToCountMap.put(cur, subdomainToCountMap.getOrDefault(cur, 0) + count);
+                subDomain = splitDomain[i] + "." + subDomain;
+                map.put(subDomain, map.getOrDefault(subDomain, 0) + count);
             }
         }
 
-        List<String> result = new ArrayList<>(subdomainToCountMap.size());
-        for (String key : subdomainToCountMap.keySet()) {
-            result.add(subdomainToCountMap.get(key) + " " + key);
+        List<String> ans = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            ans.add(entry.getValue() + " " + entry.getKey());
         }
-        return result;
+        return ans;
     }
 }
