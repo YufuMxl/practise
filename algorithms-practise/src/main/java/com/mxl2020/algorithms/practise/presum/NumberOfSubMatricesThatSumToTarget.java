@@ -21,13 +21,12 @@ public class NumberOfSubMatricesThatSumToTarget {
     public int numSubMatrixSumTarget(int[][] matrix, int target) {
         int[][] s = genPrefixSumArray(matrix);
         int count = 0;
-        for (int i = 1; i < s.length; i++) {
-            for (int j = 1; j < s[0].length; j++) {
-                for (int p = 1; p <= i; p++) {
-                    for (int q = 1; q <= j; q++) {
-                        if (s[i][j] - s[i][q - 1] - s[p - 1][j] + s[p - 1][q - 1] == target) {
-                            count++;
-                        }
+        for (int i = 0; i < s.length; i++) {
+            for (int j = 0; j < s[0].length; j++) {
+                for (int p = i + 1; p < s.length; p++) {
+                    int tmp = s[i][j] - s[p][j];
+                    for (int q = j + 1; q < s[0].length; q++) {
+                        if (s[p][q] - s[i][q] + tmp == target) count++;
                     }
                 }
             }
