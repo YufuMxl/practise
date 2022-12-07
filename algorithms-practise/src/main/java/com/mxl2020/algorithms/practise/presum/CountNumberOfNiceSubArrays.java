@@ -22,24 +22,20 @@ public class CountNumberOfNiceSubArrays {
     public int numberOfSubArrays(int[] nums, int k) {
         // 初始化前缀和数组
         int[] prefixSumArray = new int[nums.length + 1];
-        prefixSumArray[0] = 0;
         for (int i = 1; i < prefixSumArray.length; i++) {
-            prefixSumArray[i] = prefixSumArray[i - 1] + (nums[i - 1] % 2);
+            prefixSumArray[i] = prefixSumArray[i - 1] + nums[i - 1] % 2;
         }
 
-        // 将 sum = "前缀和 + k" 作为 key，sum 出现的次数作为 value 放入 map
-        Map<Integer, Integer> prefixSumToCount = new HashMap<>();
-        for (final int prefixSum : prefixSumArray) {
-            int sum = prefixSum + k;
-            prefixSumToCount.put(sum, prefixSumToCount.getOrDefault(sum, 0) + 1);
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int preSum : prefixSumArray) {
+            map.put(preSum, map.getOrDefault(preSum, 0) + 1);
         }
 
-        // 寻找总和等于 k 的子段数量
-        int count = 0;
-        for (final int prefixSum : prefixSumArray) {
-            count += prefixSumToCount.getOrDefault(prefixSum, 0);
+        int ans = 0;
+        for (int preSum : prefixSumArray) {
+            ans += map.getOrDefault(preSum - k, 0);
         }
-        return count;
+        return ans;
     }
 }
 
