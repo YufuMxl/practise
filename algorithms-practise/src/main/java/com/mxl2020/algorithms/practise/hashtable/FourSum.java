@@ -18,39 +18,40 @@ public class FourSum {
      */
     public List<List<Integer>> fourSum(int[] nums, int target) {
         Arrays.sort(nums);
+        final int n = nums.length;
+        final long[] numbers = new long[n];
+        for (int i = 0; i < n; i++) numbers[i] = nums[i];
 
-        List<List<Integer>> ans = new ArrayList<>();
-        final int lastIndex = nums.length - 1;
+        final List<List<Integer>> ans = new ArrayList<>();
 
-        for (int a = 0; a < lastIndex - 2; a++) {
-            if (a > 0 && nums[a] == nums[a - 1]) continue;
+        for (int i = 0; i < n - 3; i++) {
+            if (numbers[i] + numbers[i + 1] + numbers[i + 2] + numbers[i + 3] > target) return ans;
+            if (numbers[i] + numbers[n - 1] + numbers[n - 2] + numbers[n - 3] < target) continue;
+            if (i > 0 && numbers[i] == numbers[i - 1]) continue;
+            for (int j = i + 1; j < n - 2; j++) {
+                long ijSum = numbers[i] + numbers[j];
+                if (ijSum + numbers[j + 1] + numbers[j + 2] > target) break;
+                if (ijSum + numbers[n - 1] + numbers[n - 2] < target) continue;
+                if (j > i + 1 && numbers[j] == numbers[j - 1]) continue;
 
-            for (int b = a + 1; b < lastIndex - 1; b++) {
-                if (b > a + 1 && nums[b] == nums[b - 1]) continue;
+                int left = j + 1;
+                int right = n - 1;
 
-                int c = b + 1;
-                int d = lastIndex;
-
-                int abSum = nums[a] + nums[b];
-
-                while (c < d) {
-                    int sum = abSum + nums[c] + nums[d];
-                    if (sum < target) c++;
-                    else if (sum > target) d--;
+                while (left < right) {
+                    long sum = ijSum + numbers[left] + numbers[right];
+                    if (sum < target) left++;
+                    else if (sum > target) right--;
                     else {
-                        ans.add(Arrays.asList(nums[a], nums[b], nums[c], nums[d]));
-                        while (c < d && nums[c] == nums[c + 1]) {
-                            c++;
-                        }
-                        while (c < d && nums[d] == nums[d - 1]) {
-                            d--;
-                        }
-                        c++;
-                        d--;
+                        ans.add(Arrays.asList(nums[i], nums[j], nums[left], nums[right]));
+                        while (left < right && numbers[left] == numbers[left + 1]) left++;
+                        while (left < right && numbers[right] == numbers[right - 1]) right--;
+                        left++;
+                        right--;
                     }
                 }
             }
         }
+
         return ans;
     }
 }
