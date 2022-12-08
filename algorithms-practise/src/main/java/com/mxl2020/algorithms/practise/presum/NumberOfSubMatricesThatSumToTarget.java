@@ -34,18 +34,16 @@ public class NumberOfSubMatricesThatSumToTarget {
         return count;
     }
 
-    public int numSubMatrixSumTarget2(int[][] matrix, int target) {
+    public int numSubmatrixSumTarget(int[][] matrix, int target) {
         int[][] s = genPrefixSumArray(matrix);
         int count = 0;
-        for (int top = 1; top < s.length; top++) {
-            for (int bot = top; bot < s.length; bot++) {
-                int cur;
+        for (int i = 0; i < s.length - 1; i++) {
+            for (int j = i + 1; j < s.length; j++) {
                 Map<Integer, Integer> map = new HashMap<>();
-                for (int r = 1; r < s[0].length; r++) {
-                    cur = s[bot][r] - s[top - 1][r];
-                    if (cur == target) count++;
-                    if (map.containsKey(cur - target)) count += map.get(cur - target);
-                    map.put(cur, map.getOrDefault(cur, 0) + 1);
+                for (int r = 0; r < s[0].length; r++) {
+                    int subMatrixSum = s[j][r] - s[i][r];
+                    count += map.getOrDefault(subMatrixSum - target, 0);
+                    map.put(subMatrixSum, map.getOrDefault(subMatrixSum, 0) + 1);
                 }
             }
         }
