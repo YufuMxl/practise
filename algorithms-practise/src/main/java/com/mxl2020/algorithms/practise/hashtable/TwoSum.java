@@ -49,15 +49,20 @@ public class TwoSum {
      * @param target  设定两数之和的结果
      * @return 返回两数之和等于 target 的数组元素下标
      */
-    public int[] twoSumII(int[] numbers, int target) {
+    public int[] twoSumII(int[] nums, int target) {
+        int n = nums.length;
+        int[][] sortedNums = new int[n][2];
+        for (int i = 0; i < n; i++) sortedNums[i] = new int[]{nums[i], i};
+        Arrays.sort(sortedNums, Comparator.comparingInt(a -> a[0]));
+
         // 数组两头设置双指针，向中间靠拢
-        int i = 0;
-        int j = numbers.length - 1;
-        while (i < j && numbers[i] + numbers[j] != target) {
-            if (numbers[i] + numbers[j] < target) i++;
-            else j--;
+        int left = 0;
+        int right = n - 1;
+        while (sortedNums[left][0] + sortedNums[right][0] != target) {
+            if (sortedNums[left][0] + sortedNums[right][0] < target) left++;
+            else right--;
         }
-        return new int[]{i + 1, j + 1};
+        return new int[]{sortedNums[left][1], sortedNums[right][1]};
     }
 
     // 可以将 twoSumI 的数组排序之后，按照 twoSumII 求解决
