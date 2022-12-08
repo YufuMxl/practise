@@ -45,7 +45,7 @@ public class TwoSum {
      * <li>移动一个端点，看另一个端点的变化情况（滑动窗口、双指针扫描）
      * </ol>
      *
-     * @param numbers 排好序的数组
+     * @param nums 排好序的数组
      * @param target  设定两数之和的结果
      * @return 返回两数之和等于 target 的数组元素下标
      */
