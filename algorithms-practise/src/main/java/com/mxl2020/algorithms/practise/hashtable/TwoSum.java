@@ -72,6 +72,7 @@ public class TwoSum {
      * @return 返回所有"三数之和为零"的三元数组
      */
     public List<List<Integer>> threeSum(int[] nums) {
+        // 排序的目的：1.去重 2.双指针 3.nums[i] > 0 时直接返回答案
         Arrays.sort(nums);
 
         final List<List<Integer>> ans = new ArrayList<>();
