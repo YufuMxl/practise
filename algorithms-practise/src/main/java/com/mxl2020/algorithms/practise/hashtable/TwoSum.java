@@ -45,8 +45,8 @@ public class TwoSum {
      * <li>移动一个端点，看另一个端点的变化情况（滑动窗口、双指针扫描）
      * </ol>
      *
-     * @param nums 排好序的数组
-     * @param target  设定两数之和的结果
+     * @param nums   排好序的数组
+     * @param target 设定两数之和的结果
      * @return 返回两数之和等于 target 的数组元素下标
      */
     public int[] twoSumII(int[] nums, int target) {
@@ -72,50 +72,29 @@ public class TwoSum {
      * @return 返回所有"三数之和为零"的三元数组
      */
     public List<List<Integer>> threeSum(int[] nums) {
-        // 先排序
         Arrays.sort(nums);
 
-        List<List<Integer>> result = new ArrayList<>();
-        for (int i = 0; i < nums.length - 2; i++) {
-            // 去重
+        final List<List<Integer>> ans = new ArrayList<>();
+        final int n = nums.length;
+        for (int i = 0; i < n - 2; i++) {
+            if (nums[i] > 0) return ans;
             if (i != 0 && nums[i] == nums[i - 1]) continue;
 
-            List<int[]> jks = twoSumIII(nums, i + 1, -nums[i]);
-            for (int[] jk : jks) {
-                List<Integer> triplets = new ArrayList<>(3);
-                triplets.add(nums[i]);
-                triplets.add(jk[0]);
-                triplets.add(jk[1]);
-                result.add(triplets);
+            int left = i + 1;
+            int right = n - 1;
+            while (left < right) {
+                int sum = nums[i] + nums[left] + nums[right];
+                if (sum < 0) left++;
+                else if (sum > 0) right--;
+                else {
+                    ans.add(Arrays.asList(nums[i], nums[left], nums[right]));
+                    while (left < right && nums[left] == nums[left + 1]) left++;
+                    while (left < right && nums[right] == nums[right - 1]) right--;
+                    left++;
+                    right--;
+                }
             }
         }
-        return result;
-    }
-
-    private List<int[]> twoSumIII(int[] sortedNums, int startIndex, int target) {
-        int i = startIndex;
-        int j = sortedNums.length - 1;
-        List<int[]> result = new ArrayList<>();
-        while (i < j) {
-            // 去重
-            if (i != startIndex && sortedNums[i] == sortedNums[i - 1]) {
-                i++;
-                continue;
-            }
-            if (j != sortedNums.length - 1 && sortedNums[j] == sortedNums[j + 1]) {
-                j--;
-                continue;
-            }
-
-            if (sortedNums[i] + sortedNums[j] < target) {
-                i++;
-            } else if (sortedNums[i] + sortedNums[j] > target) {
-                j--;
-            } else {
-                result.add(new int[]{sortedNums[i], sortedNums[j]});
-                i++;
-            }
-        }
-        return result;
+        return ans;
     }
 }
