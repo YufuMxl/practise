@@ -11,10 +11,9 @@ import java.util.List;
  */
 public class PermutationsII {
 
-    private int[] nums;
     private boolean[] used;
-    private ArrayList<Integer> permutation;
-    private List<List<Integer>> permutations;
+    private final ArrayList<Integer> permutation = new ArrayList<>();
+    private final List<List<Integer>> permutations = new ArrayList<>();
 
     /**
      * @param nums 有重复元素的整数数组
@@ -23,15 +22,12 @@ public class PermutationsII {
     public List<List<Integer>> permuteUnique(int[] nums) {
         // 为了方便排除重复排列，要先给 nums 排序
         Arrays.sort(nums);
-        this.nums = nums;
         this.used = new boolean[nums.length];
-        this.permutation = new ArrayList<>(nums.length);
-        this.permutations = new ArrayList<>();
-        permute();
+        dfs(nums);
         return permutations;
     }
 
-    private void permute() {
+    private void dfs(int[] nums) {
         // 递归终止条件
         if (permutation.size() == nums.length) {
             permutations.add(new ArrayList<>(permutation));
@@ -40,13 +36,11 @@ public class PermutationsII {
 
         for (int i = 0; i < nums.length; i++) {
             if (used[i]) continue;
-            // 与前一个元素对比，如果大小一样，当前元素就不进行排列
             if (i > 0 && nums[i] == nums[i - 1] && !used[i - 1]) continue;
-            used[i] = true;
-            permutation.add(nums[i]);
-            permute();
 
-            // 还原共享变量
+            permutation.add(nums[i]);
+            used[i] = true;
+            dfs(nums);
             permutation.remove(permutation.size() - 1);
             used[i] = false;
         }
