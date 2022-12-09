@@ -22,27 +22,22 @@ public class Permutations {
      */
     public List<List<Integer>> permute(int[] nums) {
         used = new boolean[nums.length];
-        permute(0, nums);
+        dfs(nums);
         return permutations;
     }
 
-    /**
-     * 往 permutations 数组中插入所有可能的排列数组
-     */
-    private void permute(int depth, int[] nums) {
-        // 终止条件：当递归出界时，将排列好的数组 permutation 加入到 permutations 中
-        if (depth == nums.length) {
+    private void dfs(int[] nums) {
+        if (permutation.size() == nums.length) {
             permutations.add(new ArrayList<>(permutation));
             return;
         }
 
         for (int i = 0; i < nums.length; i++) {
             if (used[i]) continue;
-            used[i] = true;
-            permutation.add(nums[i]);
-            permute(depth + 1, nums);
 
-            // 还原共享变量
+            permutation.add(nums[i]);
+            used[i] = true;
+            dfs(nums);
             permutation.remove(permutation.size() - 1);
             used[i] = false;
         }
