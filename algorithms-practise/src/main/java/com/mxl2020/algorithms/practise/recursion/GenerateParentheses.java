@@ -53,7 +53,7 @@ public class GenerateParentheses {
         // 剪枝：1.随时判断括号数量是否符合要求 2.随时判断字符串是否合法
         if (leftCount > n || rightCount > n || !isValid()) return;
         // 终止条件
-        if (index == 2 * n) {
+        if (index == strArr.length) {
             ans.add(String.valueOf(strArr));
             return;
         }
@@ -68,7 +68,7 @@ public class GenerateParentheses {
 
     private boolean isValid() {
         int leftCount = 0;
-        for (int i = 0; i < 2 * n; i++) {
+        for (int i = 0; i < strArr.length; i++) {
             if (strArr[i] == 0) break;
             if (strArr[i] == '(') leftCount++;
             else {
