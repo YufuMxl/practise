@@ -1,8 +1,10 @@
 package com.mxl2020.algorithms.practise.recursion;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 括号生成
@@ -25,11 +27,8 @@ public class GenerateParentheses {
         if (n == 0) return Collections.singletonList("");
         List<String> ans = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            // 子问题 A
             List<String> aParentheses = generateParenthesis(i);
-            // 子问题 B
             List<String> bParentheses = generateParenthesis(n - i - 1);
-            // 合并子问题
             for (String aParenthesis : aParentheses) {
                 for (String bParenthesis : bParentheses) {
                     ans.add("(" + aParenthesis + ")" + bParenthesis);
@@ -37,5 +36,46 @@ public class GenerateParentheses {
             }
         }
         return ans;
+    }
+
+    private final List<String> ans = new ArrayList<>();
+    private char[] strArr;
+    private int n;
+
+    public List<String> generateParenthesis2(int n) {
+        this.n = n;
+        this.strArr = new char[2 * n];
+        dfs(0, 0, 0);
+        return ans;
+    }
+
+    private void dfs(int index, int leftCount, int rightCount) {
+        // 剪枝：1.随时判断括号数量是否符合要求 2.随时判断字符串是否合法
+        if (leftCount > n || rightCount > n || !isValid()) return;
+        // 终止条件
+        if (index == 2 * n) {
+            ans.add(String.valueOf(strArr));
+            return;
+        }
+
+        strArr[index] = '(';
+        dfs(index + 1, leftCount + 1, rightCount);
+
+        strArr[index] = ')';
+        dfs(index + 1, leftCount, rightCount + 1);
+        strArr[index] = 0;
+    }
+
+    private boolean isValid() {
+        int leftCount = 0;
+        for (int i = 0; i < 2 * n; i++) {
+            if (strArr[i] == 0) break;
+            if (strArr[i] == '(') leftCount++;
+            else {
+                if (leftCount > 0) leftCount--;
+                else return false;
+            }
+        }
+        return true;
     }
 }
