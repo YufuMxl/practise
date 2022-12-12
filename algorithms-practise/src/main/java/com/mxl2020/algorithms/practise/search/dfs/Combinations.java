@@ -54,8 +54,9 @@ public class Combinations {
     }
 
     private void generateCombinations2(final int currentNum, final int endNum, final int k) {
-        // 终止条件
+        // 剪枝
         if (chosen.size() + (endNum - currentNum + 1) < k) return;
+        // 终止条件
         if (chosen.size() == k) {
             combinations.add(new ArrayList<>(chosen));
             return;
