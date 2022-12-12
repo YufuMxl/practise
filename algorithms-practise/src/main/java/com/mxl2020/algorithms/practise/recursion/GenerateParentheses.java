@@ -68,9 +68,9 @@ public class GenerateParentheses {
 
     private boolean isValid() {
         int leftCount = 0;
-        for (int i = 0; i < strArr.length; i++) {
-            if (strArr[i] == 0) break;
-            if (strArr[i] == '(') leftCount++;
+        for (char c : strArr) {
+            if (c == 0) break;
+            if (c == '(') leftCount++;
             else {
                 if (leftCount > 0) leftCount--;
                 else return false;
