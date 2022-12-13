@@ -1,5 +1,7 @@
 package com.mxl2020.algorithms.practise.simulation;
 
+import javafx.util.Pair;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,16 +43,12 @@ public class Sudoku {
     boolean[][] boxUsed = new boolean[9][10];
 
     private char[][] board;
-    private final List<int[]> emptyCells = new ArrayList<>();
 
     public void solveSudoku(char[][] board) {
         this.board = board;
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                if (board[i][j] == '.') {
-                    emptyCells.add(new int[]{i, j});
-                    continue;
-                }
+                if (board[i][j] == '.') continue;
 
                 int num = board[i][j] - '0';
                 rowUsed[i][num] = true;
@@ -58,41 +56,61 @@ public class Sudoku {
                 boxUsed[(i / 3) * 3 + (j / 3)][num] = true;
             }
         }
-        dfs(0);
+        dfs();
     }
 
-    private boolean dfs(int index) {
-        if (index == emptyCells.size()) return true;
+    private boolean dfs() {
+        Pair<int[], List<Integer>> emptyCell = findEmptyCell();
+        if (emptyCell == null) return true;
 
-        int x = emptyCells.get(index)[0];
-        int y = emptyCells.get(index)[1];
+        int x = emptyCell.getKey()[0];
+        int y = emptyCell.getKey()[1];
 
-        List<Integer> validNumbers = find(x, y);
-        for (int num : validNumbers) {
-            int boxNum = (x / 3) * 3 + (y / 3);
+        List<Integer> availableDigits = emptyCell.getValue();
+        for (int num : availableDigits) {
             board[x][y] = (char) (num + '0');
             rowUsed[x][num] = true;
             colUsed[y][num] = true;
-            boxUsed[boxNum][num] = true;
+            boxUsed[(x / 3) * 3 + (y / 3)][num] = true;
 
-            if (dfs(index + 1)) return true;
+            if (dfs()) return true;
 
             rowUsed[x][num] = false;
             colUsed[y][num] = false;
-            boxUsed[boxNum][num] = false;
+            boxUsed[(x / 3) * 3 + (y / 3)][num] = false;
         }
 
         board[x][y] = '.';
         return false;
     }
 
-    private List<Integer> find(int x, int y) {
-        int boxNum = (x / 3) * 3 + (y / 3);
-        List<Integer> validNumbers = new ArrayList<>();
-        for (int i = 1; i <= 9; i++) {
-            if (!rowUsed[x][i] && !colUsed[y][i] && !boxUsed[boxNum][i]) validNumbers.add(i);
+    private Pair<int[], List<Integer>> findEmptyCell() {
+        int minValue = 10;
+        int[] emptyCell = null;
+        List<Integer> availableDigits = null;
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (board[i][j] != '.') continue;
+
+                List<Integer> tmp = findAvailableDigits(i, j);
+                if (tmp.size() < minValue) {
+                    minValue = tmp.size();
+                    emptyCell = new int[]{i, j};
+                    availableDigits = tmp;
+                }
+            }
         }
-        return validNumbers;
+
+        if (emptyCell == null) return null;
+        return new Pair<>(emptyCell, availableDigits);
     }
 
+    private List<Integer> findAvailableDigits(int x, int y) {
+        int boxNum = (x / 3) * 3 + (y / 3);
+        List<Integer> availableDigits = new ArrayList<>();
+        for (int i = 1; i <= 9; i++) {
+            if (!rowUsed[x][i] && !colUsed[y][i] && !boxUsed[boxNum][i]) availableDigits.add(i);
+        }
+        return availableDigits;
+    }
 }
