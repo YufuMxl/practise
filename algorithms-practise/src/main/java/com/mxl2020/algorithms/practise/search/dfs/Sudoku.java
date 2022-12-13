@@ -1,4 +1,4 @@
-package com.mxl2020.algorithms.practise.simulation;
+package com.mxl2020.algorithms.practise.search.dfs;
 
 import javafx.util.Pair;
 
