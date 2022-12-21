@@ -10,40 +10,31 @@ import com.mxl2020.algorithms.practise.tree.datastructure.TreeNode;
 public class ValidateBinarySearchTree {
 
     public boolean isValidBST(TreeNode root) {
-        // 递归终止条件：如果 root 为空，或者 root 是叶子节点，则一定是合法的 BST
-        if (root == null || (root.left == null && root.right == null)) return true;
-
-        // 验证 root 的左右子树的最大值和最小值是否满足 BST 的要求
-        if (root.left != null && findMax(root.left) >= root.val) return false;
-        if (root.right != null && findMin(root.right) <= root.val) return false;
-
-        // 验证 root 节点的左右子树是不是合法的 BST
-        return isValidBST(root.left) && isValidBST(root.right);
+        if (root == null) return true;
+        return root.val > findMax(root.left) && root.val < findMin(root.right) && isValidBST(root.left) && isValidBST(root.right);
     }
 
-    // 找一棵树的最大值
-    private int findMax(TreeNode node) {
-        if (node == null) return Integer.MIN_VALUE;
-        if (node.left == null && node.right == null) return node.val;
+    private long findMax(TreeNode node) {
+        if (node == null) return Long.MIN_VALUE;
         return Math.max(node.val, Math.max(findMax(node.left), findMax(node.right)));
     }
 
-    // 找一棵树的最小值
-    private int findMin(TreeNode node) {
-        if (node == null) return Integer.MAX_VALUE;
-        if (node.left == null && node.right == null) return node.val;
+    private long findMin(TreeNode node) {
+        if (node == null) return Long.MAX_VALUE;
         return Math.min(node.val, Math.min(findMin(node.left), findMin(node.right)));
     }
 
-    public boolean isValidBST2(TreeNode root) {
-        // 千万要注意这道题的陷阱：测试用例会将值为 Integer.MAX_VALUE 的节点传入
-        return inRange(Long.MIN_VALUE, Long.MAX_VALUE, root);
-    }
+    private long pre = Long.MIN_VALUE;
 
-    private boolean inRange(long leftRange, long rightRange, TreeNode node) {
-        if (node == null) return true;
-        if (node.val <= leftRange || node.val >= rightRange) return false;
-        return inRange(leftRange, node.val, node.left) && inRange(node.val, rightRange, node.right);
+    public boolean isValidBST2(TreeNode root) {
+        if (root == null) return true;
+        // 访问左子树
+        if (!isValidBST(root.left)) return false;
+        // 访问当前节点
+        if (root.val <= pre) return false;
+        pre = root.val;
+        // 访问右子树
+        return isValidBST(root.right);
     }
 
 }
