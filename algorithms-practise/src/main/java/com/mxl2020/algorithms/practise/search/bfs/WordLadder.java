@@ -17,17 +17,20 @@ public class WordLadder {
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
         HashSet<String> wordSet = new HashSet<>(wordList);
         if (!wordSet.contains(endWord)) return 0;
+
         Queue<Pair<String, Integer>> queue = new ArrayDeque<>();
         queue.offer(new Pair<>(beginWord, 1));
         while (!queue.isEmpty()) {
-            Pair<String, Integer> wordPair = queue.poll();
-            char[] wordCharArr = wordPair.getKey().toCharArray();
-            int depth = wordPair.getValue();
+            Pair<String, Integer> word = queue.poll();
+            char[] wordCharArr = word.getKey().toCharArray();
+            int depth = word.getValue();
 
             for (int i = 0; i < wordCharArr.length; i++) {
                 char oldChar = wordCharArr[i];
-                for (int j = 0; j < 26; j++) {
-                    wordCharArr[i] = (char) ('a' + j);
+                for (char newChar = 'a'; newChar <= 'z'; newChar++) {
+                    if (newChar == oldChar) continue;
+
+                    wordCharArr[i] = newChar;
                     String nextWord = String.valueOf(wordCharArr);
                     if (nextWord.equals(endWord)) return depth + 1;
                     else if (wordSet.contains(nextWord)) {
