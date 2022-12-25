@@ -79,19 +79,16 @@ public class MergeKSortedLists {
      * 先合并前 k/2 个链表，再合并后 k/2 个链表
      */
     public ListNode mergeKLists2(ListNode[] lists) {
-        if (lists.length < 1) return null;
-        this.lists = lists;
-        return mergeKLists2(0, lists.length - 1);
+        if (lists.length == 0) return null;
+        return mergeLists(lists, 0, lists.length - 1);
     }
 
-    private ListNode[] lists;
-
-    public ListNode mergeKLists2(int start, int end) {
-        if (start == end) return this.lists[start];
+    private ListNode mergeLists(ListNode[] lists, int start, int end) {
+        if (start == end) return lists[start];
         int mid = start + ((end - start) >> 1);
-        ListNode firstListNode = mergeKLists2(start, mid);
-        ListNode secondListNode = mergeKLists2(mid + 1, end);
-        return mergeTwoLists(firstListNode, secondListNode);
+        ListNode nodeA = mergeLists(lists, start, mid);
+        ListNode nodeB = mergeLists(lists, mid + 1, end);
+        return mergeTwoLists(nodeA, nodeB);
     }
 
     private ListNode mergeTwoLists(ListNode listA, ListNode listB) {
@@ -113,7 +110,5 @@ public class MergeKSortedLists {
 
         return soldier.next;
     }
-
-    // TODO 使用 Java Util 解决
 
 }
