@@ -11,12 +11,12 @@ public class NetworkDelayTime_Dijkstra {
 
     public int networkDelayTime(int[][] times, int n, int k) {
         // 初始化带权出边数组
-        List<ArrayList<int[]>> adjacencyArray = new ArrayList<>(n + 1);
+        ArrayList<int[]>[] adjacencyArray = new ArrayList[n + 1];
         for (int i = 0; i <= n; i++) {
-            adjacencyArray.add(i, new ArrayList<>());
+            adjacencyArray[i] = new ArrayList<>();
         }
         for (int[] time : times) {
-            adjacencyArray.get(time[0]).add(new int[]{time[1], time[2]});
+            adjacencyArray[time[0]].add(new int[]{time[1], time[2]});
         }
 
         // 初始化 dist 数组
@@ -34,7 +34,7 @@ public class NetworkDelayTime_Dijkstra {
             int minDistVertex = top[0];
             if (expand[minDistVertex]) continue;
             expand[minDistVertex] = true;
-            for (int[] edge : adjacencyArray.get(minDistVertex)) {
+            for (int[] edge : adjacencyArray[minDistVertex]) {
                 if (dist[edge[0]] > dist[minDistVertex] + edge[1]) {
                     dist[edge[0]] = dist[minDistVertex] + edge[1];
                     q.offer(new int[]{edge[0], dist[edge[0]]});
