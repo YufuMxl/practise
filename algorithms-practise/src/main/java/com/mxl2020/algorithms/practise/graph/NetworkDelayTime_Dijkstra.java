@@ -11,7 +11,7 @@ public class NetworkDelayTime_Dijkstra {
 
     public int networkDelayTime(int[][] times, int n, int k) {
         // 初始化带权出边数组
-        ArrayList<int[]>[] adjacencyArray = new ArrayList[n + 1];
+        List<int[]>[] adjacencyArray = new List[n + 1];
         for (int i = 1; i <= n; i++) {
             adjacencyArray[i] = new ArrayList<>();
         }
