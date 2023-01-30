@@ -13,57 +13,50 @@ import java.util.*;
 public class SerializeAndDeserializeBinaryTree {
 
     /**
-     * 层序遍历序列 + 顺序存储法
-     * <p>
-     * 注意：该方法只能处理 31 层的树（如果用 long 来表示 index，则能处理 63 层树）
+     * 层序遍历
      *
-     * @return 自定义序列化格式："0:0,1:1,2:2,3:3,4:4"
+     * @return 序列化格式："a:b:c:d"，其中，a 为节点 id，b 为父节点 id，c 标明节点是左右节点，d 为节点值
      */
     public String serialize(TreeNode root) {
-        // 边界判断
         if (root == null) return "";
-        // 初始化层序遍历序列的数组
-        List<String> levelOrder = new ArrayList<>();
-        // 初始化队列，队列中需要保存节点的 index
-        Queue<Pair<Integer, TreeNode>> nodeQueue = new ArrayDeque<>();
-        nodeQueue.offer(new Pair<>(0, root));
-
+        StringBuilder sb = new StringBuilder();
+        Queue<Pair<int[], TreeNode>> nodeQueue = new ArrayDeque<>();
+        int order = 0;
+        nodeQueue.offer(new Pair<>(new int[]{order, -1, -1}, root));
         while (!nodeQueue.isEmpty()) {
-            Pair<Integer, TreeNode> nodePair = nodeQueue.poll();
-            int nodeIndex = nodePair.getKey();
+            Pair<int[], TreeNode> nodePair = nodeQueue.poll();
+            int id = nodePair.getKey()[0];
+            int parentID = nodePair.getKey()[1];
+            int lor = nodePair.getKey()[2];
             TreeNode node = nodePair.getValue();
-            levelOrder.add(nodeIndex + ":" + node.val);
 
-            // 将左右子节点入队
-            if (node.left != null) nodeQueue.offer(new Pair<>(nodeIndex * 2 + 1, node.left));
-            if (node.right != null) nodeQueue.offer(new Pair<>(nodeIndex * 2 + 2, node.right));
+            sb.append(id).append(":").append(parentID).append(":").append(lor).append(":").append(node.val).append(",");
+
+            if (node.left != null) nodeQueue.offer(new Pair<>(new int[]{++order, id, 0}, node.left));
+            if (node.right != null) nodeQueue.offer(new Pair<>(new int[]{++order, id, 1}, node.right));
         }
-
-        return String.join(",", levelOrder);
+        return sb.toString();
     }
 
-    /**
-     * @param data 自定义序列化格式："0:0,1:1,2:2,3:3,4:4"
-     */
     public TreeNode deserialize(String data) {
-        // 边界判断
         if ("".equals(data)) return null;
-        // 分割字符串
-        String[] levelOrder = data.split(",");
-        Map<Integer, TreeNode> parentNodeMap = new HashMap<>();
+        String[] arr = data.split(",");
+        Map<Integer, TreeNode> map = new HashMap<>();
+        for (String nodeStr : arr) {
+            String[] nodeStrArr = nodeStr.split(":");
+            int id = Integer.parseInt(nodeStrArr[0]);
+            int parentID = Integer.parseInt(nodeStrArr[1]);
+            int lor = Integer.parseInt(nodeStrArr[2]);
+            TreeNode node = new TreeNode(Integer.parseInt(nodeStrArr[3]));
+            map.put(id, node);
 
-        for (String nodeIndexToVal : levelOrder) {
-            int nodeIndex = Integer.parseInt(nodeIndexToVal.split(":")[0]);
-            int nodeVal = Integer.parseInt(nodeIndexToVal.split(":")[1]);
-            TreeNode currentNode = new TreeNode(nodeVal);
-            parentNodeMap.put(nodeIndex, currentNode);
-            if (nodeIndex != 0) {
-                TreeNode parentNode = parentNodeMap.get((nodeIndex - 1) / 2);
-                if (nodeIndex % 2 == 1) parentNode.left = currentNode;
-                else parentNode.right = currentNode;
+            if (id != 0) {
+                TreeNode parent = map.get(parentID);
+                if (lor == 0) parent.left = node;
+                else parent.right = node;
             }
         }
-        return parentNodeMap.get(0);
+        return map.get(0);
     }
 
     /**
