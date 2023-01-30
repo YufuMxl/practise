@@ -67,53 +67,45 @@ public class SerializeAndDeserializeBinaryTree {
     }
 
     /**
-     * 前序遍历序列 + 递归
-     *
-     * @return 自定义序列化格式："1,2,null,null,3,null,null"
+     * @return 前序遍历序列
      */
     public String serialize2(TreeNode root) {
-        preOrder = new ArrayList<>();
+        sb = new StringBuilder();
         dfs(root);
-        return String.join(",", preOrder);
+        return sb.toString();
     }
 
-    private List<String> preOrder;
+    private StringBuilder sb;
 
     private void dfs(TreeNode node) {
         if (node == null) {
-            preOrder.add("null");
+            sb.append("n,");
             return;
         }
-        preOrder.add(Integer.toString(node.val));
+        sb.append(node.val).append(",");
         dfs(node.left);
         dfs(node.right);
     }
 
-    /**
-     * @param data 自定义序列化格式："1,2,null,null,3,null,null"
-     */
     public TreeNode deserialize2(String data) {
+        index = 0;
         sequence = data.split(",");
-        current = 0;
         return restructure();
     }
 
     private String[] sequence;
-    private int current;
+    private int index;
 
-    /**
-     * @return 对某个节点进行重构二叉树
-     */
     private TreeNode restructure() {
-        if ("null".equals(sequence[current])) {
-            current++;
+        if ("n".equals(sequence[index])) {
+            index++;
             return null;
         }
-        TreeNode root = new TreeNode(Integer.parseInt(sequence[current]));
-        current++;
-        root.left = restructure();
-        root.right = restructure();
-        return root;
+        TreeNode node = new TreeNode(Integer.parseInt(sequence[index]));
+        index++;
+        node.left = restructure();
+        node.right = restructure();
+        return node;
     }
 
 }
