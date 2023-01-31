@@ -2,6 +2,9 @@ package com.mxl2020.algorithms.practise.tree;
 
 import com.mxl2020.algorithms.practise.tree.datastructure.TreeNode;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 从中序与后序遍历序列构造二叉树
  *
@@ -9,51 +12,33 @@ import com.mxl2020.algorithms.practise.tree.datastructure.TreeNode;
  */
 public class ConstructBinaryTreeFromPostAndInOrder {
 
-    private int[] inorder;
+    private Map<Integer, Integer> map;
     private int[] postorder;
 
     /**
-     * 分治解法
-     *
      * @param inorder   中序遍历序列，可以确定左右子树的范围
      * @param postorder 后序遍历序列，可以确定根节点的位置
      * @return 返回被还原的树的根节点
-     * <p>
-     * inorder 和 preorder 的长度相同，元素唯一
      */
     public TreeNode buildTree(int[] inorder, int[] postorder) {
-        this.inorder = inorder;
+        final int n = inorder.length;
         this.postorder = postorder;
-        return buildTree(0, inorder.length - 1, 0, postorder.length - 1);
+        this.map = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            map.put(inorder[i], i);
+        }
+        return buildTree(0, n - 1, 0, n - 1);
     }
 
-    private TreeNode buildTree(int inLeftIndex, int inRightIndex, int postLeftIndex, int postRightIndex) {
-        // 递归终止条件
-        if (inLeftIndex > inRightIndex) return null;
+    private TreeNode buildTree(int ps, int pe, int is, int ie) {
+        if (ps > pe) return null;
 
-        // 获取根节点的值
-        int rootValue = postorder[postRightIndex];
-        TreeNode root = new TreeNode(rootValue);
+        TreeNode root = new TreeNode(postorder[pe]);
+        int iRoot = map.get(postorder[pe]);
 
-        // 寻找根节点在中序遍历序列中的下标
-        int rootIndexInInOrder = inLeftIndex;
-        while (inorder[rootIndexInInOrder] != rootValue) {
-            rootIndexInInOrder++;
-        }
+        root.left = buildTree(ps, ps + (iRoot - is) - 1, is, iRoot - 1);
+        root.right = buildTree(ps + (iRoot - is), pe - 1, iRoot + 1, ie);
 
-        // 递归生成树
-        root.left = buildTree(
-            inLeftIndex,
-            rootIndexInInOrder - 1,
-            postLeftIndex,
-            postLeftIndex + rootIndexInInOrder - inLeftIndex - 1
-        );
-        root.right = buildTree(
-            rootIndexInInOrder + 1,
-            inRightIndex,
-            postLeftIndex + rootIndexInInOrder - inLeftIndex,
-            postRightIndex - 1
-        );
         return root;
     }
 }
