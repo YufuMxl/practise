@@ -11,39 +11,24 @@ import javafx.util.Pair;
 public class LowestCommonAncestorOfABinaryTree {
 
     /**
-     * 深度优先遍历
-     * <p>
-     * 节点 p 到 root 的路径中，除 p 以外的节点都是 p 的祖先
-     * <p>
-     * 节点 x 的 children 中，如果同时包含 p q，那么 x 就是 p q 的公共祖先
-     * <p>
      * 最深的公共祖先就是最近公共祖先 LCA
-     *
-     * @param root 根节点
-     * @param p    节点 p
-     * @param q    节点 q
-     * @return 返回最近公共祖先
      */
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        this.p = p;
-        this.q = q;
-        dfs(root);
+        dfs(root, p, q);
         return lca;
     }
 
-    private TreeNode p;
-    private TreeNode q;
     private TreeNode lca;
 
     /**
      * 通过后续遍历，判断指定的节点是否包含 p 或 q
      */
-    private Pair<Boolean, Boolean> dfs(TreeNode node) {
+    private Pair<Boolean, Boolean> dfs(TreeNode node, TreeNode p, TreeNode q) {
         // 递归终止条件
         if (node == null) return new Pair<>(false, false);
         // 递归左右子节点
-        Pair<Boolean, Boolean> leftResult = dfs(node.left);
-        Pair<Boolean, Boolean> rightResult = dfs(node.right);
+        Pair<Boolean, Boolean> leftResult = dfs(node.left, p, q);
+        Pair<Boolean, Boolean> rightResult = dfs(node.right, p, q);
         // 判断当前节点是否包含 p 或 q
         boolean hasP = leftResult.getKey() || rightResult.getKey() || node.val == p.val;
         boolean hasQ = leftResult.getValue() || rightResult.getValue() || node.val == q.val;
