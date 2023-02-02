@@ -2,6 +2,7 @@ package com.mxl2020.algorithms.practise.search.bfs;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
 
 /**
@@ -19,36 +20,30 @@ public class CourseScheduleII {
      * @return 返回"学完所有课程"的拓扑排序；如果无法学完，返回空数组（比如图中有环）
      */
     public int[] findOrder(int numCourses, int[][] prerequisites) {
-        // 初始化"入度表"
-        int[] inDegree = new int[numCourses];
-        // 初始化"拓扑排序表"
-        int coursesIndex = 0;
-        int[] courses = new int[numCourses];
-        // 初始化"出边数组"
-        ArrayList<ArrayList<Integer>> graph = new ArrayList<>(numCourses);
+        List<List<Integer>> adjacencyArray = new ArrayList<>();
         for (int i = 0; i < numCourses; i++) {
-            graph.add(i, new ArrayList<>());
+            adjacencyArray.add(new ArrayList<>());
         }
-        // 存储"有向图"
+        int[] inDegree = new int[numCourses];
         for (int[] prerequisite : prerequisites) {
-            graph.get(prerequisite[1]).add(prerequisite[0]);
+            adjacencyArray.get(prerequisite[1]).add(prerequisite[0]);
             inDegree[prerequisite[0]]++;
         }
-        // 广度优先遍历
-        Queue<Integer> courseQueue = new ArrayDeque<>();
-        for (int i = 0; i < inDegree.length; i++) {
-            // 寻找入度为 0 的课程，将其放入队列
-            // 假设课程的总量不会很大，这里不 break 循环了
-            if (inDegree[i] == 0) courseQueue.offer(i);
+
+        Queue<Integer> queue = new ArrayDeque<>();
+        for (int i = 0; i < numCourses; i++) {
+            if (inDegree[i] == 0) queue.offer(i);
         }
-        while (!courseQueue.isEmpty()) {
-            int course = courseQueue.poll();
-            courses[coursesIndex++] = course;
-            for (int child : graph.get(course)) {
-                if (--inDegree[child] == 0) courseQueue.offer(child);
+
+        int[] order = new int[numCourses];
+        int orderIndex = 0;
+        while (!queue.isEmpty()) {
+            int course = queue.poll();
+            order[orderIndex++] = course;
+            for (int child : adjacencyArray.get(course)) {
+                if (--inDegree[child] == 0) queue.offer(child);
             }
         }
-        // 返回正确的课程表，或者返回空数组
-        return coursesIndex == numCourses ? courses : new int[0];
+        return orderIndex == numCourses ? order : new int[0];
     }
 }
