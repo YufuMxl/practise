@@ -2,6 +2,7 @@ package com.mxl2020.algorithms.practise.search.bfs;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
 
 /**
@@ -18,37 +19,33 @@ public class CourseSchedule {
      * @return 判断给定的 prerequisites 是否能学完所有课程（判断有向图是否有环）
      */
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        // 初始化"入度表"
         int[] inDegree = new int[numCourses];
-        // 初始化"拓扑排序表"
-        ArrayList<Integer> visited = new ArrayList<>(numCourses);
-        // 初始化"出边数组"
-        ArrayList<ArrayList<Integer>> graph = new ArrayList<>(numCourses);
+        List<List<Integer>> adjacencyArray = new ArrayList<>(numCourses);
         for (int i = 0; i < numCourses; i++) {
-            graph.add(i, new ArrayList<>());
+            adjacencyArray.add(new ArrayList<>());
         }
-        // 存储"有向图"
         for (int[] prerequisite : prerequisites) {
-            graph.get(prerequisite[1]).add(prerequisite[0]);
-            inDegree[prerequisite[0]]++;
+            int fromCourse = prerequisite[1];
+            int toCourse = prerequisite[0];
+            adjacencyArray.get(fromCourse).add(toCourse);
+            inDegree[toCourse]++;
         }
-        // 广度优先遍历
-        Queue<Integer> courseQueue = new ArrayDeque<>();
+
+        Queue<Integer> queue = new ArrayDeque<>();
         for (int i = 0; i < inDegree.length; i++) {
-            // 寻找入度为 0 的课程，将其放入队列
-            if (inDegree[i] == 0) courseQueue.offer(i);
+            if (inDegree[i] == 0) queue.offer(i);
         }
-        while (!courseQueue.isEmpty()) {
-            int course = courseQueue.poll();
-            visited.add(course);
-            for (int child : graph.get(course)) {
-                inDegree[child]--;
-                if (inDegree[child] == 0) courseQueue.offer(child);
+
+        int numOfLearnedCourses = 0;
+        while (!queue.isEmpty()) {
+            int course = queue.poll();
+            numOfLearnedCourses++;
+            for (int child : adjacencyArray.get(course)) {
+                if (--inDegree[child] == 0) queue.offer(child);
             }
         }
 
-        // 如果 visited size 等于课程数量，则该图无环
-        return visited.size() == numCourses;
+        return numOfLearnedCourses == numCourses;
     }
 
 }
