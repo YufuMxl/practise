@@ -3,7 +3,6 @@ package com.mxl2020.algorithms.practise.search.dfs;
 import com.mxl2020.algorithms.practise.tree.disjointset.DisjointSet;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -25,28 +24,28 @@ public class RedundantConnection {
     public int[] findRedundantConnection(int[][] edges) {
         final int n = edges.length;
         visited = new boolean[n + 1];
-        graph = new ArrayList<>();
+        adjacencyArray = new ArrayList<>();
         for (int i = 0; i <= n; i++) {
-            graph.add(new ArrayList<>());
+            adjacencyArray.add(new ArrayList<>());
         }
         for (int[] edge : edges) {
-            graph.get(edge[0]).add(edge[1]);
-            graph.get(edge[1]).add(edge[0]);
+            adjacencyArray.get(edge[0]).add(edge[1]);
+            adjacencyArray.get(edge[1]).add(edge[0]);
             dfs(edge[0], 0);
             if (hasCycle) return edge;
-            else Arrays.fill(visited, false);
+            else visited = new boolean[n + 1];
         }
         return null;
     }
 
-    private List<List<Integer>> graph;
+    private List<List<Integer>> adjacencyArray;
     private boolean[] visited;
     private boolean hasCycle;
 
     // 无向图判断环的模板
     private void dfs(int node, int father) {
         visited[node] = true;
-        for (int child : graph.get(node)) {
+        for (int child : adjacencyArray.get(node)) {
             if (child == father) continue;
             if (!visited[child]) dfs(child, node);
             else hasCycle = true;
