@@ -4,6 +4,7 @@ import com.mxl2020.algorithms.practise.tree.disjointset.DisjointSet;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * 冗余连接
@@ -22,12 +23,11 @@ public class RedundantConnection {
      * @return 找到形成基环树的那条边并返回，如果答案有多个，返回 edges 中最后出现的那条边
      */
     public int[] findRedundantConnection(int[][] edges) {
-        // 初始化"遍历记录表"
-        visited = new boolean[edges.length + 1];
-        // 初始化"出边数组"
-        graph = new ArrayList<>(edges.length + 1);
-        for (int i = 0; i <= edges.length; i++) {
-            graph.add(i, new ArrayList<>());
+        final int n = edges.length;
+        visited = new boolean[n + 1];
+        graph = new ArrayList<>();
+        for (int i = 0; i <= n; i++) {
+            graph.add(new ArrayList<>());
         }
         for (int[] edge : edges) {
             graph.get(edge[0]).add(edge[1]);
@@ -39,7 +39,7 @@ public class RedundantConnection {
         return null;
     }
 
-    private ArrayList<ArrayList<Integer>> graph;
+    private List<List<Integer>> graph;
     private boolean[] visited;
     private boolean hasCycle;
 
@@ -47,11 +47,9 @@ public class RedundantConnection {
     private void dfs(int node, int father) {
         visited[node] = true;
         for (int child : graph.get(node)) {
-            // 递归终止条件：遇到父节点
             if (child == father) continue;
-            // 递归终止条件：遇到曾遍历过的节点（此处成环）
-            if (visited[child]) hasCycle = true;
-            else dfs(child, node);
+            if (!visited[child]) dfs(child, node);
+            else hasCycle = true;
         }
     }
 
