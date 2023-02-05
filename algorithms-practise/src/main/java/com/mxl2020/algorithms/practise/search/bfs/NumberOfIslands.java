@@ -16,6 +16,7 @@ public class NumberOfIslands {
     private int n;
     private char[][] grid;
     private boolean[][] visited;
+    private final int[][] directions = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 
     /**
      * 广度优先搜索
@@ -24,12 +25,15 @@ public class NumberOfIslands {
      * @return 返回岛屿的数量
      */
     public int numIslands(char[][] grid) {
+        m = grid.length;
+        n = grid[0].length;
+        this.visited = new boolean[m][n];
         this.grid = grid;
 
         int count = 0;
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[0].length; j++) {
-                if (grid[i][j] == '1') {
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (!visited[i][j] && grid[i][j] == '1') {
                     bfs(i, j);
                     count++;
                 }
@@ -38,27 +42,26 @@ public class NumberOfIslands {
         return count;
     }
 
-    private final int[][] directions = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
-
     private void bfs(int x, int y) {
-        grid[x][y] = '0';
+        visited[x][y] = true;
         Queue<int[]> gridQueue = new ArrayDeque<>();
         gridQueue.offer(new int[]{x, y});
 
         while (!gridQueue.isEmpty()) {
             int[] land = gridQueue.poll();
             for (final int[] direction : directions) {
-                int[] adjacentLand = {land[0] + direction[0], land[1] + direction[1]};
-                if (isValidLand(adjacentLand[0], adjacentLand[1])) {
-                    grid[adjacentLand[0]][adjacentLand[1]] = '0';
-                    gridQueue.offer(adjacentLand);
+                int subX = land[0] + direction[0];
+                int subY = land[1] + direction[1];
+                if (isValidLand(subX, subY)) {
+                    visited[subX][subY] = true;
+                    gridQueue.offer(new int[]{subX, subY});
                 }
             }
         }
     }
 
     private boolean isValidLand(int x, int y) {
-        return x >= 0 && x < grid.length && y >= 0 && y < grid[0].length && grid[x][y] == '1';
+        return x >= 0 && x < m && y >= 0 && y < n && !visited[x][y] && grid[x][y] == '1';
     }
 
     /**
