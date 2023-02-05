@@ -12,16 +12,16 @@ import java.util.List;
 public class LetterCombinationsOfPhoneNumber {
 
     private final char[][] buttons = new char[][]{
-        null,
-        null,
-        new char[]{'a', 'b', 'c'},
-        new char[]{'d', 'e', 'f'},
-        new char[]{'g', 'h', 'i'},
-        new char[]{'j', 'k', 'l'},
-        new char[]{'m', 'n', 'o'},
-        new char[]{'p', 'q', 'r', 's'},
-        new char[]{'t', 'u', 'v'},
-        new char[]{'w', 'x', 'y', 'z'}
+            null,
+            null,
+            new char[]{'a', 'b', 'c'},
+            new char[]{'d', 'e', 'f'},
+            new char[]{'g', 'h', 'i'},
+            new char[]{'j', 'k', 'l'},
+            new char[]{'m', 'n', 'o'},
+            new char[]{'p', 'q', 'r', 's'},
+            new char[]{'t', 'u', 'v'},
+            new char[]{'w', 'x', 'y', 'z'}
     };
 
     /**
@@ -42,16 +42,15 @@ public class LetterCombinationsOfPhoneNumber {
     private char[] combination;
     private List<String> combinations;
 
-    private void combine(int combinationIndex) {
-        if (combinationIndex == digits.length) {
+    private void combine(int index) {
+        if (index == digits.length) {
             combinations.add(String.valueOf(combination));
             return;
         }
 
-        char[] letters = buttons[digits[combinationIndex] - '0'];
-        for (char letter : letters) {
-            combination[combinationIndex] = letter;
-            combine(combinationIndex + 1);
+        for (char letter : buttons[digits[index] - '0']) {
+            combination[index] = letter;
+            combine(index + 1);
         }
     }
 }
