@@ -3,9 +3,7 @@ package com.mxl2020.algorithms.practise.search.bfs;
 import com.mxl2020.algorithms.practise.tree.disjointset.DisjointSet;
 
 import java.util.ArrayDeque;
-import java.util.HashSet;
 import java.util.Queue;
-import java.util.Set;
 
 /**
  * 岛屿数量
@@ -14,7 +12,10 @@ import java.util.Set;
  */
 public class NumberOfIslands {
 
+    private int m;
+    private int n;
     private char[][] grid;
+    private boolean[][] visited;
 
     /**
      * 广度优先搜索
@@ -64,12 +65,15 @@ public class NumberOfIslands {
      * 深度优先搜索
      */
     public int numIslands2(char[][] grid) {
+        m = grid.length;
+        n = grid[0].length;
+        this.visited = new boolean[m][n];
         this.grid = grid;
 
         int count = 0;
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[0].length; j++) {
-                if (grid[i][j] == '1') {
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (!visited[i][j] && grid[i][j] == '1') {
                     dfs(i, j);
                     count++;
                 }
@@ -80,12 +84,14 @@ public class NumberOfIslands {
 
     private void dfs(int x, int y) {
         // 递归终止条件
-        if (!isValidLand(x, y)) return;
-        grid[x][y] = '0';
-        dfs(x + 1, y);
-        dfs(x, y + 1);
+        if (x < 0 || x >= m || y < 0 || y >= n) return;
+        if (grid[x][y] == '0') return;
+        if (visited[x][y]) return;
+        visited[x][y] = true;
         dfs(x - 1, y);
+        dfs(x + 1, y);
         dfs(x, y - 1);
+        dfs(x, y + 1);
     }
 
     /**
