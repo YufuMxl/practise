@@ -10,14 +10,17 @@ import java.util.Queue;
  */
 public class LongestIncreasingPathInMatrix {
 
+    private int m;
+    private int n;
+    private final byte[][] directions = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+
     /**
      * @param matrix m * n 的整数矩阵
      * @return 返回矩阵中的最长递增路径的长度
      */
     public int longestIncreasingPath(int[][] matrix) {
-        final int m = matrix.length;
-        final int n = matrix[0].length;
-        final byte[][] directions = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+        this.m = matrix.length;
+        this.n = matrix[0].length;
 
         int[][] inDegree = new int[m][n];
         Queue<int[]> bfsQueue = new ArrayDeque<>();
@@ -28,7 +31,7 @@ public class LongestIncreasingPathInMatrix {
                 for (byte[] direction : directions) {
                     int x = i + direction[0];
                     int y = j + direction[1];
-                    if (isValidCell(x, y, m, n) && matrix[x][y] < matrix[i][j]) inDegree[i][j]++;
+                    if (isValidCell(x, y) && matrix[x][y] < matrix[i][j]) inDegree[i][j]++;
                 }
                 if (inDegree[i][j] == 0) bfsQueue.offer(new int[]{i, j, 1});
             }
@@ -41,7 +44,7 @@ public class LongestIncreasingPathInMatrix {
             for (byte[] direction : directions) {
                 int x = parentCell[0] + direction[0];
                 int y = parentCell[1] + direction[1];
-                if (isValidCell(x, y, m, n) && matrix[x][y] > matrix[parentCell[0]][parentCell[1]]) {
+                if (isValidCell(x, y) && matrix[x][y] > matrix[parentCell[0]][parentCell[1]]) {
                     if (--inDegree[x][y] == 0) bfsQueue.offer(new int[]{x, y, parentCell[2] + 1});
                 }
             }
@@ -49,20 +52,23 @@ public class LongestIncreasingPathInMatrix {
         return longestPath;
     }
 
-    private boolean isValidCell(int x, int y, int m, int n) {
+    private boolean isValidCell(int x, int y) {
         return 0 <= x && x < m && 0 <= y && y < n;
     }
 
     /**
      * DFS 解法
+     * <p>寻找最长递增路径的过程，不会走回头路，所以不需要visited，和遍历树的道理一样</>
      */
     public int longestIncreasingPath2(int[][] matrix) {
+        this.m = matrix.length;
+        this.n = matrix[0].length;
         this.matrix = matrix;
-        this.pathStore = new int[matrix.length][matrix[0].length];
+        this.pathStore = new int[m][n];
 
         int longestPath = 0;
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[0].length; j++) {
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
                 longestPath = Math.max(longestPath, dfs(i, j));
             }
         }
@@ -72,7 +78,6 @@ public class LongestIncreasingPathInMatrix {
 
     private int[][] matrix;
     private int[][] pathStore;
-    private final byte[][] directions = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 
     /**
      * 求一个点的最远路径
@@ -84,7 +89,7 @@ public class LongestIncreasingPathInMatrix {
         for (byte[] direction : directions) {
             int subX = x + direction[0];
             int subY = y + direction[1];
-            if (isValidCell(subX, subY, matrix.length, matrix[0].length) && matrix[subX][subY] > matrix[x][y]) {
+            if (isValidCell(subX, subY) && matrix[subX][subY] > matrix[x][y]) {
                 maxSubPath = Math.max(maxSubPath, dfs(subX, subY));
             }
         }
