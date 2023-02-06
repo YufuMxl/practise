@@ -23,23 +23,19 @@ public class MinimumGeneticMutation {
      * @return 返回 start 变化成 end 的最少次数
      */
     public int minMutation(String start, String end, String[] bank) {
+        // bankSet 功能类似于 visited 数组
         HashSet<String> bankSet = new HashSet<>(Arrays.asList(bank));
-        if (!bankSet.contains(end)) return -1;
         bankSet.remove(start);
-
         Queue<Pair<String, Integer>> bfsQueue = new ArrayDeque<>();
         bfsQueue.offer(new Pair<>(start, 0));
         while (!bfsQueue.isEmpty()) {
             Pair<String, Integer> from = bfsQueue.poll();
 
-            String[] validGenes = bankSet.toArray(new String[0]);
-            for (String gene : validGenes) {
-                if (isValidMutation(from.getKey(), gene)) {
+            for (String gene : bank) {
+                if (bankSet.contains(gene) && isValidMutation(from.getKey(), gene)) {
                     if (end.equals(gene)) return from.getValue() + 1;
-                    else {
-                        bfsQueue.offer(new Pair<>(gene, from.getValue() + 1));
-                        bankSet.remove(gene);
-                    }
+                    bfsQueue.offer(new Pair<>(gene, from.getValue() + 1));
+                    bankSet.remove(gene);
                 }
             }
         }
