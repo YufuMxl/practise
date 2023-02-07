@@ -13,38 +13,35 @@ import java.util.Queue;
  */
 public class MergeKSortedLists {
 
+    private ListNode[] heap;
+    private int size;
+
     /**
-     * 二叉堆-小顶堆解法
+     * 二叉堆：使用自制小顶堆
      *
      * @param lists K 个升序链表
      * @return 返回合并后的升序链表
      */
     public ListNode mergeKLists(ListNode[] lists) {
         this.heap = new ListNode[lists.length];
-        // 1.建堆
         for (ListNode node : lists) {
-            if (node != null) insertHeap(node);
+            if (node != null) offer(node);
         }
 
-        // 2.取堆顶元素
         ListNode soldier = new ListNode(Integer.MIN_VALUE);
         ListNode newList = soldier;
-        while (size > 0) {
-            newList.next = removeHeap();
+        while (!isEmpty()) {
+            newList.next = poll();
             newList = newList.next;
-            if (newList.next != null) insertHeap(newList.next);
+            if (newList.next != null) offer(newList.next);
         }
 
         return soldier.next;
     }
 
-    private ListNode[] heap;
-    private int size;
-
-    private void insertHeap(ListNode node) {
+    private void offer(ListNode node) {
         heap[size++] = node;
-
-        // heapify up
+        // 插入元素，要向上堆化 heapify up
         int currentIndex = size - 1;
         int parentIndex = (currentIndex - 1) / 2;
         while (parentIndex >= 0 && heap[parentIndex].val > heap[currentIndex].val) {
@@ -56,9 +53,10 @@ public class MergeKSortedLists {
         }
     }
 
-    private ListNode removeHeap() {
+    private ListNode poll() {
         ListNode result = heap[0];
         heap[0] = heap[--size];
+        // 取堆顶元素，要向下堆化 heapify down
         heapifyDown(0);
         return result;
     }
@@ -69,26 +67,24 @@ public class MergeKSortedLists {
         int right = index * 2 + 2;
         int minChildIndex = right <= size - 1 && heap[right].val < heap[left].val ? right : left;
 
-        if (heap[index].val > heap[minChildIndex].val) {
-            ListNode tmp = heap[index];
-            heap[index] = heap[minChildIndex];
-            heap[minChildIndex] = tmp;
-            heapifyDown(minChildIndex);
-        }
+        if (heap[index].val <= heap[minChildIndex].val) return;
+        ListNode tmp = heap[index];
+        heap[index] = heap[minChildIndex];
+        heap[minChildIndex] = tmp;
+        heapifyDown(minChildIndex);
+    }
+
+    private boolean isEmpty() {
+        return size == 0;
     }
 
     /**
-     * 堆的简化写法：使用 Java PriorityQueue
+     * 二叉堆：使用 java.util.PriorityQueue
      */
     public ListNode mergeKListsWithPriorityQueue(ListNode[] lists) {
         Queue<ListNode> pq = new PriorityQueue<>(Comparator.comparingInt(node -> node.val));
         for (ListNode node : lists) {
-            while (node != null) {
-                pq.offer(node);
-                ListNode next = node.next;
-                node.next = null;
-                node = next;
-            }
+            if (node != null) pq.offer(node);
         }
 
         ListNode soldier = new ListNode(-1);
@@ -96,6 +92,7 @@ public class MergeKSortedLists {
         while (!pq.isEmpty()) {
             newListNode.next = pq.poll();
             newListNode = newListNode.next;
+            if (newListNode.next != null) pq.offer(newListNode.next);
         }
         return soldier.next;
     }
