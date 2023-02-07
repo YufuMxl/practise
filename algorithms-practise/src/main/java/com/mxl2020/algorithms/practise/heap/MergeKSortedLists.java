@@ -2,6 +2,10 @@ package com.mxl2020.algorithms.practise.heap;
 
 import com.mxl2020.algorithms.practise.linkedlist.datastructure.ListNode;
 
+import java.util.Comparator;
+import java.util.PriorityQueue;
+import java.util.Queue;
+
 /**
  * 合并 K 个升序链表
  *
@@ -23,15 +27,15 @@ public class MergeKSortedLists {
         }
 
         // 2.取堆顶元素
-        ListNode solider = new ListNode(Integer.MIN_VALUE);
-        ListNode newList = solider;
+        ListNode soldier = new ListNode(Integer.MIN_VALUE);
+        ListNode newList = soldier;
         while (size > 0) {
             newList.next = removeHeap();
             newList = newList.next;
             if (newList.next != null) insertHeap(newList.next);
         }
 
-        return solider.next;
+        return soldier.next;
     }
 
     private ListNode[] heap;
@@ -71,6 +75,29 @@ public class MergeKSortedLists {
             heap[minChildIndex] = tmp;
             heapifyDown(minChildIndex);
         }
+    }
+
+    /**
+     * 堆的简化写法：使用 Java PriorityQueue
+     */
+    public ListNode mergeKListsWithPriorityQueue(ListNode[] lists) {
+        Queue<ListNode> pq = new PriorityQueue<>(Comparator.comparingInt(node -> node.val));
+        for (ListNode node : lists) {
+            while (node != null) {
+                pq.offer(node);
+                ListNode next = node.next;
+                node.next = null;
+                node = next;
+            }
+        }
+
+        ListNode soldier = new ListNode(-1);
+        ListNode newListNode = soldier;
+        while (!pq.isEmpty()) {
+            newListNode.next = pq.poll();
+            newListNode = newListNode.next;
+        }
+        return soldier.next;
     }
 
     /**
