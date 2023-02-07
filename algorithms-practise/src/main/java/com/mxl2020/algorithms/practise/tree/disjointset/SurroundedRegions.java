@@ -7,30 +7,28 @@ package com.mxl2020.algorithms.practise.tree.disjointset;
  */
 public class SurroundedRegions {
 
-    // 只需要往下和往右移动
-    private final int[][] directions = {{1, 0}, {0, 1}};
-
     /**
      * 解法 1：并查集
      *
      * @param board m * n 的矩阵
      */
     public void solve(char[][] board) {
-        final int m = board.length;
-        final int n = board[0].length;
+        this.m = board.length;
+        this.n = board[0].length;
+        final int[][] directions = {{1, 0}, {0, 1}};
         DisjointSet disjointSet = new DisjointSet(m * n + 1);
 
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
                 if (board[i][j] == 'X') continue;
                 if (i == 0 || i == m - 1 || j == 0 || j == n - 1) {
-                    disjointSet.unionSet(0, number(i, j, n));
+                    disjointSet.unionSet(0, number(i, j));
                 }
                 for (int[] direction : directions) {
                     int subX = i + direction[0];
                     int subY = j + direction[1];
                     if (subX >= 0 && subX < m && subY >= 0 && subY < n && board[subX][subY] == 'O') {
-                        disjointSet.unionSet(number(i, j, n), number(subX, subY, n));
+                        disjointSet.unionSet(number(i, j), number(subX, subY));
                     }
                 }
             }
@@ -38,62 +36,60 @@ public class SurroundedRegions {
 
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                if (board[i][j] == 'O' && disjointSet.find(number(i, j, n)) != disjointSet.find(0)) {
+                if (board[i][j] == 'O' && disjointSet.find(number(i, j)) != disjointSet.find(0)) {
                     board[i][j] = 'X';
                 }
             }
         }
     }
 
-    private int number(int x, int y, int n) {
+    private int number(int x, int y) {
         return x * n + y + 1;
     }
 
     /**
      * 解法 2：dfs
-     *
-     * @param board m * n 的矩阵
      */
     public void solve2(char[][] board) {
-        final int m = board.length;
-        final int n = board[0].length;
+        this.m = board.length;
+        this.n = board[0].length;
         this.board = board;
         this.visited = new boolean[m][n];
 
-        final int m_1 = m - 1;
-        final int n_1 = n - 1;
         for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (i == 0 || j == 0 || i == m_1 || j == n_1) {
-                    if (board[i][j] == 'O' && !visited[i][j]) {
-                        visited[i][j] = true;
-                        dfs(i, j);
-                    }
-                }
-            }
+            if (board[i][0] == 'O') dfs(i, 0);
+            if (board[i][n - 1] == 'O') dfs(i, n - 1);
+        }
+
+        for (int j = 0; j < n; j++) {
+            if (board[0][j] == 'O') dfs(0, j);
+            if (board[m - 1][j] == 'O') dfs(m - 1, j);
         }
 
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                if (board[i][j] == 'O' && !visited[i][j]) board[i][j] = 'X';
+                if (!visited[i][j]) board[i][j] = 'X';
             }
         }
     }
 
+    private int m;
+    private int n;
     private char[][] board;
     private boolean[][] visited;
-    private final int[][] fourDirections = {{1, 0}, {0, -1}, {-1, 0}, {0, 1}};
+    private final byte[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 
     private void dfs(final int x, final int y) {
-        for (int[] direction : fourDirections) {
+        visited[x][y] = true;
+        for (byte[] direction : directions) {
             int subX = x + direction[0];
             int subY = y + direction[1];
-            if (subX < 0 || subX >= board.length || subY < 0 || subY >= board[0].length) continue;
-            if (board[subX][subY] == 'X') continue;
-            if (visited[subX][subY]) continue;
-            visited[subX][subY] = true;
-            dfs(subX, subY);
+            if (isValid(subX, subY) && board[subX][subY] == 'O' && !visited[subX][subY]) dfs(subX, subY);
         }
+    }
+
+    private boolean isValid(int x, int y) {
+        return x >= 0 && x < m && y >= 0 && y < n;
     }
 }
 
