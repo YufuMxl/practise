@@ -1,7 +1,6 @@
 package com.mxl2020.algorithms.practise.heap;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.*;
 
 /**
  * 滑动窗口最大值
@@ -43,7 +42,7 @@ public class SlidingWindowMaximum {
     }
 
     /**
-     * 二叉堆：大顶堆
+     * 二叉堆：使用自制大顶堆
      */
     public int[] maxSlidingWindowWithHeap(int[] nums, int k) {
         final int n = nums.length;
@@ -66,7 +65,7 @@ public class SlidingWindowMaximum {
     }
 
     private int[] nums;
-    private int[] heap;     // 存储 num 的下标
+    private int[] heap; // 存储 nums 的下标
     private int size;
     private int[] numIndexToHeapIndex;
 
@@ -124,5 +123,28 @@ public class SlidingWindowMaximum {
         numIndexToHeapIndex[heap[heapIndex]] = heapIndex;
 
         heapifyDown(maxChildIndex);
+    }
+
+    /**
+     * 二叉堆：使用 java.util.PriorityQueue
+     */
+    public int[] maxSlidingWindowWithPriorityQueue(int[] nums, int k) {
+        final int n = nums.length;
+        Queue<Integer> pq = new PriorityQueue<>(Comparator.comparingInt(num -> -num));
+        for (int i = 0; i < k; i++) {
+            pq.offer(nums[i]);
+        }
+
+        int[] ans = new int[n - k + 1];
+        ans[0] = pq.peek();
+
+        for (int i = 1; i < ans.length; i++) {
+            // 注意，这个 remove 方法有性能问题
+            pq.remove(nums[i - 1]);
+            pq.offer(nums[i + k - 1]);
+            ans[i] = pq.peek();
+        }
+
+        return ans;
     }
 }
