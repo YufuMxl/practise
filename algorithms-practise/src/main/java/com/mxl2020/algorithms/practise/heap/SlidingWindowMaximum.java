@@ -43,83 +43,86 @@ public class SlidingWindowMaximum {
     }
 
     /**
-     * 大顶堆解法
+     * 二叉堆：大顶堆
      */
-    public int[] maxSlidingWindow2(int[] nums, int k) {
+    public int[] maxSlidingWindowWithHeap(int[] nums, int k) {
+        final int n = nums.length;
         this.nums = nums;
-        this.k = k;
         this.heap = new int[k];
-        this.numIndexToHeapIndex = new int[k];
+        this.numIndexToHeapIndex = new int[n];
         for (int i = 0; i < k; i++) {
-            insertHeap(i);
+            offer(i);
         }
 
-        int[] result = new int[nums.length - k + 1];
-        result[0] = nums[heap[0]];
+        int[] result = new int[n - k + 1];
+        result[0] = peek();
 
         for (int i = 1; i < result.length; i++) {
-            removeKey(i - 1);
-            insertHeap(i + k - 1);
-            result[i] = nums[heap[0]];
+            remove(i - 1);
+            offer(i + k - 1);
+            result[i] = peek();
         }
         return result;
     }
 
     private int[] nums;
-    private int k;
-    private int[] heap;
-    private int heapSize;
+    private int[] heap;     // 存储 num 的下标
+    private int size;
     private int[] numIndexToHeapIndex;
 
-    private void insertHeap(int numIndex) {
-        heap[heapSize++] = numIndex;
-        numIndexToHeapIndex[numIndex % k] = heapSize - 1;
-        heapifyUp(heapSize - 1);
+    private int peek() {
+        return nums[heap[0]];
     }
 
-    private void heapifyUp(int heapIndex) {
-        int parentIndex = (heapIndex - 1) / 2;
-        if (parentIndex >= 0 && nums[heap[heapIndex]] > nums[heap[parentIndex]]) {
-            int parentValue = heap[parentIndex];
-            heap[parentIndex] = heap[heapIndex];
-            heap[heapIndex] = parentValue;
-
-            numIndexToHeapIndex[heap[parentIndex] % k] = parentIndex;
-            numIndexToHeapIndex[heap[heapIndex] % k] = heapIndex;
-
-            heapifyUp(parentIndex);
-        }
+    private void offer(int numIndex) {
+        heap[size++] = numIndex;
+        numIndexToHeapIndex[numIndex] = size - 1;
+        heapifyUp(size - 1);
     }
 
-    private void removeKey(int numIndex) {
-        int heapIndex = numIndexToHeapIndex[numIndex % k];
+    private void remove(int numIndex) {
+        int heapIndex = numIndexToHeapIndex[numIndex];
         // 更新 heap size
-        heapSize--;
+        size--;
         // 如果删除的是 heap 的最后一个元素，直接返回即可
-        if (heapIndex == heapSize) return;
+        if (heapIndex == size) return;
 
-        heap[heapIndex] = heap[heapSize];
-        numIndexToHeapIndex[heap[heapIndex] % k] = heapIndex;
+        heap[heapIndex] = heap[size];
+        numIndexToHeapIndex[heap[heapIndex]] = heapIndex;
 
         heapifyUp(heapIndex);
         heapifyDown(heapIndex);
     }
 
+    private void heapifyUp(int heapIndex) {
+        if (heapIndex <= 0) return;
+        int parentIndex = (heapIndex - 1) / 2;
+        if (nums[heap[parentIndex]] >= nums[heap[heapIndex]]) return;
+
+        int parentValue = heap[parentIndex];
+        heap[parentIndex] = heap[heapIndex];
+        heap[heapIndex] = parentValue;
+
+        numIndexToHeapIndex[heap[parentIndex]] = parentIndex;
+        numIndexToHeapIndex[heap[heapIndex]] = heapIndex;
+
+        heapifyUp(parentIndex);
+    }
+
     private void heapifyDown(int heapIndex) {
         int left = heapIndex * 2 + 1;
-        if (left > heapSize - 1) return;
+        if (left > size - 1) return;
         int right = left + 1;
-        int maxChildIndex = right <= heapSize - 1 && nums[heap[right]] > nums[heap[left]] ? right : left;
+        int maxChildIndex = right <= size - 1 && nums[heap[right]] > nums[heap[left]] ? right : left;
 
-        if (nums[heap[maxChildIndex]] > nums[heap[heapIndex]]) {
-            int maxChildValue = heap[maxChildIndex];
-            heap[maxChildIndex] = heap[heapIndex];
-            heap[heapIndex] = maxChildValue;
+        if (nums[heap[heapIndex]] >= nums[heap[maxChildIndex]]) return;
+        int maxChildValue = heap[maxChildIndex];
+        heap[maxChildIndex] = heap[heapIndex];
+        heap[heapIndex] = maxChildValue;
 
-            numIndexToHeapIndex[heap[maxChildIndex] % k] = maxChildIndex;
-            numIndexToHeapIndex[heap[heapIndex] % k] = heapIndex;
+        numIndexToHeapIndex[heap[maxChildIndex]] = maxChildIndex;
+        numIndexToHeapIndex[heap[heapIndex]] = heapIndex;
 
-            heapifyDown(maxChildIndex);
-        }
+        heapifyDown(maxChildIndex);
     }
 }
