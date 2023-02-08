@@ -49,19 +49,14 @@ public class SlidingWindowMaximum {
         this.nums = nums;
         this.heap = new int[k];
         this.numIndexToHeapIndex = new int[n];
-        for (int i = 0; i < k; i++) {
+
+        final int[] ans = new int[n - k + 1];
+        for (int i = 0; i < n; i++) {
+            if (i >= k) remove(i - k);
             offer(i);
+            if (i >= k - 1) ans[i - k + 1] = peek();
         }
-
-        int[] result = new int[n - k + 1];
-        result[0] = peek();
-
-        for (int i = 1; i < result.length; i++) {
-            remove(i - 1);
-            offer(i + k - 1);
-            result[i] = peek();
-        }
-        return result;
+        return ans;
     }
 
     private int[] nums;
@@ -131,18 +126,13 @@ public class SlidingWindowMaximum {
     public int[] maxSlidingWindowWithPriorityQueue(int[] nums, int k) {
         final int n = nums.length;
         Queue<Integer> pq = new PriorityQueue<>(Comparator.comparingInt(num -> -num));
-        for (int i = 0; i < k; i++) {
-            pq.offer(nums[i]);
-        }
 
         int[] ans = new int[n - k + 1];
-        ans[0] = pq.peek();
-
-        for (int i = 1; i < ans.length; i++) {
+        for (int i = 0; i < n; i++) {
             // 注意，这个 remove 方法有性能问题
-            pq.remove(nums[i - 1]);
-            pq.offer(nums[i + k - 1]);
-            ans[i] = pq.peek();
+            if (i >= k) pq.remove(nums[i - k]);
+            pq.offer(nums[i]);
+            if (i >= k - 1) ans[i - k + 1] = pq.peek();
         }
 
         return ans;
