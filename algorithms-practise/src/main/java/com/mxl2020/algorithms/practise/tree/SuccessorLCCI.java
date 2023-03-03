@@ -19,43 +19,31 @@ public class SuccessorLCCI {
      * @return 返回目标节点的"后继节点"
      */
     public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
-        return inorderSuccessor(root, p.val);
-    }
-
-    /**
-     * 通用方法：求 targetValue 的后继者
-     */
-    public TreeNode inorderSuccessor(TreeNode root, int targetValue) {
-        TreeNode targetNode = searchAndGenRoute(root, targetValue);
-        if (targetNode != null && targetNode.right != null) {
-            TreeNode successor = targetNode.right;
-            while (successor.left != null) {
-                successor = successor.left;
-            }
-            return successor;
+        // 1.如果 p 有右子树，直接从右子树中寻找后继者
+        if (p.right != null) return searchSuccessor(p);
+        // 2.否则，从 root 到 p 的路径中寻找后继者
+        genRoute(root, p.val);
+        TreeNode ans = new TreeNode((int) 1e9);
+        for (TreeNode node : route) {
+            if (node.val > p.val && node.val < ans.val) ans = node;
         }
 
-        return searchSuccessor(targetValue);
+        if (ans.val == (int) 1e9) return null;
+        else return ans;
     }
 
-    /**
-     * 查询目标节点并保存查询路径
-     */
-    private TreeNode searchAndGenRoute(TreeNode node, int targetValue) {
-        if (node == null) return null;
-
+    private void genRoute(TreeNode node, int val) {
+        if (node == null) return;
+        if (node.val == val) return;
         route.add(node);
-        if (targetValue == node.val) return node;
-        if (targetValue > node.val) return searchAndGenRoute(node.right, targetValue);
-        else return searchAndGenRoute(node.left, targetValue);
+        if (node.val > val) genRoute(node.left, val);
+        else genRoute(node.right, val);
     }
 
-    private TreeNode searchSuccessor(int targetValue) {
-        TreeNode successor = null;
-        for (TreeNode treeNode : route) {
-            if (treeNode.val > targetValue && (successor == null || successor.val > treeNode.val)) {
-                successor = treeNode;
-            }
+    private TreeNode searchSuccessor(TreeNode node) {
+        TreeNode successor = node.right;
+        while (successor.left != null) {
+            successor = successor.left;
         }
         return successor;
     }
