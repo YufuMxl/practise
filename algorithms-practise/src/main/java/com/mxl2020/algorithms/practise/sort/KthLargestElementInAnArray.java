@@ -1,5 +1,8 @@
 package com.mxl2020.algorithms.practise.sort;
 
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
 /**
  * 数组中的第 K 个最大元素
  *
@@ -59,6 +62,22 @@ public class KthLargestElementInAnArray {
         return i;
     }
 
-    // TODO 基于优先队列/堆排序的选择方法
+    public int findKthLargest1(int[] nums, int k) {
+        PriorityQueue<Integer> heap = new PriorityQueue<>(k, Comparator.comparingInt(a -> a));
+
+        for (int i = 0; i < k; i++) {
+            heap.offer(nums[i]);
+        }
+
+        for (int i = k; i < nums.length; i++) {
+            int top = heap.peek();
+            if (nums[i] > top) {
+                heap.poll();
+                heap.offer(nums[i]);
+            }
+        }
+
+        return heap.peek();
+    }
 
 }
