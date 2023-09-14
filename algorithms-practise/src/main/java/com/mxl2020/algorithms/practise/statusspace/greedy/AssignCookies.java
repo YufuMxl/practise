@@ -19,13 +19,12 @@ public class AssignCookies {
         Arrays.sort(s);
 
         int childIndex = 0;
-        int cookieIndex = 0;
 
         int result = 0;
 
         // 贪心分发饼干：给每个孩子发能满足他的最小饼干
-        while (childIndex < g.length && cookieIndex < s.length && g[childIndex] <= s[s.length - 1]) {
-            if (g[childIndex] <= s[cookieIndex++]) {
+        for (int cookie : s) {
+            if (childIndex < g.length && g[childIndex] <= cookie) {
                 childIndex++;
                 result++;
             }
