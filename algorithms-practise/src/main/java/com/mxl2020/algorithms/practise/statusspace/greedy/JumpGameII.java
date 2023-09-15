@@ -26,9 +26,7 @@ public class JumpGameII {
     }
 
     private int fetchNextJumpIndex(int[] nums, int start, int end) {
-        int lastIndex = nums.length - 1;
-        if (end >= lastIndex) return lastIndex;
-        if (start == end) return start;
+        if (end >= nums.length - 1) return nums.length - 1;
 
         int nextJumpIndex = start;
         for (int i = start + 1; i <= end; i++) {
